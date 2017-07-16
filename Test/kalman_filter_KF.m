@@ -1,4 +1,4 @@
-%% Testing kalman_filter using ssm and smooth in MATLAB
+%% Testing KF using kalman_filter and fme example..........PASS
 %  Adding the corresponding folder to the path
 
 %% Clear
@@ -10,7 +10,7 @@ rng('default')                                       % control the randomness
 %% ********Testing for the fme example*********
 
 
-n = 1;                                       % number of subjects
+n = 20;                                       % number of subjects
 m = 30;                                       % number of observations
 t = (1:m)/m;
 p = 1;                                        % # of fixed effects
@@ -38,7 +38,7 @@ logpara0 = [3;                                      % log of e
 
 %% Model fitting
 
-d = 4;
+d = 42;
 diffusePrior = 1e7;
 
 tic
