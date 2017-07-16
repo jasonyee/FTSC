@@ -25,7 +25,7 @@ function output_args = Dyssm(dataset, SSModelStruc, Opti )
     
     Mean0 = SSModelStruc.Mean0;                  % <- E(x^{i-1}(0));
     Cov0 = SSModelStruc.Cov0;                    % <- Var(x^{i-1}(0));
-    [d, foo] = size(Mean0);
+    [d, ~] = size(Mean0);
     
     loglik = 0.0;
     

@@ -1,4 +1,4 @@
-%% Testing for ssmV2
+%% Testing for ssmV2 ................PASS
 
 %%
 clear;
