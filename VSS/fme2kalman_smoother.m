@@ -1,7 +1,7 @@
-%% fme2kalman_filter
-%  fitting a functional mixed effect model using Kalman filttering
+%% fme2kalman_smoother
+%  fitting a functional mixed effect model using Kalman smoothing.
 
-function [x, V, VV, loglik] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara, diffusePrior)
+function [x, V, VV, loglik] = fme2kalman_smoother(Y, fixedDesign, randomDesign, t, logpara, diffusePrior)
 %For functional mixed effect model, we let:
 %   (n for subjects, m for observations
 %    p for fixed effects, q for random effects)
@@ -133,7 +133,7 @@ function [x, V, VV, loglik] = fme2kalman_filter(Y, fixedDesign, randomDesign, t,
     end
     P00 = blkdiag(P00Cell{:});                                      %  Done
     
-    [x, V, VV, loglik] = kalman_filter(Y, H0, F, sigma0, sigma_e, x00, P00);
+    [x, V, VV, loglik] = kalman_smoother(Y, H0, F, sigma0, sigma_e, x00, P00);
     
 end
 

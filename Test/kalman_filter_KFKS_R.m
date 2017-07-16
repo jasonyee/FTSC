@@ -1,4 +1,4 @@
-%% Testing KF using kalman_filter and fme example..........PASS
+%% Testing KF&KS using kalman_filter and fme example..........PASS
 %  Adding the corresponding folder to the path
 
 %% Clear
@@ -36,27 +36,35 @@ logpara0 = [3;                                      % log of e
          -10;-10;                                 % logs of lambdaF, lambdaR
          5*ones(2*q,1)];                         % log of randomDiag
 
-%% Model fitting
-
-d = 42;
+k = 42;
 diffusePrior = 1e7;
 
+%% Model fitting
+%  KF
 tic
-output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+output_arg1 = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
 toc
-
+%  kalman_filter
 tic
-[x, V, VV, loglik] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+[x1, V1, VV1, loglik1] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+toc
+%  KS
+tic
+output_arg2 = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+toc
+%  kalman_smoother
+tic
+[x2, V2, VV2, loglik2] = fme2kalman_smoother(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
 
 %% Filtering
 %  KF
-fixedEffectMeanhat1 = output_arg.FilteredMean(d,:);
-fixedEffectCovhat1 = reshape(output_arg.FilteredCov(d,d,:), [1, m]);
+fixedEffectMeanhat1 = output_arg1.FilteredMean(k,:);
+fixedEffectCovhat1 = reshape(output_arg1.FilteredCov(k,k,:), [1, m]);
 
 %  kalman_filter
-fixedEffectMeanhat2 = x(d,:);
-fixedEffectCovhat2 = reshape(V(d,d,:), [1,m]);
+fixedEffectMeanhat2 = x1(k,:);
+fixedEffectCovhat2 = reshape(V1(k,k,:), [1,m]);
 
 % Plotting
 subplot(1,2,1)
@@ -68,4 +76,32 @@ subplot(1,2,2)
 plot(t, fixedEffectCovhat1, t, fixedEffectCovhat2);
 legend('KF', 'UBC');
 title('Filtered Variance');
+
+%% Smoothing
+%  KS
+fixedEffectMeanhat3 = output_arg2.SmoothedMean(k, :);
+fixedEffectCovhat3 = reshape(output_arg2.SmoothedCov(k,k,:), [1, m]);
+
+%  kalman_smoother
+fixedEffectMeanhat4 = x2(k,:);
+fixedEffectCovhat4 = reshape(V2(k,k,:), [1,m]);
+
+% Plotting
+subplot(1,2,1)
+plot(t, fixedEffectMeanhat3, t, fixedEffectMeanhat4);
+legend('KF', 'UBC');
+title('Smoothed Mean');
+
+subplot(1,2,2)
+plot(t, fixedEffectCovhat3, t, fixedEffectCovhat4);
+legend('KF', 'UBC');
+title('Smoothed Variance');
+
+
+
+
+
+
+
+
 

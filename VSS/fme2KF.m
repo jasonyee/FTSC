@@ -1,5 +1,5 @@
-%% fme2vss
-%  Converting a functional mixed effect model to a state-space model
+%% fme2KF
+%  fitting a functional mixed effect model using Kalman filttering
 
 function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, opti)
 %For functional mixed effect model, we let:
