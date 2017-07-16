@@ -1,13 +1,16 @@
-%% Testing for ssmV2
+%% Testing KF using kalman_filter and fme example..........PASS
+%  Adding the corresponding folder to the path
 
-%%
+%% Clear
 clear;
 clc;
 
-%% Simulation
-rng(1);                                       % control the randomness
+rng('default')                                       % control the randomness
 
-n = 1;                                       % number of subjects
+%% ********Testing for the fme example*********
+
+
+n = 20;                                       % number of subjects
 m = 30;                                       % number of observations
 t = (1:m)/m;
 p = 1;                                        % # of fixed effects
@@ -33,41 +36,36 @@ logpara0 = [3;                                      % log of e
          -10;-10;                                 % logs of lambdaF, lambdaR
          5*ones(2*q,1)];                         % log of randomDiag
 
-SSModelStruc = fme2ssm(fixedDesign, randomDesign, t, logpara0);
+%% Model fitting
 
-SSModel1 = ssm_structure(SSModelStruc);
-
-stateDistMean = cell(1, m);
-for j=1:m
-    stateDistMean{j} = zeros(d,1);
-end
-
-SSModel2 = ssmV2(SSModelStruc.stateTran, ...
-                stateDistMean, ...
-                SSModelStruc.stateDist, ...
-                SSModelStruc.measSens, ...
-                SSModelStruc.obseInnov, ...
-                SSModelStruc.Mean0, ...
-                SSModelStruc.Cov0);
-
-
-%%
-tic
-[SmoothedMeanhat1, logL1, output1]= smooth(SSModel1, Y');
-toc
-
-fixedEffectMeanhat1 = SmoothedMeanhat1(:,1);
+d = 42;
+diffusePrior = 1e7;
 
 tic
-[SmoothedMeanhat2, logL2, output2]= smooth(SSModel2, Y');
+output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
 toc
 
-fixedEffectMeanhat2 = SmoothedMeanhat1(:,1);
+tic
+[x, V, VV, loglik] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+toc
 
+%% Filtering
+%  KF
+fixedEffectMeanhat1 = output_arg.FilteredMean(d,:);
+fixedEffectCovhat1 = reshape(output_arg.FilteredCov(d,d,:), [1, m]);
+
+%  kalman_filter
+fixedEffectMeanhat2 = x(d,:);
+fixedEffectCovhat2 = reshape(V(d,d,:), [1,m]);
+
+% Plotting
+subplot(1,2,1)
 plot(t, fixedEffectMeanhat1, t, fixedEffectMeanhat2);
+legend('KF', 'UBC');
+title('Filtered Mean');
 
-
-
-
-
+subplot(1,2,2)
+plot(t, fixedEffectCovhat1, t, fixedEffectCovhat2);
+legend('KF', 'UBC');
+title('Filtered Variance');
 

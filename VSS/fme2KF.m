@@ -1,7 +1,7 @@
-%% vss_fme2
-%  State space model with Kalman filtering and state smoothing
+%% fme2vss
+%  Converting a functional mixed effect model to a state-space model
 
-function output_args = vsscore_fme(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, opti)
+function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, opti)
 %For functional mixed effect model, we let:
 %   (n for subjects, m for observations
 %    p for fixed effects, q for random effects)
@@ -19,9 +19,7 @@ function output_args = vsscore_fme(Y, fixedDesign, randomDesign, t, logpara, dif
 %           , 2q-by-1.
 %   -diffuse is the diffuse prior variance parameter for fixed effect 
 %       parameters.
-%   -opti is boolean: if True then the function returns criterion value;
-%       otherwise the state vector estimate and the variances 
-%       are returned too.
+%   -opti: true when KF is used in the minimization process.
 %   for the detailed mathematics of this algorithms, please refer to:
 %       http://www.jstor.org/stable/3068297?seq=1#page_scan_tab_contents
 
@@ -135,6 +133,7 @@ function output_args = vsscore_fme(Y, fixedDesign, randomDesign, t, logpara, dif
     end
     P00 = blkdiag(P00Cell{:});                                      %  Done
     
-    output_args = vsscore(Y, H0,sigma0, F, sigma_e, x00, P00, opti);
+    output_arg = KF(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00, opti);
+    
 end
 
