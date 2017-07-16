@@ -70,4 +70,3 @@ plot(t, fixedEffectMeanhat1, t, fixedEffectMeanhat2);
 
 
 
-

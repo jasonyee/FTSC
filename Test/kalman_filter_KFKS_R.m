@@ -1,11 +1,14 @@
 %% Testing KF&KS using kalman_filter and fme example..........PASS
-%  Adding the corresponding folder to the path
+%  Adding the following folders to the path:
+%   -FTSC
+%   -Kalman
+%   -KPMstats
 
 %% Clear
 clear;
 clc;
 
-rng('default')                                       % control the randomness
+rng(1)                                       % control the randomness
 
 %% ********Testing for the fme example*********
 
@@ -67,15 +70,16 @@ fixedEffectMeanhat2 = x1(k,:);
 fixedEffectCovhat2 = reshape(V1(k,k,:), [1,m]);
 
 % Plotting
+figure;
 subplot(1,2,1)
 plot(t, fixedEffectMeanhat1, t, fixedEffectMeanhat2);
-legend('KF', 'UBC');
-title('Filtered Mean');
+legend("KF", "UBC");
+title("Filtered Mean");
 
 subplot(1,2,2)
 plot(t, fixedEffectCovhat1, t, fixedEffectCovhat2);
-legend('KF', 'UBC');
-title('Filtered Variance');
+legend("KF", "UBC");
+title("Filtered Variance");
 
 %% Smoothing
 %  KS
@@ -87,19 +91,16 @@ fixedEffectMeanhat4 = x2(k,:);
 fixedEffectCovhat4 = reshape(V2(k,k,:), [1,m]);
 
 % Plotting
+figure;
 subplot(1,2,1)
 plot(t, fixedEffectMeanhat3, t, fixedEffectMeanhat4);
-legend('KF', 'UBC');
-title('Smoothed Mean');
+legend("KF", "UBC");
+title("Smoothed Mean");
 
 subplot(1,2,2)
 plot(t, fixedEffectCovhat3, t, fixedEffectCovhat4);
-legend('KF', 'UBC');
-title('Smoothed Variance');
-
-
-
-
+legend("KF", "UBC");
+title("Smoothed Variance");
 
 
 
