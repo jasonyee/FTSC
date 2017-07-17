@@ -76,14 +76,14 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
-    legend("dss", "vss");
-    plottitle = strcat("Filtered Mean when i=", num2str(i));
+    legend('dss', 'vss');
+    plottitle = strcat('Filtered Mean when i=', num2str(i));
     title(plottitle);
 
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
-    legend("dss", "vss");
-    plottitle = strcat("Filtered Variance when i=", num2str(i));
+    legend('dss', 'vss');
+    plottitle = strcat('Filtered Variance when i=', num2str(i));
     title(plottitle);
 end
 
@@ -102,14 +102,14 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend("dss", "vss");
-    plottitle = strcat("Smoothed Mean when i=", num2str(i));
+    legend('dss', 'vss');
+    plottitle = strcat('Smoothed Mean when i=', num2str(i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
-    legend("dss", "vss");
-    plottitle = strcat("Smoothed Variance when i=", num2str(i));
+    legend('dss', 'vss');
+    plottitle = strcat('Smoothed Variance when i=', num2str(i));
     title(plottitle);
     
 end

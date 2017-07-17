@@ -1,6 +1,6 @@
 %% dss_uni
-%  dss_uni fits the state-space model by dynamic Kalman-filtering and
-%  smoothing
+%  dss_uni trains a dynamic state-space model
+%  for the given state-space model and data
 
 function [KalmanFitCell, loglik, prior]= ...
     dss_uni(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0)
@@ -78,7 +78,6 @@ function [KalmanFitCell, loglik, prior]= ...
     prior.OneSubTranMX = OneSubTranMX;
     prior.OneSubDistMean = OneSubDistMean;
     prior.OneSubDistCov = OneSubDistCov;
-    prior.OneSubState0 = OneSubState0;
     prior.OneSubState0 = OneSubState0;
     prior.OneSubStateCov0 = OneSubStateCov0;
 end

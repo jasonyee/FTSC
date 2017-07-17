@@ -27,6 +27,11 @@ realRandomEffect = randn(n,4)*[cos(2*pi*t);cos(4*pi*t);...
 Y = repmat(realFixedEffect, [n,1]) + realRandomEffect ... 
     + sqrt(sigma_e)*randn(n,m);
 
+%% Model setting
+
+fixedDesign = repmat(ones(n,p),[1, 1, m]);    % n-by-p-by-m
+randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
+
 %  Optimization
 logpara0 = [0;                                      % log of e  
          -10;-10;                                 % logs of lambdaF, lambdaR
@@ -36,5 +41,5 @@ diffusePrior = 1e7;
 
 %% fmeTraining
 tic
-logparahat = fmeTraining(Y, t, logpara0, diffusePrior);
+logparahat = fmeTraining(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
