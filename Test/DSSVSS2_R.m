@@ -61,6 +61,7 @@ tic
 [logparahat_vss, val_vss] = fminsearch(NlogLik_vss, logpara0);
 toc
 
+
 %% Model fitting
 %  DSS
 tic
@@ -131,6 +132,13 @@ for i=1:n
     title(plottitle);
     
 end
+
+%% Estimation result
+fprintf('-DSS estimate is %i \n', logparahat_dss(1))
+fprintf('and the minimized objective value is %i. \n', val_dss);
+fprintf('-VSS estimate is %i \n', logparahat_vss(1))
+fprintf('and the minimized objective value is %i. \n', val_vss);
+
 
 
 
