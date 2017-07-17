@@ -34,12 +34,21 @@ randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
 
 %  Optimization
 logpara0 = [0;                                      % log of e  
-         -10;-10;                                 % logs of lambdaF, lambdaR
+         -5;-5;                                 % logs of lambdaF, lambdaR
          1*ones(2*q,1)];                         % log of randomDiag
 
 diffusePrior = 1e7;
 
-%% fmeTraining
+%% fmeTraining.............................................................PASS
 tic
 logparahat = fmeTraining(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
+
+%% fmeCondProb.............................................................
+ClusterMem = 1:n-1;
+subj = n;
+
+SSModel = fme2ss(fixedDesign, randomDesign, t, logparahat, diffusePrior);
+
+ClusterData = Y(ClusterMem,:);
+
