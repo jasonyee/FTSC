@@ -1,7 +1,7 @@
-%% fme2KS
-%  fitting a functional mixed effect model using Kalman smoothing.
+%% fme2dss
+%  fitting a functional mixed effect model using dyanmic Kalman smoothing.
 
-function output_arg = fme2KS(Y, fixedDesign, randomDesign, t, logpara, diffusePrior)
+function [KalmanFitCell, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logpara, diffusePrior)
 %For functional mixed effect model, we let:
 %   (n for subjects, m for observations
 %    p for fixed effects, q for random effects)
@@ -133,7 +133,7 @@ function output_arg = fme2KS(Y, fixedDesign, randomDesign, t, logpara, diffusePr
     end
     P00 = blkdiag(P00Cell{:});                                      %  Done
     
-    output_arg = KS(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
+    [KalmanFitCell, loglik, prior] = dss_uni(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
     
 end
 

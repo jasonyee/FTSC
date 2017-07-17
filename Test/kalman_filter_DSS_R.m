@@ -1,4 +1,4 @@
-%% Testing KF&KS using kalman_filter and fme example..........PASS
+%% Testing DSS using kalman_filter and fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
 %   -Kalman
@@ -36,55 +36,61 @@ randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
 
 %  Optimization
 logpara0 = [3;                                      % log of e  
-         -10;-10;                                 % logs of lambdaF, lambdaR
-         5*ones(2*q,1)];                         % log of randomDiag
+         -5;-7;                                 % logs of lambdaF, lambdaR
+         1*ones(2*q,1)];                         % log of randomDiag
 
-k = 42;
 diffusePrior = 1e7;
 
+
+
 %% Model fitting
-%  KF
+%  DSS
 tic
-output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+[output_arg1, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
 %  kalman_filter
 tic
 [x1, V1, VV1, loglik1] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
-%  KS
-tic
-output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
-toc
+
 %  kalman_smoother
 tic
 [x2, V2, VV2, loglik2] = fme2kalman_smoother(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
 
+%%
+k = 1;
+i = 20;
+
 %% Filtering
-%  KF
-fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
+%  DSS
+fixedEffectMeanhat1 = output_arg1{i}.FilteredMean(k,:);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
+fixedEffectCovhat1 = reshape(output_arg1{i}.FilteredCov(k,k,:), [1, m]);
 
 %  kalman_filter
 fixedEffectMeanhat2 = x1(k,:);
 fixedEffectCovhat2 = reshape(V1(k,k,:), [1,m]);
 
+
 % Plotting
 figure;
 subplot(1,2,1)
-plot(t, fixedEffectMeanhat_KF, t, fixedEffectMeanhat2);
-legend("KF", "UBC");
+plot(t, fixedEffectMeanhat1, t, fixedEffectMeanhat2);
+legend("dss", "UBC");
 title("Filtered Mean");
 
 subplot(1,2,2)
-plot(t, fixedEffectCovhat_KF, t, fixedEffectCovhat2);
-legend("KF", "UBC");
+plot(t, fixedEffectCovhat1, t, fixedEffectCovhat2);
+legend("dss", "UBC");
 title("Filtered Variance");
 
 %% Smoothing
-%  KS
-fixedEffectMeanhat_KS = output_arg_KS.SmoothedMean(k, :);
-fixedEffectCovhat_KS = reshape(output_arg_KS.SmoothedCov(k,k,:), [1, m]);
+%  DSS
+fixedEffectMeanhat3 = output_arg1{i}.SmoothedMean(k,:);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
+fixedEffectCovhat3 = reshape(output_arg1{i}.SmoothedCov(k,k,:), [1, m]);
+
 
 %  kalman_smoother
 fixedEffectMeanhat4 = x2(k,:);
@@ -93,15 +99,14 @@ fixedEffectCovhat4 = reshape(V2(k,k,:), [1,m]);
 % Plotting
 figure;
 subplot(1,2,1)
-plot(t, fixedEffectMeanhat_KS, t, fixedEffectMeanhat4);
-legend("KS", "UBC");
+plot(t, fixedEffectMeanhat3, t, fixedEffectMeanhat4);
+legend("dss", "UBC");
 title("Smoothed Mean");
 
 subplot(1,2,2)
-plot(t, fixedEffectCovhat_KS, t, fixedEffectCovhat4);
-legend("KS", "UBC");
+plot(t, fixedEffectCovhat3, t, fixedEffectCovhat4);
+legend("dss", "UBC");
 title("Smoothed Variance");
-
 
 
 

@@ -1,8 +1,8 @@
-%% KSUpdate
+%% KSBackward
 %  Kalman smoothing backward one step updating
 
-function [PrevMean, PrevCov] = ...
-    KSUpdate(TranMX, FilteredMean, FilteredCov, MeanPred, CovPred,  NextMean, NextCov)
+function [PrevMean, PrevCov, J] = ...
+    KSBackward(TranMX, FilteredMean, FilteredCov, MeanPred, CovPred,  NextMean, NextCov)
 %Input: t=0:T-1
 %   -TranMX: the state transtion matix from t to t+1.
 %   -FilteredMean: the state disturbing mean at t, E(x_t|1:t).
