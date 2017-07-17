@@ -23,12 +23,12 @@ function [KalmanFitCell, loglik, prior]= ...
 %       -SmoothedMean: E(x^(i-1)_t|1:T)
 %       -SmoothedCov: Cov(x^(i-1)_t|1:T)
 %   loglik is the log-likelihood value for all the data.
-%   prior is a structure storing the prior info for the coming subject.
-%       -OneSubTranMX
-%       -OneSubDistMean
-%       -OneSubDistCov
-%       -OneSubState0
-%       -OneSubStateCov0
+%   prior is a structure storing the prior info for the new subject.
+%       -OneSubTranMX: (:,:,t) is the state transition matrix
+%       -OneSubDistMean: (:,t) is the state disturbance mean
+%       -OneSubDistCov: (:,:,t) is the state disturbance covariance matrix
+%       -OneSubState0: initial state mean
+%       -OneSubStateCov0: initial state covariance matrix
 
 
     [n, d, T] = size(MeasMX);
