@@ -1,5 +1,6 @@
 %% KF
-%  KF returns a Kalman filtering structure.
+%  KF returns a Kalman filtering structure
+%  or the log-likelihood value of the data.
 
 function output_arg = ...
     KF(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0, opti)
