@@ -31,7 +31,7 @@ function [KalmanFitCell, loglik, prior]= ...
 %       -OneSubStateCov0: initial state covariance matrix
 
 
-    [n, d, T] = size(MeasMX);
+    [n, ~, T] = size(MeasMX);
     KalmanFitCell = cell(n,1);
     loglik = 0.0;
     

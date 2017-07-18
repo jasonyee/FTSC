@@ -48,7 +48,11 @@ toc
 ClusterMem = 1:n-1;
 subj = n;
 
-SSModel = fme2ss(fixedDesign, randomDesign, t, logparahat, diffusePrior);
-
 ClusterData = Y(ClusterMem,:);
+subdata = Y(subj, :);
+tic
+logCondProb = fmeCondProb(ClusterData, subdata, t, ...
+                        logparahat, diffusePrior);
+toc
+                    
 
