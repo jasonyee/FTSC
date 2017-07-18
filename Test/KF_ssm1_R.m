@@ -44,8 +44,8 @@ d = 3;      % state we want to see
 figure;
 subplot(1,2,1);
 plot(t, KFFit.FilteredMean(d,:), t, FilteredMean_MATLAB(:,d));
-legend("KFFit","MATLAB");
-title("Filtered.Mean");
+legend('KFFit','MATLAB');
+title('Filtered.Mean');
 
 subplot(1,2,2);
 for j=1:T
@@ -53,8 +53,8 @@ for j=1:T
     FilteredStatesCov_MATLAB(j) = output_f(j).FilteredStatesCov(d,d);
 end
 plot(t,FilteredStatesCov_KFFit, t, FilteredStatesCov_MATLAB);
-legend("KFFit","MATLAB");
-title("Filtered.Variance");
+legend('KFFit','MATLAB');
+title('Filtered.Variance');
 
 %% Forecasted stimates ..................PASS
 
@@ -69,8 +69,8 @@ for j=1:T
     ForecastedStatesMean_MATLAB(j) = output_f(j).ForecastedStates(d);
 end
 plot(t, KFFit.ForecastedMean(d,:), t, ForecastedStatesMean_MATLAB);
-legend("KFFit","MATLAB");
-title("Forecasted.Mean");
+legend('KFFit','MATLAB');
+title('Forecasted.Mean');
 
 subplot(1,2,2);
 for j=1:T
@@ -78,5 +78,5 @@ for j=1:T
     ForecastedStatesCov_MATLAB(j) = output_f(j).ForecastedStatesCov(d,d);
 end
 plot(t,ForecastedStatesCov_KFFit, t, ForecastedStatesCov_MATLAB);
-legend("KFFit","MATLAB");
-title("Forecasted.Variance");
+legend('KFFit','MATLAB');
+title('Forecasted.Variance');

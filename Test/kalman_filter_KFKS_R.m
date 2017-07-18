@@ -73,13 +73,13 @@ fixedEffectCovhat2 = reshape(V1(k,k,:), [1,m]);
 figure;
 subplot(1,2,1)
 plot(t, fixedEffectMeanhat_KF, t, fixedEffectMeanhat2);
-legend("KF", "UBC");
-title("Filtered Mean");
+legend('KF', 'UBC');
+title('Filtered Mean');
 
 subplot(1,2,2)
 plot(t, fixedEffectCovhat_KF, t, fixedEffectCovhat2);
-legend("KF", "UBC");
-title("Filtered Variance");
+legend('KF', 'UBC');
+title('Filtered Variance');
 
 %% Smoothing
 %  KS
@@ -94,13 +94,13 @@ fixedEffectCovhat4 = reshape(V2(k,k,:), [1,m]);
 figure;
 subplot(1,2,1)
 plot(t, fixedEffectMeanhat_KS, t, fixedEffectMeanhat4);
-legend("KS", "UBC");
-title("Smoothed Mean");
+legend('KS', 'UBC');
+title('Smoothed Mean');
 
 subplot(1,2,2)
 plot(t, fixedEffectCovhat_KS, t, fixedEffectCovhat4);
-legend("KS", "UBC");
-title("Smoothed Variance");
+legend('KS', 'UBC');
+title('Smoothed Variance');
 
 
 
