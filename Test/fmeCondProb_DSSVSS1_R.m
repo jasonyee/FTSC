@@ -1,4 +1,4 @@
-%% Testing fmeTraining and fmeCondProb using fme example
+%% Testing fmeCondProb using fme example...................................PASS
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -33,18 +33,13 @@ fixedDesign = repmat(ones(n,p),[1, 1, m]);    % n-by-p-by-m
 randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
 
 %  Optimization
-logpara0 = [0;                                      % log of e  
-         -5;-5;                                 % logs of lambdaF, lambdaR
+logpara0 = [3;                                      % log of e  
+         -5;-7;                                 % logs of lambdaF, lambdaR
          1*ones(2*q,1)];                         % log of randomDiag
 
 diffusePrior = 1e7;
 
-%% fmeTraining.............................................................PASS
-tic
-logparahat = fmeTraining(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
-toc
-
-%% fmeCondProb.............................................................
+%% fmeCondProb
 ClusterMem = 1:n-1;
 subj = n;
 
@@ -52,7 +47,6 @@ ClusterData = Y(ClusterMem,:);
 subdata = Y(subj, :);
 tic
 logCondProb = fmeCondProb(ClusterData, subdata, t, ...
-                        logparahat, diffusePrior);
+                        logpara0, diffusePrior);
 toc
-                    
-
+% compare to the result in DSSVSS1_R
