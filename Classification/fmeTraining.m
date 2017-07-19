@@ -6,8 +6,8 @@ function logparahat = fmeTraining(dataset, obtime, fixedArray, randomArray, logp
 %Input:
 %   -dataset: (i,t) is the data for patient i at observation t.
 %   -obtime: (t) is the time at observation t.
-%   -fixedArray: 1-by-p array stands for fixed effect coefficients.
-%   -randomArray: 1-by-q array stands for random effect coefficients.
+%   -fixedArray: 1-by-p array stands for fixed effect factors.
+%   -randomArray: 1-by-q array stands for random effect factors.
 %   -logpara0: initial para for the optimization process.
 %   -diffusePrior: the diffuse prior parameter.
 %Output:

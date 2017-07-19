@@ -8,8 +8,8 @@ function logCondProb = fmeCondProb(ClusterData, subdata, OBtime, ...
 %   -ClusterData: (i,t) is the data of group member i at observation t.
 %   -subdata: (t) is the data of new subject at observation t.
 %   -OBtime: (t) is the time at observation t.
-%   -fixedArray: 1-by-p array stands for fixed effect coefficients.
-%   -randomArray: 1-by-q array stands for random effect coefficients.
+%   -fixedArray: 1-by-p array stands for fixed effect factors.
+%   -randomArray: 1-by-q array stands for random effect factors.
 %   -logparahat: the MLE for the cluster.
 %Output:
 %   -CondProb: the density of a new subject conditioning on this cluster.
