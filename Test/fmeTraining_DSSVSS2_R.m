@@ -33,14 +33,14 @@ fixedDesign = repmat(ones(n,p),[1, 1, m]);    % n-by-p-by-m
 randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
 
 %  Optimization
-logpara0 = [3;                                      % log of e  
-         -5;-7;                                 % logs of lambdaF, lambdaR
+logpara0 = [0;                                      % log of e  
+         -10;-10;                                 % logs of lambdaF, lambdaR
          1*ones(2*q,1)];                         % log of randomDiag
 
 diffusePrior = 1e7;
 
 %% fmeTraining
 tic
-logparahat = fmeTraining(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+logparahat = fmeTraining(Y, t, logpara0, diffusePrior);
 toc
 % compare to the result in DSSVSS2_R
