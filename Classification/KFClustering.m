@@ -60,7 +60,7 @@ function [ ClusterIDs, ClusterMembers, Theta] = ...
                 else
                     LeaveOneClusterData = dataset(ClusterMembers{k},:);
                 end
-                logPostProb(k) = fmeCondProb(LeaveOneClusterData, dataset(i,:), OBtime, Theta(:,k), diffusePrior);
+                logPostProb(k) = fmeCondProb(LeaveOneClusterData, dataset(i,:), OBtime, fixedArray, randomArray, Theta(:,k), diffusePrior);
             end
             [~, newClusterID] = max(logPostProb);
             
@@ -70,7 +70,7 @@ function [ ClusterIDs, ClusterMembers, Theta] = ...
                 ClusterIDs(i) = newClusterID;
                 % members
                 newClusterMembers = ClusterMembers{newClusterID};
-                ClusterMembers{newClusterID} = [newClusterMembers, i];
+                ClusterMembers{newClusterID} = [newClusterMembers; i];
                 ClusterMembers{oldClusterID} = oldClusterMembers;
                 Switches = Switches + 1;
             end
