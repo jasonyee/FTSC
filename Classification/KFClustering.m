@@ -1,5 +1,5 @@
 %% KFClustering
-%  KFClustering classify the subjects to the fixed number of clusters
+%  KFClustering classifies the subjects to the fixed number of clusters
 %  and returns the parameters for each cluster.
 
 function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
