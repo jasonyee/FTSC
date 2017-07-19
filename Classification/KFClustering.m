@@ -2,7 +2,7 @@
 %  KFClustering classify the subjects to the fixed number of clusters
 %  and returns the parameters for each cluster.
 
-function [ ClusterIDs, ClusterMembers, Theta] = ...
+function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     KFClustering(dataset, OBtime, nClusters, ...
                 fixedArray, randomArray, MAX_LOOP)
 %Input:
@@ -18,6 +18,7 @@ function [ ClusterIDs, ClusterMembers, Theta] = ...
 %   1-by-nCluster.
 %   -Theta: (:,k) is the fitting parameter for cluster k, dim of
 %   para-by-nClusters.
+%   -SwitchHistory: an array that stores the switches number in each loop
 
     % Initialize
     [n, ~] = size(dataset);
@@ -41,6 +42,7 @@ function [ ClusterIDs, ClusterMembers, Theta] = ...
     
     Switches = 1;
     loopNum = 0;
+    SwitchHistory = [];
     
     while ~ShouldStop(Switches, loopNum, MAX_LOOP)
         Switches = 0;
@@ -81,7 +83,8 @@ function [ ClusterIDs, ClusterMembers, Theta] = ...
             Theta(:,k) = fmeTraining(dataset(ClusterMembers{k},:), OBtime, fixedArray, randomArray, logpara0, diffusePrior);
         end
         loopNum = loopNum + 1;
-    
+        
+        SwitchHistory = [SwitchHistory, Switches];
     end
 end
 

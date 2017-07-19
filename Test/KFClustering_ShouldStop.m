@@ -54,11 +54,12 @@ randomArray = ones(1,q);
 MAX_LOOP = 100;
 
 tic
-[ ClusterIDs_KF, ClusterMembers, Theta] = ...
+[ ClusterIDs_KF, ClusterMembers, Theta, switchHistory] = ...
     KFClustering(dataset, t, nClusters, ...
                 fixedArray, randomArray, MAX_LOOP);
 toc
 
+plot(switchHistory);
 
 
                  
