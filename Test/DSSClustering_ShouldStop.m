@@ -1,4 +1,4 @@
-%% Testing KFClustering and kmeans using 2 group fme examples
+%% Testing DSSClustering and kmeans using 2 group fme examples
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -48,10 +48,10 @@ end
 ClusterData_real = ClusteringData(dataset, ClusterMembers_real);
 ClusteringVisual(dataset, ClusterData_real, t);
 
-%% kmeans fitting
+%% kmeans: fitting
 ClusterIDs_kmeans = kmeans(dataset, nClusters);
 
-%% kmeans visualization
+%% kmeans: visualization
 ClusterMembers_kmeans = cell(1, nClusters);
 for k = 1:nClusters
     ClusterMembers_kmeans{k} = find(ClusterIDs_kmeans == k);
@@ -59,36 +59,44 @@ end
 ClusterData_kmeans = ClusteringData(dataset, ClusterMembers_kmeans);
 ClusteringVisual(dataset, ClusterData_kmeans, t);
 
+%% kmeans: sensitivity analysis
+SensRate1 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_kmeans, [1, 2]);
+SensRate2 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_kmeans, [2, 1]);
+
+fprintf('If the real cluster 1 corresponds to the kmeans-output cluster 1, then sensitivity rate is [%f, %f]\n', SensRate1);
+fprintf('If the real cluster 1 corresponds to the kmeans-output cluster 2, then sensitivity rate is [%f, %f]\n', SensRate2);
 
 
-%% KFClustering fitting
+%% DSSClustering: fitting
 
 fixedArray = ones(1,p);
 randomArray = ones(1,q);
 MAX_LOOP = 100;
 
 tic
-[ ClusterIDs_KF, ClusterMembers_KF, Theta, switchHistory] = ...
-    KFClustering(dataset, t, nClusters, ...
+[ ClusterIDs_DSS, ClusterMembers_DSS, Theta, switchHistory] = ...
+    DSSClustering(dataset, t, nClusters, ...
                 fixedArray, randomArray, MAX_LOOP);
 toc
 
-%% KFClustering iterations
+%%  DSSClustering: iterations
 figure;
 plot(switchHistory);
-title('KFClustering iteration');
+title('DSSClustering iteration');
 xlabel('iterative steps');
 ylabel('switches');
 
+%% DSSClustering: visualization
+ClusterData_DSS = ClusteringData(dataset, ClusterMembers_DSS);
+ClusteringVisual(dataset, ClusterData_DSS, t);
 
+%% DSSClustering: sensitivity analysis
 
-%% KFClustering visualization
-ClusterData_KF = ClusteringData(dataset, ClusterMembers_KF);
-ClusteringVisual(dataset, ClusterData_KF, t);
+SensRate3 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_DSS, [1, 2]);
+SensRate4 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_DSS, [2, 1]);
 
-
-
-
+fprintf('If the real cluster 1 corresponds to the dss-output cluster 1, then sensitivity rate is [%f, %f]\n', SensRate3);
+fprintf('If the real cluster 1 corresponds to the dss-output cluster 2, then sensitivity rate is [%f, %f]\n', SensRate4);
 
                  
 

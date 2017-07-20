@@ -1,9 +1,9 @@
-%% KFClustering
-%  KFClustering classifies the subjects to the fixed number of clusters
+%% DSSClustering
+%  DSSClustering classifies the subjects to the fixed number of clusters
 %  and returns the parameters for each cluster.
 
 function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
-    KFClustering(dataset, OBtime, nClusters, ...
+    DSSClustering(dataset, OBtime, nClusters, ...
                 fixedArray, randomArray, MAX_LOOP)
 %Input:
 %   -dataset: (i,t) is the data for subject i at observation t, n-by-T.
