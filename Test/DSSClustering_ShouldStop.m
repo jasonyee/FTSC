@@ -63,7 +63,7 @@ ClusteringVisual(dataset, ClusterData_kmeans, t);
 sensT_kmeans = SensTable(ClusterMembers_real, ClusterMembers_kmeans);
 SensTable_kmeans = array2table(sensT_kmeans, ...
                 'VariableNames', {'kmeans_cluster1', 'kmeans_cluster2'}, ...
-                'RowNames', {'real_cluster1', 'real_cluster2'})
+                'RowNames', {'real_cluster1: 5', 'real_cluster2: 7'})
 
 %% DSSClustering: fitting
 
@@ -92,4 +92,4 @@ ClusteringVisual(dataset, ClusterData_DSS, t);
 sensT_DSS = SensTable(ClusterMembers_real, ClusterMembers_DSS);
 SensTable_DSS = array2table(sensT_DSS, ...
                 'VariableNames', {'DSS_cluster1', 'DSS_cluster2'}, ...
-                'RowNames', {'real_cluster1', 'real_cluster2'})
+                'RowNames', {'real_cluster1-5', 'real_cluster2-7'})
