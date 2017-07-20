@@ -60,12 +60,10 @@ ClusterData_kmeans = ClusteringData(dataset, ClusterMembers_kmeans);
 ClusteringVisual(dataset, ClusterData_kmeans, t);
 
 %% kmeans: sensitivity analysis
-SensRate1 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_kmeans, [1, 2]);
-SensRate2 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_kmeans, [2, 1]);
-
-fprintf('If the real cluster 1 corresponds to the kmeans-output cluster 1, then sensitivity rate is [%f, %f]\n', SensRate1);
-fprintf('If the real cluster 1 corresponds to the kmeans-output cluster 2, then sensitivity rate is [%f, %f]\n', SensRate2);
-
+sensT_kmeans = SensTable(ClusterMembers_real, ClusterMembers_kmeans);
+SensTable_kmeans = array2table(sensT_kmeans, ...
+                'VariableNames', {'kmeans_cluster1', 'kmeans_cluster2'}, ...
+                'RowNames', {'real_cluster1', 'real_cluster2'})
 
 %% DSSClustering: fitting
 
@@ -91,13 +89,7 @@ ClusterData_DSS = ClusteringData(dataset, ClusterMembers_DSS);
 ClusteringVisual(dataset, ClusterData_DSS, t);
 
 %% DSSClustering: sensitivity analysis
-
-SensRate3 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_DSS, [1, 2]);
-SensRate4 = SensitivityAnalysis(ClusterMembers_real, ClusterMembers_DSS, [2, 1]);
-
-fprintf('If the real cluster 1 corresponds to the dss-output cluster 1, then sensitivity rate is [%f, %f]\n', SensRate3);
-fprintf('If the real cluster 1 corresponds to the dss-output cluster 2, then sensitivity rate is [%f, %f]\n', SensRate4);
-
-                 
-
-
+sensT_DSS = SensTable(ClusterMembers_real, ClusterMembers_DSS);
+SensTable_DSS = array2table(sensT_DSS, ...
+                'VariableNames', {'DSS_cluster1', 'DSS_cluster2'}, ...
+                'RowNames', {'real_cluster1', 'real_cluster2'})
