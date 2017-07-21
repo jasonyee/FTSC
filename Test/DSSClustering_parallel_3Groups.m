@@ -74,7 +74,7 @@ SensTable_kmeans = array2table(sensT_kmeans, ...
                 'VariableNames', {'kmeans_cluster1', 'kmeans_cluster2', 'kmeans_cluster3'}, ...
                 'RowNames', {'real_cluster1-5', 'real_cluster2-7', 'real_cluster3-9'})
 
-%% DSSClustering: fitting
+%% DSSClustering_parallel: fitting
 
 fixedArray = ones(1,p);
 randomArray = ones(1,q);
@@ -86,19 +86,19 @@ tic
                 fixedArray, randomArray, MAX_LOOP);
 toc
 
-%%  DSSClustering: iterations
+%%  DSSClustering_parallel: iterations
 figure;
 plot(switchHistory);
-title('DSSClustering iteration');
+title('DSSClustering_parallel iteration');
 xlabel('iterative steps');
 ylabel('switches');
 
-%% DSSClustering: visualization
+%% DSSClustering_parallel: visualization
 ClusterData_DSS = ClusteringData(dataset, ClusterMembers_DSS);
 ClusteringVisual(dataset, ClusterData_DSS, t);
 
-%% DSSClustering: sensitivity analysis
+%% DSSClustering_parallel: sensitivity analysis
 sensT_DSS = SensTable(ClusterMembers_real, ClusterMembers_DSS);
 SensTable_DSS = array2table(sensT_DSS, ...
-                'VariableNames', {'DSS_cluster1', 'DSS_cluster2', 'DSS_cluster3'}, ...
+                'VariableNames', {'DSS_parallel_cluster1', 'DSS_parallel_cluster2', 'DSS_parallel_cluster3'}, ...
                 'RowNames', {'real_cluster1-5', 'real_cluster2-7', 'real_cluster3-9'})
