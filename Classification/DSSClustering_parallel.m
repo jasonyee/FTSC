@@ -32,7 +32,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     
     %k-means clustering
     ClusterIDs = kmeans(dataset, nClusters);
-    for k = 1:nClusters
+    parfor k = 1:nClusters
         ClusterIndex = find(ClusterIDs == k);
         ClusterMembers{k} = ClusterIndex;
         kClusterData = dataset(ClusterIndex, :);
