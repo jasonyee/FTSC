@@ -38,9 +38,9 @@ Y2 = repmat(realFixedEffect2, [n2,1]) + realRandomEffect2 ...
 
 % group 2:
 n3 = 20;                                      % # of subjects
-sigma_e3 = 1;                                 % variance of white noise
+sigma_e3 = 2;                                 % variance of white noise
 d3 = 2*(p+n3*q);                              % dimension of states
-realFixedEffect3 = 6*sin(2*pi*t);             % p-by-m
+realFixedEffect3 = 5*sin(2*pi*t);             % p-by-m
 realRandomEffect3 = randn(n3,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
 Y3 = repmat(realFixedEffect3, [n3,1]) + realRandomEffect3 ... 
@@ -72,7 +72,7 @@ ClusteringVisual(dataset, ClusterData_kmeans, t);
 sensT_kmeans = SensTable(ClusterMembers_real, ClusterMembers_kmeans);
 SensTable_kmeans = array2table(sensT_kmeans, ...
                 'VariableNames', {'kmeans_cluster1', 'kmeans_cluster2', 'kmeans_cluster3'}, ...
-                'RowNames', {'real_cluster1: 5', 'real_cluster2: 7', 'real_cluster2: 10'})
+                'RowNames', {'real_cluster1-5', 'real_cluster2-7', 'real_cluster2-5var2'})
 
 %% DSSClustering: fitting
 
@@ -101,4 +101,4 @@ ClusteringVisual(dataset, ClusterData_DSS, t);
 sensT_DSS = SensTable(ClusterMembers_real, ClusterMembers_DSS);
 SensTable_DSS = array2table(sensT_DSS, ...
                 'VariableNames', {'DSS_cluster1', 'DSS_cluster2', 'DSS_cluster3'}, ...
-                'RowNames', {'real_cluster1-5', 'real_cluster2-7', 'real_cluster2-10'})
+                'RowNames', {'real_cluster1-5', 'real_cluster2-7', 'real_cluster2-5var2'})
