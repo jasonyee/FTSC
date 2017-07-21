@@ -6,7 +6,7 @@
 clear;
 clc;
 
-rng(1)                                       % control the randomness
+rng(2)                                       % control the randomness
 
 %% Simulation data
 m = 30;                                       % number of observations
@@ -38,9 +38,9 @@ Y2 = repmat(realFixedEffect2, [n2,1]) + realRandomEffect2 ...
 
 % group 2:
 n3 = 20;                                      % # of subjects
-sigma_e3 = 2;                                 % variance of white noise
+sigma_e3 = 1;                                 % variance of white noise
 d3 = 2*(p+n3*q);                              % dimension of states
-realFixedEffect3 = 5*sin(2*pi*t);             % p-by-m
+realFixedEffect3 = 9*sin(2*pi*t);             % p-by-m
 realRandomEffect3 = randn(n3,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
 Y3 = repmat(realFixedEffect3, [n3,1]) + realRandomEffect3 ... 
