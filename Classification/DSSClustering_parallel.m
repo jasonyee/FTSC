@@ -32,11 +32,13 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     
     %k-means clustering
     ClusterIDs = kmeans(dataset, nClusters);
-    parfor k = 1:nClusters
+    for k = 1:nClusters
         ClusterIndex = find(ClusterIDs == k);
         ClusterMembers{k} = ClusterIndex;
-        kClusterData = dataset(ClusterIndex, :);
-        Theta(:,k) = fmeTraining(kClusterData, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+    end
+    ClusterData = ClusteringData(dataset, ClusterMembers);
+    parfor k = 1:nClusters
+        Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
     end
     
     Switches = 1;
@@ -47,6 +49,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         Switches = 0;
         
         for i=1:n
+            subjData = dataset(i,:);
             oldClusterID = ClusterIDs(i);
             oldClusterMembers = ClusterMembers{oldClusterID};
             % leave out the ith subject
@@ -55,13 +58,16 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
             
             % reclassifying the ith subject: invoking parallel computing
             logPostProb = zeros(1, nClusters);
-            parfor k=1:nClusters
+            LeaveOneClusterData = cell(1, nClusters);
+            for k=1:nClusters
                 if k == oldClusterID
-                    LeaveOneClusterData = oldLeaveOneClusterData;
+                    LeaveOneClusterData{k} = oldLeaveOneClusterData;
                 else
-                    LeaveOneClusterData = dataset(ClusterMembers{k},:);
+                    LeaveOneClusterData{k} = dataset(ClusterMembers{k},:);
                 end
-                logPostProb(k) = fmeCondProb(LeaveOneClusterData, dataset(i,:), OBtime, fixedArray, randomArray, Theta(:,k), diffusePrior);
+            end
+            parfor k=1:nClusters
+                logPostProb(k) = fmeCondProb(LeaveOneClusterData{k}, subjData, OBtime, fixedArray, randomArray, Theta(:,k), diffusePrior);
             end
             [~, newClusterID] = max(logPostProb);
             
@@ -78,8 +84,9 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         end
         
         % updating theta: invoking parallel computing
+        ClusterData = ClusteringData(dataset, ClusterMembers);
         parfor k = 1:nClusters
-            Theta(:,k) = fmeTraining(dataset(ClusterMembers{k},:), OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+            Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
         end
         loopNum = loopNum + 1;
         
