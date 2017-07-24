@@ -1,8 +1,7 @@
-%% Testing fixed effect of DSS and VSS using fme example...................PASS
+%% Testing evalutation of DSS2STEP and VSS using fme example...............PASS
 %  Adding the following folders to the path:
 %   -FTSC
-%  Uncomment dss_uni line in DSS\fme2dss.m
-%  Uncomment dss_uni line in DSS\fme_dss_NlogLik.m
+
 %% Clear
 clear;
 clc;
@@ -42,46 +41,28 @@ diffusePrior = 1e7;
 
 k = 1;
 
-%% Optimization
-%  DSS
-NlogLik_dss = @(logpara) ...
-    fme_dss_NlogLik(Y, fixedDesign, randomDesign, t, logpara, diffusePrior);
-
-tic
-[logparahat_dss, val_dss] = fminsearch(NlogLik_dss, logpara0);
-toc
-
-%%  KF
-
-NlogLik_vss = @(logpara) ...
-    fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, true);
-
-tic
-[logparahat_vss, val_vss] = fminsearch(NlogLik_vss, logpara0);
-toc
-
-
 %% Model fitting
 %  DSS
 tic
-[output_arg_dss, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logparahat_dss, diffusePrior);
+[output_arg_dss, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
 
 %  KF
 tic
-output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logparahat_vss, diffusePrior, false);
+output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
 toc
 
 %  KS
 tic
-output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffusePrior);
+output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 toc
 
 
 %% Filtering
-for i=1:n
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
 
     %  KF
@@ -93,21 +74,22 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Filtered Mean when i=', num2str(n-2+i));
     title(plottitle);
 
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Filtered Variance when i=', num2str(n-2+i));
     title(plottitle);
 end
 
 %% Smoothing
-for i=1:n
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
 
     %  KS
@@ -118,25 +100,17 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Smoothed Mean when i=', num2str(n-2+i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Smoothed Variance when i=', num2str(n-2+i));
     title(plottitle);
     
 end
-
-%% Estimation result
-fprintf('-DSS estimate is %i \n', logparahat_dss(1))
-fprintf('and the minimized objective value is %i. \n', val_dss);
-fprintf('-VSS estimate is %i \n', logparahat_vss(1))
-fprintf('and the minimized objective value is %i. \n', val_vss);
-
-
 
 
 

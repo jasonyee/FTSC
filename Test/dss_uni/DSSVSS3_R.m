@@ -5,6 +5,7 @@
 %   -VSS\KF
 %   -VSS\KS
 %   see commit: Uncomments for DSSVSS3_R.m
+%  Uncomment dss_uni line in DSS\fme2dss.m
 %% Clear
 clear;
 clc;

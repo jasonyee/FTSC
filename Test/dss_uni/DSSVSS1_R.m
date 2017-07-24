@@ -1,7 +1,7 @@
-%% Testing evalutation of DSS and VSS using fme example.........PASS
+%% Testing evalutation of DSS and VSS using fme example....................PASS
 %  Adding the following folders to the path:
 %   -FTSC
-
+%  Uncomment dss_uni line in DSS\fme2dss.m
 %% Clear
 clear;
 clc;

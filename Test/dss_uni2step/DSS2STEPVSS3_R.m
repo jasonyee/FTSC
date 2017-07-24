@@ -1,8 +1,10 @@
-%% Testing fixed effect of DSS and VSS using fme example...................PASS
+%% Testing subject-fit and group-average of DSS2STEP and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
-%  Uncomment dss_uni line in DSS\fme2dss.m
-%  Uncomment dss_uni line in DSS\fme_dss_NlogLik.m
+%  Uncomment the subject-fit code in
+%   -VSS\KF
+%   -VSS\KS
+%   see commit: Uncomments for DSSVSS3_R.m
 %% Clear
 clear;
 clc;
@@ -78,34 +80,38 @@ output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffuseP
 toc
 
 
-%% Filtering
-for i=1:n
+%% Subject-fit
+for i=1:2
     %  DSS
-    fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
-    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
-
+    if i==1
+        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(end,:);
+        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(end,end,:), [1, m]);
+    else
+        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
+        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
+    end
     %  KF
-    fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-    fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
+    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(n-2+i,:);
+    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(n-2+i,n-2+i,:), [1, m]);
 
 
     % Plotting
     figure;
     subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
+    plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
+    legend('dss2step', 'vss');
+    plottitle = strcat('Subject-fit mean when i=', num2str(n-2+i));
     title(plottitle);
 
     subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
+    plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
+    legend('dss2step', 'vss');
+    plottitle = strcat('Subject-fit variance when i=', num2str(n-2+i));
     title(plottitle);
 end
 
-%% Smoothing
-for i=1:n
+%% Group-average
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
@@ -118,14 +124,14 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Group-average mean when i=', num2str(n-2+i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Group-average variance when i=', num2str(n-2+i));
     title(plottitle);
     
 end
