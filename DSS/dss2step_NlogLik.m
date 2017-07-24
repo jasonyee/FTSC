@@ -3,7 +3,7 @@
 %  by dynamic Kalman-filtering and smoothing
 
 function NlogLik = ...
-    dss_NlogLik(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0)
+    dss2step_NlogLik(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0)
 %Input: t=1:T
 %   -TranMX(:,:,t): the state transtion matix from t-1 to t.
 %   -DistMean(:,t): the state disturbing mean at t.
@@ -40,10 +40,19 @@ function NlogLik = ...
     OneSubState0 = StateMean0;
     OneSubStateCov0 = StateCov0;
     
-    for i=1:n
-        KalmanFit = KS(OneSubTranMX, OneSubDistMean, OneSubDistCov, ...
-                        MeasMX(i,:,:), ObseCov(i,i,:), data(i,:), ...
-                        OneSubState0, OneSubStateCov0);
+    for i=1:2
+        if i==1
+            % step1: filtering and smoothing for 1:n-1
+            KalmanFit = KS(OneSubTranMX, OneSubDistMean, OneSubDistCov, ...
+                            MeasMX(1:n-1,:,:), ObseCov(1:n-1,1:n-1,:), data(1:n-1,:), ...
+                            OneSubState0, OneSubStateCov0);
+        else
+            % step2: filtering and smoothing for n
+            KalmanFit = KS(OneSubTranMX, OneSubDistMean, OneSubDistCov, ...
+                            MeasMX(n,:,:), ObseCov(n,n,:), data(n,:), ...
+                            OneSubState0, OneSubStateCov0);
+        end
+ 
         %updating the priors
         OneSubState0 = OneSubState0 + ...
             KalmanFit.Ctp1(:,:,1)*(KalmanFit.SmoothedMean(:,1) ...
@@ -70,6 +79,7 @@ function NlogLik = ...
                     *OneSubTranMX(:,:,t)';
             end
         end
+        
         loglik = loglik + KalmanFit.loglik;
     end
     NlogLik = -loglik;

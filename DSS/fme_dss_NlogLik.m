@@ -134,7 +134,7 @@ function NlogLik = fme_dss_NlogLik(Y, fixedDesign, randomDesign, t, logpara, dif
     end
     P00 = blkdiag(P00Cell{:});                                      %  Done
     
-    NlogLik = dss_NlogLik(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
-    
+    %NlogLik = dss_NlogLik(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
+    NlogLik = dss2step_NlogLik(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
 end
 
