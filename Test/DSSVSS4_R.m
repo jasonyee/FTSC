@@ -1,4 +1,4 @@
-%% Testing fixed effect of DSS and VSS using fme example.........PASS
+%% Testing random effect of DSS and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -39,7 +39,7 @@ logpara0 = [0;                                      % log of e
 
 diffusePrior = 1e7;
 
-k = 1;
+
 
 %% Optimization
 %  DSS
@@ -76,67 +76,33 @@ tic
 output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffusePrior);
 toc
 
+%% Plotting
 
-%% Filtering
+randomEffectsMeanhat_dss = zeros(n, m);
+randomEffectsCovhat_dss = zeros(n, m);
+
+randomEffectsMeanhat_vss = zeros(n, m);
+randomEffectsCovhat_vss = zeros(n, m);
+
 for i=1:n
-    %  DSS
-    fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
-    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
-
-    %  KF
-    fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-    fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
-
-
+    randomEffectsMeanhat_dss(i,:) = output_arg_dss{n}.SmoothedMean(2*i+1,:);
+    randomEffectsCovhat_dss(i,:) = reshape(output_arg_dss{n}.SmoothedCov(2*i+1,2*i+1,:) , [1,m]);
+    
+    randomEffectsMeanhat_vss(i,:) = output_arg_KS.SmoothedMean(2*i+1,:);
+    randomEffectsCovhat_vss(i,:) = reshape(output_arg_KS.SmoothedCov(2*i+1,2*i+1,:), [1, m]);
+    
     % Plotting
     figure;
     subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
-    title(plottitle);
-
-    subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
-    title(plottitle);
-end
-
-%% Smoothing
-for i=1:n
-    %  DSS
-    fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
-    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
-
-    %  KS
-    fixedEffectMeanhat_KS = output_arg_KS.SmoothedMean(k, :);
-    fixedEffectCovhat_KS = reshape(output_arg_KS.SmoothedCov(k,k,:), [1, m]);
-
-    % Plotting
-    figure;
-    subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    plot(t, randomEffectsMeanhat_dss(i,:), t, randomEffectsMeanhat_vss(i,:), t, realRandomEffect(i,:));
+    legend('dss', 'vss', 'real');
+    plottitle = strcat('Random effect mean when i=', num2str(i));
     title(plottitle);
     
     subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
+    plot(t, randomEffectsCovhat_dss(i,:), t, randomEffectsCovhat_vss(i,:));
     legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    plottitle = strcat('Random effect variance when i=', num2str(i));
     title(plottitle);
     
 end
-
-%% Estimation result
-fprintf('-DSS estimate is %i \n', logparahat_dss(1))
-fprintf('and the minimized objective value is %i. \n', val_dss);
-fprintf('-VSS estimate is %i \n', logparahat_vss(1))
-fprintf('and the minimized objective value is %i. \n', val_vss);
-
-
-
-
-
-
