@@ -22,5 +22,5 @@ function logCondProb = fmeCondProb(ClusterData, subdata, OBtime, ...
     %  fitting the kalman filter and smoother
     [KalmanFitCell, ~, ~] = fme2dss(allData, allFixedDesign, ...
         allRandomDesign, OBtime, logparahat, diffusePrior);
-    logCondProb = KalmanFitCell{nCluster+1}.loglik;
+    logCondProb = KalmanFitCell{end}.loglik;
 end
