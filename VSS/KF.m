@@ -24,9 +24,9 @@ function output_arg = ...
     ForecastedCov = zeros(d,d,T);
     FilteredMean = zeros(d,T);
     FilteredCov = zeros(d,d,T);
-    %subject-fit
-    YFilteredMean = zeros(n,T);
-    YFilteredCov = zeros(n,n,T);
+%     %subject-fit
+%     YFilteredMean = zeros(n,T);
+%     YFilteredCov = zeros(n,n,T);
 
     PrevMean = StateMean0;
     PrevCov = StateCov0;
@@ -40,10 +40,10 @@ function output_arg = ...
         FilteredMean(:,t) = PrevMean;
         FilteredCov(:,:,t) = PrevCov;
         loglik = loglik + Deltaloglik;
-        
-        %subject-fit
-        YFilteredMean(:,t) = MeasMX(:,:,t)*FilteredMean(:,t);
-        YFilteredCov(:,:,t) = MeasMX(:,:,t)*FilteredCov(:,:,t)*MeasMX(:,:,t)'+ObseCov(:,:,t);
+%         
+%         %subject-fit
+%         YFilteredMean(:,t) = MeasMX(:,:,t)*FilteredMean(:,t);
+%         YFilteredCov(:,:,t) = MeasMX(:,:,t)*FilteredCov(:,:,t)*MeasMX(:,:,t)'+ObseCov(:,:,t);
     end
     
     if opti
@@ -55,10 +55,10 @@ function output_arg = ...
         KFFit.ForecastedCov = ForecastedCov;
         KFFit.FilteredMean = FilteredMean;
         KFFit.FilteredCov = FilteredCov;
-        
-        %subject-fit
-        KFFit.YFilteredMean = YFilteredMean;
-        KFFit.YFilteredCov = YFilteredCov;
+%         
+%         %subject-fit
+%         KFFit.YFilteredMean = YFilteredMean;
+%         KFFit.YFilteredCov = YFilteredCov;
         
         output_arg = KFFit;
     end

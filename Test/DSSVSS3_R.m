@@ -4,7 +4,7 @@
 %  Uncomment the subject-fit code in
 %   -VSS\KF
 %   -VSS\KS
-
+%   see commit: Uncomments for DSSVSS3_R.m
 %% Clear
 clear;
 clc;
