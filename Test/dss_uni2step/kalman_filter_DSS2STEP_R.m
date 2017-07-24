@@ -1,9 +1,8 @@
-%% Testing DSS using kalman_filter and fme example.........................PASS
+%% Testing DSS2STEP using kalman_filter and fme example....................PASS
 %  Adding the following folders to the path:
 %   -FTSC
 %   -Kalman
 %   -KPMstats
-%  Uncomment dss_uni line in DSS\fme2dss.m
 
 %% Clear
 clear;
@@ -61,7 +60,7 @@ toc
 
 %%
 k = 1;
-i = 20;
+i = 2;
 
 %% Filtering
 %  DSS

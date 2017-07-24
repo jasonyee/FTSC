@@ -133,7 +133,7 @@ function [KalmanFitCell, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, 
     end
     P00 = blkdiag(P00Cell{:});                                      %  Done
     
-    [KalmanFitCell, loglik, prior] = dss_uni(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
-    
+    %[KalmanFitCell, loglik, prior] = dss_uni(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
+    [KalmanFitCell, loglik, prior] = dss_uni2step(H0, zeros(d,m), sigma0, F, sigma_e, Y, x00, P00);
 end
 
