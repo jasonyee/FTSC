@@ -77,33 +77,33 @@ output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffuseP
 toc
 
 
-%% Subject-fit
+%% Filtering
 for i=1:n
     %  DSS
-    subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
-    subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
+    fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
+    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
 
     %  KF
-    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(i,:);
-    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(i,i,:), [1, m]);
+    fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
+    fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
 
 
     % Plotting
     figure;
     subplot(1,2,1)
-    plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
+    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
     legend('dss', 'vss');
-    plottitle = strcat('Subject-fit mean when i=', num2str(i));
+    plottitle = strcat('Filtered Mean when i=', num2str(i));
     title(plottitle);
 
     subplot(1,2,2)
-    plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
+    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
     legend('dss', 'vss');
-    plottitle = strcat('Subject-fit variance when i=', num2str(i));
+    plottitle = strcat('Filtered Variance when i=', num2str(i));
     title(plottitle);
 end
 
-%% Group-average
+%% Smoothing
 for i=1:n
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
@@ -118,13 +118,13 @@ for i=1:n
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Group-average mean when i=', num2str(i));
+    plottitle = strcat('Smoothed Mean when i=', num2str(i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Group-average variance when i=', num2str(i));
+    plottitle = strcat('Smoothed Variance when i=', num2str(i));
     title(plottitle);
     
 end
