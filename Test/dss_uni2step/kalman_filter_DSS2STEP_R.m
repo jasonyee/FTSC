@@ -100,12 +100,12 @@ fixedEffectCovhat4 = reshape(V2(k,k,:), [1,m]);
 figure;
 subplot(1,2,1)
 plot(t, fixedEffectMeanhat3, t, fixedEffectMeanhat4);
-legend('dss', 'UBC');
+legend('dss2step', 'UBC');
 title('Smoothed Mean');
 
 subplot(1,2,2)
 plot(t, fixedEffectCovhat3, t, fixedEffectCovhat4);
-legend('dss', 'UBC');
+legend('dss2step', 'UBC');
 title('Smoothed Variance');
 
 
