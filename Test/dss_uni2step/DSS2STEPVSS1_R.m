@@ -1,7 +1,7 @@
-%% Testing evalutation of DSS and VSS using fme example....................PASS
+%% Testing evalutation of DSS2STEP and VSS using fme example...............PASS
 %  Adding the following folders to the path:
 %   -FTSC
-%  Uncomment dss_uni line in DSS\fme2dss.m
+
 %% Clear
 clear;
 clc;
@@ -59,7 +59,7 @@ toc
 
 
 %% Filtering
-for i=1:n
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
@@ -74,19 +74,19 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Filtered Mean when i=', num2str(n-2+i));
     title(plottitle);
 
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
-    legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Filtered Variance when i=', num2str(n-2+i));
     title(plottitle);
 end
 
 %% Smoothing
-for i=1:n
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
@@ -100,14 +100,14 @@ for i=1:n
     figure;
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Smoothed Mean when i=', num2str(n-2+i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
-    legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    legend('dss2step', 'vss');
+    plottitle = strcat('Smoothed Variance when i=', num2str(n-2+i));
     title(plottitle);
     
 end
