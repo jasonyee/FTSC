@@ -2,6 +2,7 @@
 %  Adding the following folders to the path:
 %   -FTSC
 %  Uncomment dss_uni line in DSS\fme2dss.m
+%  Uncomment dss_uni line in DSS\fme_dss_NlogLik.m
 %% Clear
 clear;
 clc;
