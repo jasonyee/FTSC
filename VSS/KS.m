@@ -24,7 +24,7 @@ function KalmanFit = ...
 %   -Ctp1: C(t-1) saved for dynamic state space model
 
     
-    [n,d,T] = size(MeasMX);
+    [~,d,T] = size(MeasMX);
     SmoothedMean = zeros(d, T);
     SmoothedCov = zeros(d,d,T);
     Ctp1 = zeros(d,d,T);
@@ -52,5 +52,8 @@ function KalmanFit = ...
     KalmanFit.SmoothedMean = SmoothedMean;
     KalmanFit.SmoothedCov = SmoothedCov;
     KalmanFit.Ctp1 = Ctp1;
-
+    
+%     %subject-fit
+%     KalmanFit.YFilteredMean = KFFit.YFilteredMean;
+%     KalmanFit.YFilteredCov = KFFit.YFilteredCov;
 end

@@ -1,7 +1,10 @@
-%% Testing evalutation of DSS and VSS using fme example.........PASS
+%% Testing subject-fit and group-average of DSS and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
-
+%  Uncomment the subject-fit code in
+%   -VSS\KF
+%   -VSS\KS
+%   see commit: Uncomments for DSSVSS3_R.m
 %% Clear
 clear;
 clc;
@@ -41,55 +44,72 @@ diffusePrior = 1e7;
 
 k = 1;
 
+%% Optimization
+%  DSS
+NlogLik_dss = @(logpara) ...
+    fme_dss_NlogLik(Y, fixedDesign, randomDesign, t, logpara, diffusePrior);
+
+tic
+[logparahat_dss, val_dss] = fminsearch(NlogLik_dss, logpara0);
+toc
+
+%%  KF
+
+NlogLik_vss = @(logpara) ...
+    fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, true);
+
+tic
+[logparahat_vss, val_vss] = fminsearch(NlogLik_vss, logpara0);
+toc
+
+
 %% Model fitting
 %  DSS
 tic
-[output_arg_dss, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+[output_arg_dss, loglik, prior] = fme2dss(Y, fixedDesign, randomDesign, t, logparahat_dss, diffusePrior);
 toc
 
 %  KF
 tic
-output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logparahat_vss, diffusePrior, false);
 toc
 
 %  KS
 tic
-output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffusePrior);
 toc
 
 
-%% Filtering
+%% Subject-fit
 for i=1:n
     %  DSS
-    fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
-    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
+    subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
+    subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
 
     %  KF
-    fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-    fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
+    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(i,:);
+    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(i,i,:), [1, m]);
 
 
     % Plotting
     figure;
     subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
+    plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
     legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
+    plottitle = strcat('Subject-fit mean when i=', num2str(i));
     title(plottitle);
 
     subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
+    plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
     legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
+    plottitle = strcat('Subject-fit variance when i=', num2str(i));
     title(plottitle);
 end
 
-%% Smoothing
+%% Group-average
 for i=1:n
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT HERE
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
 
     %  KS
@@ -101,16 +121,24 @@ for i=1:n
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    plottitle = strcat('Group-average mean when i=', num2str(i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    plottitle = strcat('Group-average variance when i=', num2str(i));
     title(plottitle);
     
 end
+
+%% Estimation result
+fprintf('-DSS estimate is %i \n', logparahat_dss(1))
+fprintf('and the minimized objective value is %i. \n', val_dss);
+fprintf('-VSS estimate is %i \n', logparahat_vss(1))
+fprintf('and the minimized objective value is %i. \n', val_vss);
+
+
 
 
 
