@@ -52,5 +52,8 @@ function KalmanFit = ...
     KalmanFit.SmoothedMean = SmoothedMean;
     KalmanFit.SmoothedCov = SmoothedCov;
     KalmanFit.Ctp1 = Ctp1;
-
+    
+    %subject-fit
+    KalmanFit.YFilteredMean = KFFit.YFilteredMean;
+    KalmanFit.YFilteredCov = KFFit.YFilteredCov;
 end

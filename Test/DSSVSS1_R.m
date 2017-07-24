@@ -1,8 +1,6 @@
 %% Testing evalutation of DSS and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
-%   -Kalman
-%   -KPMstats
 
 %% Clear
 clear;

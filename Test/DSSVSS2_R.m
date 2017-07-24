@@ -1,8 +1,6 @@
 %% Testing numerical optimization of DSS and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
-%   -Kalman
-%   -KPMstats
 
 %% Clear
 clear;
@@ -79,33 +77,33 @@ output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logparahat_vss, diffuseP
 toc
 
 
-%% Filtering
+%% Subject-fit
 for i=1:n
     %  DSS
-    fixedEffectMeanhat_dss = output_arg_dss{i}.FilteredMean(k,:);
-    fixedEffectCovhat_dss = reshape(output_arg_dss{i}.FilteredCov(k,k,:), [1, m]);
+    subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
+    subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
 
     %  KF
-    fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-    fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
+    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(n,:);
+    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(n,n,:), [1, m]);
 
 
     % Plotting
     figure;
     subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KF );
+    plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
     legend('dss', 'vss');
-    plottitle = strcat('Filtered Mean when i=', num2str(i));
+    plottitle = strcat('Subject-fit mean when i=', num2str(i));
     title(plottitle);
 
     subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KF);
+    plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
     legend('dss', 'vss');
-    plottitle = strcat('Filtered Variance when i=', num2str(i));
+    plottitle = strcat('Subject-fit variance when i=', num2str(i));
     title(plottitle);
 end
 
-%% Smoothing
+%% Group-average
 for i=1:n
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
@@ -120,13 +118,13 @@ for i=1:n
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Smoothed Mean when i=', num2str(i));
+    plottitle = strcat('Group-average mean when i=', num2str(i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Smoothed Variance when i=', num2str(i));
+    plottitle = strcat('Group-average variance when i=', num2str(i));
     title(plottitle);
     
 end
