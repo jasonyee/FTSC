@@ -1,4 +1,4 @@
-%% Testing subject-fit and group-average of DSS and VSS using fme example.........PASS
+%% Testing subject-fit and group-average of DSS2STEP and VSS using fme example.........PASS
 %  Adding the following folders to the path:
 %   -FTSC
 %  Uncomment the subject-fit code in
