@@ -19,7 +19,7 @@ function output_arg = ...
 %   -FilteredCov: P_{t|t}
 %   -loglik: log-likelihood of dependent data 1:T
     
-    [n,d,T] = size(MeasMX);
+    [~,d,T] = size(MeasMX);
     ForecastedMean = zeros(d,T);
     ForecastedCov = zeros(d,d,T);
     FilteredMean = zeros(d,T);

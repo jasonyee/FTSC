@@ -24,7 +24,7 @@ function KalmanFit = ...
 %   -Ctp1: C(t-1) saved for dynamic state space model
 
     
-    [n,d,T] = size(MeasMX);
+    [~,d,T] = size(MeasMX);
     SmoothedMean = zeros(d, T);
     SmoothedCov = zeros(d,d,T);
     Ctp1 = zeros(d,d,T);
