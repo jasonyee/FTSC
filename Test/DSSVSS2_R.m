@@ -84,8 +84,8 @@ for i=1:n
     subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
 
     %  KF
-    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(n,:);
-    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(n,n,:), [1, m]);
+    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(i,:);
+    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(i,i,:), [1, m]);
 
 
     % Plotting
