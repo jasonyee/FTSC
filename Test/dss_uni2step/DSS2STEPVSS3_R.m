@@ -5,7 +5,6 @@
 %   -VSS\KF
 %   -VSS\KS
 %   see commit: Uncomments for DSSVSS3_R.m
-%  Uncomment dss_uni line in DSS\fme2dss.m
 %% Clear
 clear;
 clc;
@@ -82,14 +81,18 @@ toc
 
 
 %% Subject-fit
-for i=1:n
+for i=1:2
     %  DSS
-    subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
-    subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
-
+    if i==1
+        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(end,:);
+        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(end,end,:), [1, m]);
+    else
+        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
+        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
+    end
     %  KF
-    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(i,:);
-    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(i,i,:), [1, m]);
+    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(n-2+i,:);
+    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(n-2+i,n-2+i,:), [1, m]);
 
 
     % Plotting
@@ -97,18 +100,18 @@ for i=1:n
     subplot(1,2,1)
     plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
     legend('dss', 'vss');
-    plottitle = strcat('Subject-fit mean when i=', num2str(i));
+    plottitle = strcat('Subject-fit mean when i=', num2str(n-2+i));
     title(plottitle);
 
     subplot(1,2,2)
     plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
     legend('dss', 'vss');
-    plottitle = strcat('Subject-fit variance when i=', num2str(i));
+    plottitle = strcat('Subject-fit variance when i=', num2str(n-2+i));
     title(plottitle);
 end
 
 %% Group-average
-for i=1:n
+for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
@@ -122,13 +125,13 @@ for i=1:n
     subplot(1,2,1)
     plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Group-average mean when i=', num2str(i));
+    plottitle = strcat('Group-average mean when i=', num2str(n-2+i));
     title(plottitle);
     
     subplot(1,2,2)
     plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
     legend('dss', 'vss');
-    plottitle = strcat('Group-average variance when i=', num2str(i));
+    plottitle = strcat('Group-average variance when i=', num2str(n-2+i));
     title(plottitle);
     
 end
