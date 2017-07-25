@@ -38,6 +38,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     end
     ClusterData = ClusteringData(dataset, ClusterMembers);
     parfor k = 1:nClusters
+        %warning('off', 'MATLAB:nearlySingularMatrix');
         Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
     end
     
@@ -67,6 +68,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
                 end
             end
             parfor k=1:nClusters
+                %warning('off', 'MATLAB:nearlySingularMatrix');
                 logPostProb(k) = fmeCondProb(LeaveOneClusterData{k}, subjData, OBtime, fixedArray, randomArray, Theta(:,k), diffusePrior);
             end
             [~, newClusterID] = max(logPostProb);
@@ -86,6 +88,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         % updating theta: invoking parallel computing
         ClusterData = ClusteringData(dataset, ClusterMembers);
         parfor k = 1:nClusters
+            %warning('off', 'MATLAB:nearlySingularMatrix');
             Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
         end
         loopNum = loopNum + 1;
