@@ -47,6 +47,6 @@ ClusterData = Y(ClusterMem,:);
 subdata = Y(subj, :);
 tic
 logCondProb = fmeCondProb(ClusterData, subdata, t, ...
-                        fixedArray, randomArray, logpara0, diffusePrior);
+                        fixedArray, randomArray, logpara0, diffusePrior)
 toc
 % compare to the result in DSSVSS1_R
