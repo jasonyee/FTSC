@@ -13,9 +13,8 @@ function SSMArray = fme2ssArray(nSubj, OBtime, ...
 %   -SSMArray: a nSubj-by-1 structure array,
 %       SSMArray(i) is a SSM structure for i subjects
 
-    SSMArray = repmat(struct, nSubj, 1);
-    %parfor i=1:nSubj
-    for i=1:nSubj
+
+    for i=nSubj:-1:1
         SSMArray(i) = fme2ss(i, fixedArray, randomArray, OBtime, logparahat, diffusePrior);
     end
 end
