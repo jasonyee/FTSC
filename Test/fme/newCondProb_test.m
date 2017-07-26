@@ -40,8 +40,8 @@ logpara0 = [0;                                      % log of e
 diffusePrior = 1e7;
 
 %% fmeCondProb
-ClusterMem = 1:n-10;
-subj = n;
+ClusterMem = 3:n-10;
+subj = n-1;
 
 ClusterData = Y(ClusterMem,:);
 subdata = Y(subj, :);
@@ -53,11 +53,10 @@ oldCondProb =toc;
 
 %% newCondProb
 tic;
-SSMArray = fme2ssArray(n, t, ...
-                       fixedArray, randomArray, logpara0, diffusePrior);
+SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
 
-generateArray = toc;
+generateSSM = toc;
 
 tic;
-logCondProb1 = fmeCondProb1(ClusterData, subdata, SSMArray(length(ClusterMem)+1))
+logCondProb1 = fmeCondProb1(ClusterData, subdata, SSM, p, q)
 newCondProb = toc;
