@@ -35,8 +35,8 @@ function SSM = fme2ss(nSubj, fixedArray, randomArray, t, logpara, diffusePrior)
     p = length(fixedArray);                           % # of fixed effects;
     q = length(randomArray);                          % # of random effects
     
-    fixedDesign = repmat(fixedArray,[nSubj, 1, m]);    % n-by-p-by-m
-    randomDesign = repmat(randomArray,[nSubj, 1, m]);   % n-by-q-by-m
+    fixedDesign = repmat(fixedArray,nSubj, 1);    % n-by-p
+    randomDesign = repmat(randomArray,nSubj, 1);   % n-by-q
   
     d = 2*(p+nSubj*q);                              % dimension of states
     
@@ -47,7 +47,6 @@ function SSM = fme2ss(nSubj, fixedArray, randomArray, t, logpara, diffusePrior)
     
     % Initialize 
     
-    F = repmat(zeros(nSubj, d),[1,1,m]);        % F(:,:,j) <- Fj 
     H0 = repmat(zeros(d, d), [1, 1, m]);        % H0(:,:,j) <- Hj
     sigma0 = H0;                                % sigma0(:,:,j) <- Wj
 
@@ -63,21 +62,21 @@ function SSM = fme2ss(nSubj, fixedArray, randomArray, t, logpara, diffusePrior)
     P00Cell = cell(1, nSubj+1);
     
     % Output
-    %  Design matrix: F is n-by-d-by-m    
-    for j=1:m
-        % XStar setup
-        for v=1:p
-            XStar(:,2*v-1) = fixedDesign(:,v,j);
-        end
-        % ZStar setup
-        for i=1:nSubj
-            for u=1:q
-                ZStar(2*u-1) = randomDesign(i,u,j);
-            end
-            ZStarDiagCell{i} = ZStar;
-        end
-        F(:,:,j) = [XStar, blkdiag(ZStarDiagCell{:})];              %  Done
+    %  Design matrix: F is n-by-d-by-m  
+    % XStar setup
+    for v=1:p
+        XStar(:,2*v-1) = fixedDesign(:,v);
     end
+    % ZStar setup
+    for i=1:nSubj
+        for u=1:q
+            ZStar(2*u-1) = randomDesign(i,u);
+        end
+        ZStarDiagCell{i} = ZStar;
+    end
+    % F(:,:,j) <- Fj 
+    F = repmat([XStar, blkdiag(ZStarDiagCell{:})], 1, 1, m);            %  Done
+
     
     %  tensor that stores all white noise covariance matrices
     sigma_e = repmat(e*eye(nSubj), [1,1,m]);                            %  Done            
