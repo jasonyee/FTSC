@@ -11,9 +11,10 @@ The aim of the project is to classify the time series data collected from the pa
 
 This is the version with:
 
+*  balanced time points for all subjects.
 *  dss_uni2step (so called dss2 in communicating)
 *  parellel computing in DSSClustering
 *  fast fmeCondProb
 *  fast state space model construction
 
-This version is a time-variant version.
+This version is a time-variant version, which means the difference between 2 time points can vary.
