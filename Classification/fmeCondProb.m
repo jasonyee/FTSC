@@ -2,25 +2,30 @@
 %  fmeCondProb returns the density of a new subject
 %  conditioning on the cluster in the functional mixed effect model
 
-function logCondProb = fmeCondProb(ClusterData, subdata, OBtime, ...
-                       fixedArray, randomArray, logparahat, diffusePrior)
+function logCondProb = fmeCondProb1(ClusterData, subdata, SSM, nFixedEffects, nRandomEffects)
 %Input: t=1:T
 %   -ClusterData: (i,t) is the data of group member i at observation t.
 %   -subdata: (t) is the data of new subject at observation t.
-%   -OBtime: (t) is the time at observation t.
-%   -fixedArray: 1-by-p array stands for fixed effect factors.
-%   -randomArray: 1-by-q array stands for random effect factors.
-%   -logparahat: the MLE for the cluster.
+%   -SSM: the corresponding state-space model for ***one specific group*** 
+%   and the dimension is for ***all*** subject
+%   -nFixedEffects: number of fixed effects
+%   -nRandomEffects: number of random effects
 %Output:
 %   -CondProb: the density of a new subject conditioning on this cluster.
 
-    [nCluster, m] = size(ClusterData);
     %  add the new subject to the last
     allData = [ClusterData; subdata];
-    allFixedDesign = repmat(fixedArray, [nCluster+1, 1, m]);
-    allRandomDesign = repmat(randomArray, [nCluster+1, 1, m]);
-    %  fitting the kalman filter and smoother
-    [KalmanFitCell, ~, ~] = fme2dss(allData, allFixedDesign, ...
-        allRandomDesign, OBtime, logparahat, diffusePrior);
+    [n, ~] = size(allData);
+    d = 2*(nFixedEffects + n*nRandomEffects);
+    %  fitting dss model
+    [KalmanFitCell, ~, ~] = dss_uni2step(SSM.TranMX(1:d, 1:d, :), ...
+                                         SSM.DistMean(1:d, :), ...
+                                         SSM.DistCov(1:d, 1:d, :), ...
+                                         SSM.MeasMX(1:n, 1:d, :), ...
+                                         SSM.ObseCov(1:n, 1:n, :), ...
+                                         allData, ...
+                                         SSM.StateMean0(1:d, :), ...
+                                         SSM.StateCov0(1:d, 1:d, :));
+    
     logCondProb = KalmanFitCell{end}.loglik;
 end
