@@ -6,7 +6,7 @@
 clear;
 clc;
 
-rng(1)                                       % control the randomness
+rng(3)                                       % control the randomness
 
 %% Simulation data
 m = 30;                                       % number of observations
