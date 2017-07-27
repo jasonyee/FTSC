@@ -1,14 +1,14 @@
 %% fme2KF
 %  fitting a functional mixed effect model using Kalman filttering
 
-function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePrior, opti)
+function output_arg = fme2KF(Y, fixedArray, randomArray, t, logpara, diffusePrior, opti)
 %For functional mixed effect model, we let:
 %   (n for subjects, m for observations
 %    p for fixed effects, q for random effects)
 %   -Y is the dependent data: 
 %       Y(:,:) is a n-by-m matrix. 
-%   -fixedDesign is n-by-p-by-m.
-%   -randomDesign is n-by-q-by-m.
+%   -fixedArray is 1-by-p.
+%   -randomArray is 1-by-q.
 %   -t is the observation time points, 1-by-m.
 %   -para stores the parameters for optimization.
 %       -e is the ***variance*** of the iid white noise.
@@ -35,10 +35,8 @@ function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePr
     
     [n, m] = size(Y);                           % subjects and observations
     
-    fixedSize = size(fixedDesign);
-    p = fixedSize(2);                           % # of fixed effects
-    randomSize = size(randomDesign);
-    q = randomSize(2);                          % # of random effects
+    p = length(fixedArray);                           % # of fixed effects;
+    q = length(randomArray);                          % # of random effects
     
     d = 2*(p+n*q);                              % dimension of states
     
@@ -47,9 +45,11 @@ function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePr
     lambdaR = exp(logpara(3));
     randomDiag = exp(logpara(4:end));
     
+    fixedDesign = repmat(fixedArray, n, 1);    % n-by-p
+    randomDesign = repmat(randomArray, n, 1);   % n-by-q
+    
     %% Initialize 
     
-    F = repmat(zeros(n, d),[1,1,m]);            % F(:,:,j) <- Fj 
     H0 = repmat(zeros(d, d), [1, 1, m]);        % H0(:,:,j) <- Hj
     sigma0 = H0;                                % sigma0(:,:,j) <- Wj
 
@@ -66,20 +66,19 @@ function output_arg = fme2KF(Y, fixedDesign, randomDesign, t, logpara, diffusePr
     
     %% Output
     %  Design matrix: F is n-by-d-by-m    
-    for j=1:m
-        % XStar setup
-        for v=1:p
-            XStar(:,2*v-1) = fixedDesign(:,v,j);
-        end
-        % ZStar setup
-        for i=1:n
-            for u=1:q
-                ZStar(2*u-1) = randomDesign(i,u,j);
-            end
-            ZStarDiagCell{i} = ZStar;
-        end
-        F(:,:,j) = [XStar, blkdiag(ZStarDiagCell{:})];              %  Done
+    % XStar setup
+    for v=1:p
+        XStar(:,2*v-1) = fixedDesign(:,v);
     end
+    % ZStar setup
+    for i=1:n
+        for u=1:q
+            ZStar(2*u-1) = randomDesign(i,u);
+        end
+        ZStarDiagCell{i} = ZStar;
+    end
+    % F(:,:,j) <- Fj 
+    F = repmat([XStar, blkdiag(ZStarDiagCell{:})], 1, 1, m);        %  Done
     
     %  tensor that stores all white noise covariance matrices
     sigma_e = repmat(e*eye(n), [1,1,m]);                            %  Done            
