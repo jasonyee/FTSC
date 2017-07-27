@@ -2,7 +2,7 @@
 %  fmeCondProb returns the density of a new subject
 %  conditioning on the cluster in the functional mixed effect model
 
-function logCondProb = fmeCondProb1(ClusterData, subdata, SSM, nFixedEffects, nRandomEffects)
+function logCondProb = fmeCondProb(ClusterData, subdata, SSM, nFixedEffects, nRandomEffects)
 %Input: t=1:T
 %   -ClusterData: (i,t) is the data of group member i at observation t.
 %   -subdata: (t) is the data of new subject at observation t.
