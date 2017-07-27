@@ -67,7 +67,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
                 else
                     LeaveOneClusterData = dataset(ClusterMembers{k},:);
                 end
-                logPostProb(k) = fmeCondProb1(LeaveOneClusterData, dataset(i,:), SSM(k), p, q);
+                logPostProb(k) = fmeCondProb(LeaveOneClusterData, dataset(i,:), SSM(k), p, q);
             end
             [~, newClusterID] = max(logPostProb);
             
