@@ -17,7 +17,7 @@ q = 1;                                        % # of random effects
 nClusters = 2;
 
 % group 1:
-n1 = 20;                                      % # of subjects
+n1 = 40;                                      % # of subjects
 sigma_e1 = 1;                                 % variance of white noise
 d1 = 2*(p+n1*q);                              % dimension of states
 realFixedEffect1 = 5*sin(2*pi*t);             % p-by-m
@@ -27,10 +27,10 @@ Y1 = repmat(realFixedEffect1, [n1,1]) + realRandomEffect1 ...
     + sqrt(sigma_e1)*randn(n1,m);
 
 % group 2:
-n2 = 20;                                      % # of subjects
+n2 = 40;                                      % # of subjects
 sigma_e2 = 1;                                 % variance of white noise
 d2 = 2*(p+n2*q);                              % dimension of states
-realFixedEffect2 = 7*sin(2*pi*t+pi/4);             % p-by-m
+realFixedEffect2 = 7*sin(2*pi*t+pi/2);             % p-by-m
 realRandomEffect2 = randn(n2,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
 Y2 = repmat(realFixedEffect2, [n2,1]) + realRandomEffect2 ... 
