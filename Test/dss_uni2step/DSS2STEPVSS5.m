@@ -65,6 +65,14 @@ tic
 [logparahat_vss, val_vss] = fminsearch(NlogLik_vss, logpara0);
 toc
 
+%% Estimation result
+estimates_dss=sprintf('%d ', logparahat_dss);
+fprintf('-DSS estimate is %s \n', estimates_dss)
+fprintf('and the minimized objective value is %i. \n', val_dss);
+estimates_vss=sprintf('%d ', logparahat_vss);
+fprintf('-VSS estimate is %s \n', estimates_vss)
+fprintf('and the minimized objective value is %i. \n', val_vss);
+
 
 %% Model fitting
 %  DSS
@@ -84,66 +92,83 @@ toc
 
 
 %% Subject-fit
-for i=1:2
-    %  DSS
-    if i==1
-        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(end,:);
-        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(end,end,:), [1, m]);
+%  dss
+subjfitMeanhat_dss = [ output_arg_dss{1}.YFilteredMean(:,:);
+                      output_arg_dss{2}.YFilteredMean(1,:) ];
+                  
+subjfitCovhat_dss = zeros(n, m);
+for i=1:n
+    if i < n
+        subjfitCovhat_dss(i,:) = reshape(output_arg_dss{1}.YFilteredCov(i,i,:), [1, m]);
     else
-        subjfitMeanhat_dss = output_arg_dss{i}.YFilteredMean(1,:);
-        subjfitCovhat_dss = reshape(output_arg_dss{i}.YFilteredCov(1,1,:), [1, m]);
+        subjfitCovhat_dss(i,:) = reshape(output_arg_dss{2}.YFilteredCov(1,1,:), [1, m]);
     end
-    %  KF
-    subjfitMeanhat_KF = output_arg_KF.YFilteredMean(n-2+i,:);
-    subjfitCovhat_KF = reshape(output_arg_KF.YFilteredCov(n-2+i,n-2+i,:), [1, m]);
+end
 
+subjfit95Upper_dss = subjfitMeanhat_dss + 1.96*sqrt(subjfitCovhat_dss);
+subjfit95Lower_dss = subjfitMeanhat_dss - 1.96*sqrt(subjfitCovhat_dss);
 
+%  vss
+subjfitMeanhat_KF = output_arg_KF.YFilteredMean;
+
+subjfitCovhat_KF = zeros(n, m);
+for i=1:n
+    subjfitCovhat_KF(i,:) = reshape(output_arg_KF.YFilteredCov(i,i,:), [1, m]);
+end
+
+subjfit95Upper_KF = subjfitMeanhat_KF + 1.96*sqrt(subjfitCovhat_KF);
+subjfit95Lower_KF = subjfitMeanhat_KF - 1.96*sqrt(subjfitCovhat_KF);
+
+for i=1:n
     % Plotting
     figure;
-    subplot(1,2,1)
-    plot(t, subjfitMeanhat_dss, t, subjfitMeanhat_KF );
-    legend('dss2step', 'vss');
-    plottitle = strcat('Subject-fit mean when i=', num2str(n-2+i));
-    title(plottitle);
-
-    subplot(1,2,2)
-    plot(t, subjfitCovhat_dss, t, subjfitCovhat_KF);
-    legend('dss2step', 'vss');
-    plottitle = strcat('Subject-fit variance when i=', num2str(n-2+i));
+    plot(t, Y(i,:), t, subjfitMeanhat_dss(i,:), t, subjfitMeanhat_KF(i,:),...
+        t, subjfit95Upper_dss(i, :), '--',...
+        t, subjfit95Upper_KF(i, :), '--',...
+        t, subjfit95Lower_dss(i, :), '--',...
+        t, subjfit95Lower_KF(i, :), '--');
+    legend('true', 'dss', 'vss', ...
+           '95Upper_dss',...
+           '95Upper_vss',...
+           '95Lower_dss',...
+           '95Lower_vss');
+    plottitle = strcat('Subject-fit when i=', num2str(i));
     title(plottitle);
 end
+
+
+
 
 %% Group-average
 for i=1:2
     %  DSS
     fixedEffectMeanhat_dss = output_arg_dss{i}.SmoothedMean(k,:);
     fixedEffectCovhat_dss = reshape(output_arg_dss{i}.SmoothedCov(k,k,:), [1, m]);
+    fixedEffect95Upper_dss = fixedEffectMeanhat_dss + 1.96*sqrt(fixedEffectCovhat_dss);
+    fixedEffect95Lower_dss = fixedEffectMeanhat_dss - 1.96*sqrt(fixedEffectCovhat_dss);
 
     %  KS
     fixedEffectMeanhat_KS = output_arg_KS.SmoothedMean(k, :);
     fixedEffectCovhat_KS = reshape(output_arg_KS.SmoothedCov(k,k,:), [1, m]);
+    fixedEffect95Upper_KS = fixedEffectMeanhat_KS + 1.96*sqrt(fixedEffectCovhat_KS);
+    fixedEffect95Lower_KS = fixedEffectMeanhat_KS - 1.96*sqrt(fixedEffectCovhat_KS);
+    
+    
 
     % Plotting
     figure;
-    subplot(1,2,1)
-    plot(t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS);
-    legend('dss2step', 'vss');
-    plottitle = strcat('Group-average mean when i=', num2str(n-2+i));
+    plot(t, realFixedEffect, t, fixedEffectMeanhat_dss, t, fixedEffectMeanhat_KS, ...
+         t, fixedEffect95Upper_dss, '--', t, fixedEffect95Upper_KS, '--',...
+         t, fixedEffect95Lower_dss, '--', t, fixedEffect95Lower_KS, '--');
+    legend('real', 'dss', 'vss',...
+           '95Upper_dss',...
+           '95Upper_vss',...
+           '95Lower_dss',...
+           '95Lower_vss');
+    plottitle = strcat('Group-average when i=', num2str(n-2+i));
     title(plottitle);
-    
-    subplot(1,2,2)
-    plot(t, fixedEffectCovhat_dss, t, fixedEffectCovhat_KS);
-    legend('dss2step', 'vss');
-    plottitle = strcat('Group-average variance when i=', num2str(n-2+i));
-    title(plottitle);
-    
 end
 
-%% Estimation result
-fprintf('-DSS estimate is %i \n', logparahat_dss(1))
-fprintf('and the minimized objective value is %i. \n', val_dss);
-fprintf('-VSS estimate is %i \n', logparahat_vss(1))
-fprintf('and the minimized objective value is %i. \n', val_vss);
 
 
 
