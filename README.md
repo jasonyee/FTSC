@@ -14,3 +14,6 @@ This is the version with:
 *  dss_uni2step (so called dss2 in communicating)
 *  parellel computing in DSSClustering
 *  fast fmeCondProb
+*  fast state space model construction
+
+This version is a time-variant version.
