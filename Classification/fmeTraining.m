@@ -13,13 +13,9 @@ function logparahat = fmeTraining(dataset, obtime, fixedArray, randomArray, logp
 %Output:
 %   -logparahat: MLEs of the functional mixed effect model
     
-    [n, m] = size(dataset);
-    
-    fixedDesign = repmat(fixedArray,[n, 1, m]);    % n-by-p-by-m
-    randomDesign = repmat(randomArray,[n, 1, m]);   % n-by-q-by-m
     
     NlogLik_vss = @(logpara) ...
-    fme2KF(dataset, fixedDesign, randomDesign, obtime, logpara, diffusePrior, true);
+    fme2KF(dataset, fixedArray, randomArray, obtime, logpara, diffusePrior, true);
 
     logparahat = fminsearch(NlogLik_vss, logpara0);
 
