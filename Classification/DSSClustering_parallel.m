@@ -21,6 +21,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
 
     % Initialize
     [n, ~] = size(dataset);
+    p = length(fixedArray);
     q = length(randomArray); 
     diffusePrior = 1e7;
     logpara0 = [0;                                      % log of e  
@@ -29,6 +30,9 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     
     ClusterMembers = cell(1, nClusters);
     Theta = zeros(length(logpara0), nClusters);
+    SSM = repmat(struct('TranMX', {}, 'DistMean', {}, 'DistCov', {}, ...
+                 'MeasMX', {}, 'ObseCov', {}, ...
+                 'StateMean0', {}, 'StateCov0', {}),nClusters, 1);
     
     %k-means clustering
     ClusterIDs = kmeans(dataset, nClusters);
@@ -40,6 +44,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     parfor k = 1:nClusters
         %warning('off', 'MATLAB:nearlySingularMatrix');
         Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+        SSM(k) = fme2ss(n, fixedArray, randomArray, OBtime, Theta(:,k), diffusePrior);
     end
     
     Switches = 1;
@@ -69,7 +74,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
             end
             parfor k=1:nClusters
                 %warning('off', 'MATLAB:nearlySingularMatrix');
-                logPostProb(k) = fmeCondProb(LeaveOneClusterData{k}, subjData, OBtime, fixedArray, randomArray, Theta(:,k), diffusePrior);
+                logPostProb(k) = fmeCondProb(LeaveOneClusterData{k}, subjData, SSM(k), p, q);
             end
             [~, newClusterID] = max(logPostProb);
             
@@ -90,6 +95,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         parfor k = 1:nClusters
             %warning('off', 'MATLAB:nearlySingularMatrix');
             Theta(:,k) = fmeTraining(ClusterData{k}, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+            SSM(k) = fme2ss(n, fixedArray, randomArray, OBtime, Theta(:,k), diffusePrior);
         end
         loopNum = loopNum + 1;
         

@@ -41,6 +41,6 @@ diffusePrior = 1e7;
 
 %% fmeTraining
 tic
-logparahat = fmeTraining(Y, t, fixedArray, randomArray, logpara0, diffusePrior);
+logparahat = fmeTraining(Y, t, fixedArray, randomArray, logpara0, diffusePrior)
 toc
 % compare to the result in DSSVSS2_R

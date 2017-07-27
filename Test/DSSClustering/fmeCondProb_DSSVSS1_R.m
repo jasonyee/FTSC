@@ -39,14 +39,20 @@ logpara0 = [0;                                      % log of e
 
 diffusePrior = 1e7;
 
-%% fmeCondProb
 ClusterMem = 1:n-1;
 subj = n;
 
 ClusterData = Y(ClusterMem,:);
-subdata = Y(subj, :);
-tic
-logCondProb = fmeCondProb(ClusterData, subdata, t, ...
-                        fixedArray, randomArray, logpara0, diffusePrior);
-toc
+subdata = Y(subj,:);
+
+%% newCondProb
+tic;
+SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
+
+generateSSM = toc;
+
+tic;
+logCondProb = fmeCondProb(ClusterData, subdata, SSM, p, q)
+newCondProb = toc;
+
 % compare to the result in DSSVSS1_R
