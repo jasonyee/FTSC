@@ -11,7 +11,7 @@ rng(1)                                       % control the randomness
 %% ********Testing for the fme example*********
 
 
-n = 200;                                       % number of subjects
+n = 20;                                       % number of subjects
 m = 30;                                       % number of observations
 t = (1:m)/m;
 p = 1;                                        % # of fixed effects
@@ -39,6 +39,12 @@ logpara0 = [0;                                      % log of e
 
 diffusePrior = 1e7;
 
+ClusterMem = 1:n-1;
+subj = n;
+
+ClusterData = Y(ClusterMem,:);
+subdata = Y(subj,:);
+
 %% newCondProb
 tic;
 SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
@@ -46,7 +52,7 @@ SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
 generateSSM = toc;
 
 tic;
-logCondProb1 = fmeCondProb1(ClusterData, subdata, SSM, p, q)
+logCondProb = fmeCondProb(ClusterData, subdata, SSM, p, q)
 newCondProb = toc;
 
 % compare to the result in DSSVSS1_R
