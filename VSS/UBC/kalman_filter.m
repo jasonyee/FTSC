@@ -63,7 +63,7 @@ for t=1:T
     %prevV = init_V(:,:,m);
     prevx = init_x;
     prevV = init_V;
-    initial = 1;
+    initial = 0;
   else
     prevx = x(:,t-1);
     prevV = V(:,:,t-1);
