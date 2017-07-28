@@ -76,20 +76,20 @@ title('Group average: built in')
 
 %% Subject-fit
 
-YFitted = zeros(n, m);
-YFittedCov = zeros(n, m);
+YFitted_built_in = zeros(n, m);
+YFittedCov_built_in = zeros(n, m);
 for j=1:m
-    YFitted(:,j) = Y(:,j) - Output_built_in(j).SmoothedObsInnov;
-    YFittedCov(:,j) = diag(Output_built_in(j).SmoothedObsInnovCov);
+    YFitted_built_in(:,j) = Y(:,j) - Output_built_in(j).SmoothedObsInnov;
+    YFittedCov_built_in(:,j) = diag(Output_built_in(j).SmoothedObsInnovCov);
 end
-YFitted95Upper = YFitted + 1.96*sqrt(YFittedCov);
-YFitted95Lower = YFitted - 1.96*sqrt(YFittedCov);
+YFitted95Upper_built_in = YFitted_built_in + 1.96*sqrt(YFittedCov_built_in);
+YFitted95Lower_built_in = YFitted_built_in - 1.96*sqrt(YFittedCov_built_in);
 
 for n_i = 1:n
     subplot(5, 4, n_i)
-    plot(t, YFitted(n_i, :),...
+    plot(t, YFitted_built_in(n_i, :),...
         t, Y(n_i,:),...
-        t, YFitted95Upper(n_i, :), '--',...
-        t, YFitted95Lower(n_i, :), '--')
+        t, YFitted95Upper_built_in(n_i, :), '--',...
+        t, YFitted95Lower_built_in(n_i, :), '--')
     title(strcat('Subject fit: built in n=', num2str(n_i)))
 end
