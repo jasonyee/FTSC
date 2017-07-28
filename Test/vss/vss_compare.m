@@ -35,16 +35,67 @@ fixedArray = ones(1,p);
 randomArray = ones(1,q);
 
 %  Optimization
-logpara0 = [3;                                    % log of e  
-         -10;-10;                                 % logs of lambdaF, lambdaR
-         5*ones(2*q,1)];                          % log of randomDiag
+logpara0 = [0;                                    % log of e  
+         -5;-5;                                 % logs of lambdaF, lambdaR
+         1*ones(2*q,1)];                          % log of randomDiag
 
 diffusePrior = 1e7;
 
-SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
+%% Training parameters
+%  Built-in
+tic
+logparahat = fmeTraining_built_in(Y, fixedArray, randomArray, t, logpara0, diffusePrior)
+toc
 
+
+
+%% Model fitting
+%  Built-in
+Md = Md_built_in(n, fixedArray, randomArray, t, logparahat, diffusePrior);
+data = cell(m, 1);
+for j=1:m
+    data{j} = Y(:,j);
+end
+[~, logL_built_in, Output_built_in] = smooth(Md, data);
+
+
+%% Group-average
 k = 1;
+%  Built-in
+SmoothedStates_built_in = zeros(d, m);
+SmoothedStatesCov_built_in = zeros(d, m);
+for j=1:m
+    SmoothedStates_built_in(:,j) = Output_built_in(j).SmoothedStates;
+    SmoothedStatesCov_built_in(:,j) = diag(Output_built_in(j).SmoothedStatesCov);
+end
+SmoothedStates95Upper_built_in = SmoothedStates_built_in + 1.96*sqrt(SmoothedStatesCov_built_in);
+SmoothedStates95Lower_built_in = SmoothedStates_built_in - 1.96*sqrt(SmoothedStatesCov_built_in);
 
+plot(t, SmoothedStates_built_in(k,:),...
+    t, realFixedEffect,...
+    t, SmoothedStates95Upper_built_in(k,:), '--',...
+    t, SmoothedStates95Lower_built_in(k,:), '--')
+title('Group average: built in')
+
+%% Subject-fit
+
+YFitted = zeros(n, m);
+YFittedCov = zeros(n, m);
+for j=1:m
+    YFitted(:,j) = Y(:,j) - Output_built_in(j).SmoothedObsInnov;
+    YFittedCov(:,j) = diag(Output_built_in(j).SmoothedObsInnovCov);
+end
+YFitted95Upper = YFitted + 1.96*sqrt(YFittedCov);
+YFitted95Lower = YFitted - 1.96*sqrt(YFittedCov);
+
+for n_i = 1:n
+    subplot(5, 4, n_i)
+    plot(t, YFitted(n_i, :),...
+        t, Y(n_i,:),...
+        t, YFitted95Upper(n_i, :), '--',...
+        t, YFitted95Lower(n_i, :), '--')
+    title(strcat('Subject fit: built in n=', num2str(n_i)))
+end
 %% Model fitting
 %  KF
 tic
