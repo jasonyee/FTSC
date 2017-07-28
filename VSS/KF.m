@@ -21,8 +21,6 @@ function KFFit = ...
     
     [~,d,T] = size(MeasMX);
     
-    PredictedMean = zeros(d,T);
-    PredictedCov = zeros(d,d,T);
     FilteredMean = zeros(d,T);
     FilteredCov = zeros(d,d,T);
 
@@ -36,8 +34,7 @@ function KFFit = ...
             PrevCov = FilteredCov(:,:,t-1);
         end
         
-        [PredictedMean(:,t), PredictedCov(:,:,t), ...
-         FilteredMean(:,t), FilteredCov(:,:,t), Deltaloglik] = ...
+        [FilteredMean(:,t), FilteredCov(:,:,t), Deltaloglik] = ...
         KFUpdate(TranMX(:,:,t), DistMean(:,t), DistCov(:,:,t), ...
             MeasMX(:,:,t), ObseCov(:,:,t), data(:,t), PrevMean, PrevCov);
 
@@ -46,8 +43,6 @@ function KFFit = ...
     end
     
     KFFit.loglik = loglik;
-    KFFit.PredictedMean = PredictedMean;
-    KFFit.PredictedCov = PredictedCov;
     KFFit.FilteredMean = FilteredMean;
     KFFit.FilteredCov = FilteredCov;
         

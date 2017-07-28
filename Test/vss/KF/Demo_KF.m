@@ -47,5 +47,43 @@ tic
 logparahat = fmeTraining_KF(Y, fixedArray, randomArray, t, logpara0, diffusePrior)
 toc
 
+%% Model fitting
+SSM = fme2ss(n, fixedArray, randomArray, t, logparahat, diffusePrior);
+KalmanFit = KS(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX,...
+    SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0);
 
+%% Group-average
+k = 1;
+SmoothedStates_KF = KalmanFit.SmoothedMean;
+SmoothedStatesCov_KF = zeros(d, m);
+for j=1:m
+    SmoothedStatesCov_KF(:,j) = diag(KalmanFit.SmoothedCov(:,:,j));
+end
+SmoothedStates95Upper_KF = SmoothedStates_KF + 1.96*sqrt(SmoothedStatesCov_KF);
+SmoothedStates95Lower_KF = SmoothedStates_KF - 1.96*sqrt(SmoothedStatesCov_KF);
+
+plot(t, SmoothedStates_KF(k,:),...
+    t, SmoothedStates95Upper_KF(k,:), '--',...
+    t, SmoothedStates95Lower_KF(k,:), '--')
+title('Group average: KF')
+
+%% Subject-fit
+
+YFitted_UBC = zeros(n, m);
+YFittedCov_UBC = zeros(n, m);
+for j=1:m
+    YFitted_UBC(:,j) = SSM.MeasMX(:,:,j)*x(:,j);
+    YFittedCov_UBC(:,j) = diag(SSM.MeasMX(:,:,j)*V(:,:,j)*SSM.MeasMX(:,:,j)');
+end
+YFitted95Upper_UBC = YFitted_UBC + 1.96*sqrt(YFittedCov_UBC);
+YFitted95Lower_UBC = YFitted_UBC - 1.96*sqrt(YFittedCov_UBC);
+
+for n_i = 1:n
+    figure;
+    plot(t, YFitted_UBC(n_i, :),...
+        t, Y(n_i,:),...
+        t, YFitted95Upper_UBC(n_i, :), '--',...
+        t, YFitted95Lower_UBC(n_i, :), '--')
+    title(strcat('Subject fit: UBC n=', num2str(n_i)))
+end
 

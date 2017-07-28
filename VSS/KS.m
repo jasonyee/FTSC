@@ -15,8 +15,8 @@ function KalmanFit = ...
 
 %Output: KalmanFit is a structure, for t=1:T
 %   -loglik: log-likelihood of dependent data 1:T
-%   -ForecastedMean: E(x_t|1:t-1)
-%   -ForecastedCov: Cov(x_t|1:t-1)
+%   -PredictedMean: E(x_t|1:t-1)
+%   -PredictedCov: Cov(x_t|1:t-1)
 %   -FilteredMean: E(x_t|1:t)
 %   -FilteredCov: Cov(x_t|1:t)
 %   -SmoothedMean: E(x_t|1:T)
@@ -30,7 +30,7 @@ function KalmanFit = ...
     Ctp1 = zeros(d,d,T);
 
     KFFit=KF(TranMX, DistMean, DistCov, MeasMX, ObseCov, ...
-        data, StateMean0, StateCov0, false);
+        data, StateMean0, StateCov0);
     
     SmoothedMean(:,T) = KFFit.FilteredMean(:,T);
     SmoothedCov(:,:,T) = KFFit.FilteredCov(:,:,T);
@@ -39,14 +39,14 @@ function KalmanFit = ...
         [SmoothedMean(:,t), SmoothedCov(:,:,t), Ctp1(:,:,t+1)] = ...
             KSBackward(TranMX(:,:,t+1), ...
                 KFFit.FilteredMean(:,t), KFFit.FilteredCov(:,:,t), ...
-                KFFit.ForecastedMean(:,t+1), KFFit.ForecastedCov(:,:,t+1),...
+                KFFit.PredictedMean(:,t+1), KFFit.PredictedCov(:,:,t+1),...
                 SmoothedMean(:,t+1), SmoothedCov(:,:,t+1));
     end
-    Ctp1(:,:,1) = StateCov0*TranMX(:,:,1)'/KFFit.ForecastedCov(:,:,1);
+    Ctp1(:,:,1) = StateCov0*TranMX(:,:,1)'/KFFit.PredictedCov(:,:,1);
     
     KalmanFit.loglik = KFFit.loglik;
-    KalmanFit.ForecastedMean = KFFit.ForecastedMean;
-    KalmanFit.ForecastedCov = KFFit.ForecastedCov;
+    KalmanFit.PredictedMean = KFFit.PredictedMean;
+    KalmanFit.PredictedCov = KFFit.PredictedCov;
     KalmanFit.FilteredMean = KFFit.FilteredMean;
     KalmanFit.FilteredCov = KFFit.FilteredCov;
     KalmanFit.SmoothedMean = SmoothedMean;
