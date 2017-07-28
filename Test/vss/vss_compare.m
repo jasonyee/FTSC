@@ -41,6 +41,12 @@ logpara0 = [0;                                    % log of e
 
 diffusePrior = 1e7;
 
+%%  kalman_filter
+
+
+%  kalman_smoother
+
+
 %% Training parameters
 %  Built-in
 tic
@@ -101,18 +107,12 @@ end
 tic
 KalmanFilter = KF(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX, SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0, false);
 toc
-%  kalman_filter
-tic
-[x1, V1, VV1, loglik1] = kalman_filter(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
-toc
+
 %  KS
 tic
 KalmanSmoother = KS(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX, SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0);
 toc
-%  kalman_smoother
-tic
-[x2, V2, VV2, loglik2] = kalman_smoother(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
-toc
+
 
 %% Group-average
 %  KS
