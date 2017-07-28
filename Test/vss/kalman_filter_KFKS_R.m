@@ -31,60 +31,42 @@ Y = repmat(realFixedEffect, [n,1]) + realRandomEffect ...
 
 %% Model setting
 
-fixedDesign = repmat(ones(n,p),[1, 1, m]);    % n-by-p-by-m
-randomDesign = repmat(ones(n,q),[1, 1, m]);   % n-by-q-by-m
+fixedArray = ones(1,p);
+randomArray = ones(1,q);
 
 %  Optimization
-logpara0 = [3;                                      % log of e  
+logpara0 = [3;                                    % log of e  
          -10;-10;                                 % logs of lambdaF, lambdaR
-         5*ones(2*q,1)];                         % log of randomDiag
+         5*ones(2*q,1)];                          % log of randomDiag
 
-k = 42;
 diffusePrior = 1e7;
+
+SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
+
+k = 1;
 
 %% Model fitting
 %  KF
 tic
-output_arg_KF = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+KalmanFilter = KF(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX, SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0, false);
 toc
 %  kalman_filter
 tic
-[x1, V1, VV1, loglik1] = fme2kalman_filter(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+[x1, V1, VV1, loglik1] = kalman_filter(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
 toc
 %  KS
 tic
-output_arg_KS = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+KalmanSmoother = KS(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX, SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0);
 toc
 %  kalman_smoother
 tic
-[x2, V2, VV2, loglik2] = fme2kalman_smoother(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
+[x2, V2, VV2, loglik2] = kalman_smoother(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
 toc
 
-%% Filtering
-%  KF
-fixedEffectMeanhat_KF = output_arg_KF.FilteredMean(k,:);
-fixedEffectCovhat_KF = reshape(output_arg_KF.FilteredCov(k,k,:), [1, m]);
-
-%  kalman_filter
-fixedEffectMeanhat2 = x1(k,:);
-fixedEffectCovhat2 = reshape(V1(k,k,:), [1,m]);
-
-% Plotting
-figure;
-subplot(1,2,1)
-plot(t, fixedEffectMeanhat_KF, t, fixedEffectMeanhat2);
-legend('KF', 'UBC');
-title('Filtered Mean');
-
-subplot(1,2,2)
-plot(t, fixedEffectCovhat_KF, t, fixedEffectCovhat2);
-legend('KF', 'UBC');
-title('Filtered Variance');
-
-%% Smoothing
+%% Group-average
 %  KS
-fixedEffectMeanhat_KS = output_arg_KS.SmoothedMean(k, :);
-fixedEffectCovhat_KS = reshape(output_arg_KS.SmoothedCov(k,k,:), [1, m]);
+fixedEffectMeanhat_KS = KalmanSmoother.SmoothedMean(k, :);
+fixedEffectCovhat_KS = reshape(KalmanSmoother.SmoothedCov(k,k,:), [1, m]);
 
 %  kalman_smoother
 fixedEffectMeanhat4 = x2(k,:);
@@ -101,6 +83,9 @@ subplot(1,2,2)
 plot(t, fixedEffectCovhat_KS, t, fixedEffectCovhat4);
 legend('KS', 'UBC');
 title('Smoothed Variance');
+
+%% Subject-fit
+
 
 
 
