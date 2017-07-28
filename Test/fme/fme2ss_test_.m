@@ -41,8 +41,11 @@ diffusePrior = 1e7;
 
 %% Kalman filtering and smoothing
 % fme2ss
+tic
 SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
+toc
 
+%%
 KFFit1 = KF(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX,...
     SSM.ObseCov, Y, SSM.StateMean0, SSM.StateCov0, false);
 
@@ -53,7 +56,7 @@ KSFit1 = KS(SSM.TranMX, SSM.DistMean, SSM.DistCov, SSM.MeasMX,...
 fixedDesign = repmat(fixedArray,[n, 1, m]);    % n-by-p-by-m
 randomDesign = repmat(randomArray,[n, 1, m]);   % n-by-q-by-m
 
-KFFit2 = fme2KF(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior, false);
+KFFit2 = fme2KF(Y, fixedArray, randomArray, t, logpara0, diffusePrior, false);
 
 % fme2KS
 
@@ -69,6 +72,4 @@ KSFit2 = fme2KS(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
 % fme2dss
 
 [DSSFitCell2, loglik2, prior2] = fme2dss(Y, fixedDesign, randomDesign, t, logpara0, diffusePrior);
-
-
 
