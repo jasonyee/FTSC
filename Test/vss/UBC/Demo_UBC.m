@@ -41,7 +41,8 @@ diffusePrior = 1e7;
 %% Start point
 SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
 tic
-[~, ~, ~, loglik1] = kalman_filter(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
+[~, ~, ~, loglik1] = kalman_filter(Y, SSM.TranMX, SSM.MeasMX,...
+    SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0, 'model', 1:m);
 toc
 
 %% Training parameters
@@ -53,7 +54,8 @@ toc
 SSM = fme2ss(n, fixedArray, randomArray, t, logparahat, diffusePrior);
 
 tic
-[x, V, ~, loglik2] = kalman_smoother(Y, SSM.TranMX, SSM.MeasMX, SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0);
+[x, V, ~, loglik2] = kalman_smoother(Y, SSM.TranMX, SSM.MeasMX,...
+    SSM.DistCov, SSM.ObseCov, SSM.StateMean0, SSM.StateCov0, 'model', 1:m);
 toc
 
 %% Group-average
@@ -71,3 +73,22 @@ plot(t, SmoothedStates_UBC(k,:),...
     t, SmoothedStates95Lower_UBC(k,:), '--')
 title('Group average: UBC')
 
+%% Subject-fit
+
+YFitted_UBC = zeros(n, m);
+YFittedCov_UBC = zeros(n, m);
+for j=1:m
+    YFitted_UBC(:,j) = SSM.MeasMX(:,:,j)*x(:,j);
+    YFittedCov_UBC(:,j) = diag(SSM.MeasMX(:,:,j)*V(:,:,j)*SSM.MeasMX(:,:,j)');
+end
+YFitted95Upper_UBC = YFitted_UBC + 1.96*sqrt(YFittedCov_UBC);
+YFitted95Lower_UBC = YFitted_UBC - 1.96*sqrt(YFittedCov_UBC);
+
+for n_i = 1:n
+    subplot(5, 4, n_i)
+    plot(t, YFitted_UBC(n_i, :),...
+        t, Y(n_i,:),...
+        t, YFitted95Upper_UBC(n_i, :), '--',...
+        t, YFitted95Lower_UBC(n_i, :), '--')
+    title(strcat('Subject fit: UBC n=', num2str(n_i)))
+end
