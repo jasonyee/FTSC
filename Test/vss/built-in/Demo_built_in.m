@@ -1,4 +1,4 @@
-%% Testing KF&KS using kalman_filter and fme example..........PASS
+%% Demo for fitting functional mixed effect model using built-in Kalman filter
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -38,15 +38,17 @@ logpara0 = [0;                                    % log of e
 
 diffusePrior = 1e7;
 
+%% Start point
+SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
+logL = logLik_built_in(SSM, Y)
+
 %% Training parameters
-%  Built-in
 tic
 logparahat = fmeTraining_built_in(Y, fixedArray, randomArray, t, logpara0, diffusePrior)
 toc
 
 
 %% Model fitting
-%  Built-in
 Md = Md_built_in(n, fixedArray, randomArray, t, logparahat, diffusePrior);
 data = cell(m, 1);
 for j=1:m
@@ -57,7 +59,6 @@ end
 
 %% Group-average
 k = 1;
-%  Built-in
 SmoothedStates_built_in = zeros(d, m);
 SmoothedStatesCov_built_in = zeros(d, m);
 for j=1:m
