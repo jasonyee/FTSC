@@ -50,6 +50,8 @@ tic
 logparahat = fmeTraining_UBC(Y, fixedArray, randomArray, t, logpara0, diffusePrior)
 toc
 
+fprintf('The estimated variance is %d .\n', exp(logparahat(1)));
+
 %% Model fitting
 SSM = fme2ss(n, fixedArray, randomArray, t, logparahat, diffusePrior);
 
@@ -67,12 +69,13 @@ for j=1:m
 end
 SmoothedStates95Upper_UBC = SmoothedStates_UBC + 1.96*sqrt(SmoothedStatesCov_UBC);
 SmoothedStates95Lower_UBC = SmoothedStates_UBC - 1.96*sqrt(SmoothedStatesCov_UBC);
-
+figure;
 plot(t, SmoothedStates_UBC(k,:),...
     t, SmoothedStates95Upper_UBC(k,:), '--',...
     t, SmoothedStates95Lower_UBC(k,:), '--')
 title('Group average: UBC')
-
+figure;
+plot(t, SmoothedStatesCov_UBC(k,:));
 %% Subject-fit
 
 YFitted_UBC = zeros(n, m);
