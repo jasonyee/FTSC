@@ -13,6 +13,8 @@ function [MeanPred, CovPred, NextMean, NextCov, loglik] = ...
 %   -PrevMean: a_{T-1|T-1}.
 %   -PrevCov: P_{T-1|T-1}.
 %Output: T>=1
+%   -MeanPred: a_{T|T-1}
+%   -CovPred: P_{T|T-1}
 %   -NextMean: a_{T|T}
 %   -NextCov: P_{T|T}
 %   -loglik: log-likelihood of dependent data
@@ -21,11 +23,13 @@ function [MeanPred, CovPred, NextMean, NextCov, loglik] = ...
     CovPred = TranMX*PrevCov*TranMX' + DistCov;
     
     e = data - MeasMX*MeanPred;
-    S = MeasMX*CovPred*MeasMX' + ObseCov;
+    K = CovPred*MeasMX';
+    F = MeasMX*K + ObseCov;
+    KoverF = K/F;
     
-    loglik = -0.5*(length(data)*log(2*pi) + log(det(S)) + e'/S*e);
-    K = CovPred*MeasMX'/S;
-    NextMean = MeanPred + K*e;
-    NextCov = CovPred - K*MeasMX*CovPred;
+    loglik = -0.5*(length(data)*log(2*pi) + log(det(F)) + e'/F*e);
+    
+    NextMean = MeanPred + KoverF*e;
+    NextCov = CovPred - KoverF*K';
 end
 

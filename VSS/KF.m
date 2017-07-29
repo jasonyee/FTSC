@@ -2,8 +2,8 @@
 %  KF returns a Kalman filtering structure
 %  or the log-likelihood value of the data.
 
-function output_arg = ...
-    KF(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0, opti)
+function KFFit = ...
+    KF(TranMX, DistMean, DistCov, MeasMX, ObseCov, data, StateMean0, StateCov0)
 %Input: t=1:T
 %   -TranMX(:,:,t): the state transtion matix from t-1 to t.
 %   -DistMean(:,t): the state disturbing mean at t.
@@ -21,8 +21,6 @@ function output_arg = ...
     
     [~,d,T] = size(MeasMX);
     
-    ForecastedMean = zeros(d,T);
-    ForecastedCov = zeros(d,d,T);
     FilteredMean = zeros(d,T);
     FilteredCov = zeros(d,d,T);
 
@@ -31,26 +29,21 @@ function output_arg = ...
     loglik = .0;
     
     for t=1:T
-        [ForecastedMean(:,t), ForecastedCov(:,:,t), ...
-         PrevMean, PrevCov, Deltaloglik] = ...
+        if t>1
+            PrevMean = FilteredMean(:,t-1);
+            PrevCov = FilteredCov(:,:,t-1);
+        end
+        
+        [FilteredMean(:,t), FilteredCov(:,:,t), Deltaloglik] = ...
         KFUpdate(TranMX(:,:,t), DistMean(:,t), DistCov(:,:,t), ...
             MeasMX(:,:,t), ObseCov(:,:,t), data(:,t), PrevMean, PrevCov);
-        FilteredMean(:,t) = PrevMean;
-        FilteredCov(:,:,t) = PrevCov;
+
         loglik = loglik + Deltaloglik;
         
     end
     
-    if opti
-        output_arg = -loglik;
-        return
-    else
-        KFFit.loglik = loglik;
-        KFFit.ForecastedMean = ForecastedMean;
-        KFFit.ForecastedCov = ForecastedCov;
-        KFFit.FilteredMean = FilteredMean;
-        KFFit.FilteredCov = FilteredCov;
+    KFFit.loglik = loglik;
+    KFFit.FilteredMean = FilteredMean;
+    KFFit.FilteredCov = FilteredCov;
         
-        output_arg = KFFit;
-    end
 end
