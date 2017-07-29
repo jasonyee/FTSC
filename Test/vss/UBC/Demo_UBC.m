@@ -33,7 +33,7 @@ randomArray = ones(1,q);
 
 %  Optimization
 logpara0 = [0;                                    % log of e  
-         -5;-5;                                 % logs of lambdaF, lambdaR
+         -10;-10;                                 % logs of lambdaF, lambdaR
          1*ones(2*q,1)];                          % log of randomDiag
 
 diffusePrior = 1e7;
