@@ -1,4 +1,4 @@
-%% Demo for fitting functional mixed effect model using built-in Kalman filter
+%% Demo for MATLAB's built-in Kalman filter
 %  Adding the following folders to the path:
 %   -FTSC
 
