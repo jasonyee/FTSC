@@ -7,14 +7,14 @@ I am very fortunate to be co-advised by Prof. Richard Landis and Prof. Wensheng 
 
 The aim of the project is to classify the time series data collected from the patients to make statistical inference.
 
-# Version: v1.02
+# Features
 
 This is the version with:
 
+*  numerical stable filtering and smoothing
+*  time-variant model
 *  balanced time points for all subjects.
 *  dss2step algorithm
 *  parellel computing in DSSClustering
 *  fast fmeCondProb
 *  fast state space model construction
-
-This version is a time-variant version, which means the difference between 2 time points can vary.
