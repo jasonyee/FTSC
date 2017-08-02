@@ -110,6 +110,41 @@ SSM_kalman = fme2ss(n, fixedArray, randomArray, t, logparahat_kalman, diffusePri
 
 fprintf('The KalmanAll maximized log-likelihood is %d .\n', logL_kalman);
 
+%% Group-average
+k = 1;  %  the real fixed effect state parameter
+ConfidenceLevel = 0.95;     % confidence level
+
+%  built-in
+[Smoothed_built_in, SmoothedVar_built_in] =...
+    StatesMeanVar(Output_built_in, 'built-in', 'smooth');
+
+[Smoothed95Upper_built_in, Smoothed95Lower_built_in] = ...
+    NormalCI(Smoothed_built_in, SmoothedVar_built_in, ConfidenceLevel);
+
+%  KalmanAll
+[Smoothed_kalman, SmoothedVar_kalman] =...
+    StatesMeanVar(Output_kalman, 'kalman-all', 'smooth');
+
+[Smoothed95Upper_kalman, Smoothed95Lower_kalman] = ...
+    NormalCI(Smoothed_kalman, SmoothedVar_kalman, ConfidenceLevel);
+
+% mean and confidence interal
+figure;
+subplot(1,2,1);
+plot(t, Smoothed_built_in(k,:),...
+    t, realFixedEffect,...
+    t, Smoothed95Upper_built_in(k,:), '--',...
+    t, Smoothed95Lower_built_in(k,:), '--')
+legend('Smoothed', 'real fixed effect')
+title('Group average: built in')
+subplot(1,2,2)
+plot(t, Smoothed_kalman(k,:),...
+    t, realFixedEffect,...
+    t, Smoothed95Upper_kalman(k,:), '--',...
+    t, Smoothed95Lower_kalman(k,:), '--')
+legend('Smoothed', 'real fixed effect')
+title('Group average: KalmanAll')
+
 
 %% New subject
 
