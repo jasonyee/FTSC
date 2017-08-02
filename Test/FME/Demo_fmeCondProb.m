@@ -114,8 +114,8 @@ fprintf('The KalmanAll maximized log-likelihood is %d .\n', logL_kalman);
 %% New subject
 
 % 7Sins
-newSub_7Sin_real = realFixedEffect + randn(1,4) *  [cos(2*pi*t);cos(4*pi*t);...
-                               cos(6*pi*t);ones(1,m)];
+newSub_7Sin_real = 7 * sin(2*pi*t) + randn(1,4) * ...
+    [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
 newSub_7Sin = newSub_7Sin_real + sqrt(sigma_e)*randn(1,m);   
 
 
