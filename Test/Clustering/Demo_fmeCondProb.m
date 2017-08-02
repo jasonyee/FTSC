@@ -26,9 +26,9 @@ realY = repmat(realFixedEffect, [n,1]) + realRandomEffect;
 
 Y = realY+ sqrt(sigma_e)*randn(n,m);
 
-% figure;
-% plot(t, Y');
-% title('raw data, fixed effect: 7Sin');
+figure;
+plot(t, Y');
+title('raw data, fixed effect: 7Sin');
 
 %% Model setting
 
@@ -118,22 +118,48 @@ newSub_7Sin_real = realFixedEffect + randn(1,4) *  [cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
 newSub_7Sin = newSub_7Sin_real + sqrt(sigma_e)*randn(1,m);   
 
+
 % 5Sins
 newSub_5Sin_real = 5 * sin(2*pi*t) + randn(1,4) * ...
     [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
 newSub_5Sin = newSub_5Sin_real + sqrt(sigma_e)*randn(1,m); 
 
-%% log-conditional-probability
+% 7SinShifted
+newSub_7Cos_real = 7 * cos(2*pi*t) + randn(1,4) * ...
+    [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
+newSub_7Cos = newSub_7Cos_real + sqrt(sigma_e)*randn(1,m); 
 
+figure;
+subplot(1,2,1)
+plot(t, newSub_5Sin,...
+     t, newSub_7Sin,...
+     t, newSub_7Cos);
+legend('5Sin', '7Sin', '7Cos');
+title('Observations for 3 new subjects');
+
+subplot(1,2,2)
+plot(t, newSub_5Sin_real,...
+     t, newSub_7Sin_real,...
+     t, newSub_7Cos_real);
+legend('5Sin', '7Sin', '7Cos');
+title('Real values for 3 new subjects');
+
+
+%% log-conditional-probability
+clc;
 Algo = @DSS2Step;
-SSMTotal = SSM_built_in;
-%  DSS2Step
+SSMTotal = SSM_kalman;
+
 logCondProb_7Sin = ...
     fmeCondProb(Algo, Y(1:end-1,:), newSub_7Sin, SSMTotal, 1, 1);
-
-
-
+logCondProb_5Sin = ...
+    fmeCondProb(Algo, Y(1:end-1,:), newSub_5Sin, SSMTotal, 1, 1);
+logCondProb_7Cos = ...
+    fmeCondProb(Algo, Y(1:end-1,:), newSub_7Cos, SSMTotal, 1, 1);
  
-
+fprintf('Using KalmanAll to train parameters and DSS2Step to calculate log conditional probability: \n');
+fprintf('-7Sin: %d \n', logCondProb_7Sin);
+fprintf('-5Sin: %d \n', logCondProb_5Sin);
+fprintf('-7Cos: %d \n', logCondProb_7Cos);
 
 
