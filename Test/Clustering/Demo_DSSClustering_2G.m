@@ -1,4 +1,4 @@
-%% Testing DSSClustering using 2-group fme examples
+%% Demo DSSClustering using 2-group fme examples
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -64,7 +64,7 @@ SensTable_kmeans = array2table(sensT_kmeans, ...
 %% DSSClustering: fitting
 fixedArray = ones(1,p);
 randomArray = ones(1,q);
-MAX_LOOP = 100;
+MAX_LOOP = 10;
 
 tic;
 [ ClusterIDs_DSS, ClusterMembers_DSS, Theta, switchHistory] = ...
