@@ -41,7 +41,8 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         ClusterIndex = find(ClusterIDs == k);
         ClusterMembers{k} = ClusterIndex;
         kClusterData = dataset(ClusterIndex, :);
-        Theta(:,k) = fmeTraining(kClusterData, OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+        % KalmanAll to train parameters
+        Theta(:,k) = fmeTraining(@KalmanAll, kClusterData, fixedArray, randomArray, OBtime, logpara0, diffusePrior);
         SSM(k) = fme2ss(n, fixedArray, randomArray, OBtime, Theta(:,k), diffusePrior);
     end
     
@@ -67,7 +68,8 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
                 else
                     LeaveOneClusterData = dataset(ClusterMembers{k},:);
                 end
-                logPostProb(k) = fmeCondProb(LeaveOneClusterData, dataset(i,:), SSM(k), p, q);
+                % DSS2Step to calculate log conditional probability
+                logPostProb(k) = fmeCondProb(@DSS2Step, LeaveOneClusterData, dataset(i,:), SSM(k), p, q);
             end
             [~, newClusterID] = max(logPostProb);
             
@@ -85,7 +87,8 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         
         % updating theta
         for k = 1:nClusters
-            Theta(:,k) = fmeTraining(dataset(ClusterMembers{k},:), OBtime, fixedArray, randomArray, logpara0, diffusePrior);
+            % KalmanAll to train parameters
+            Theta(:,k) = fmeTraining(@KalmanAll, dataset(ClusterMembers{k},:), fixedArray, randomArray, OBtime, logpara0, diffusePrior);
             SSM(k) = fme2ss(n, fixedArray, randomArray, OBtime, Theta(:,k), diffusePrior);
         end
         loopNum = loopNum + 1;
