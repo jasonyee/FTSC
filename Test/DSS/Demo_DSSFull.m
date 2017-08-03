@@ -163,7 +163,6 @@ end
 [YFitted_kalman, YFittedVar_kalman] = ...
     SpaceMeanVar(Output_kalman, SSM_kalman, 'kalman-all', 'smooth');
 
-
 [YFitted95Upper_kalman, YFitted95Lower_kalman] = ...
     NormalCI(YFitted_kalman, YFittedVar_kalman, ConfidenceLevel);
 

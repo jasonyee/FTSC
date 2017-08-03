@@ -1,4 +1,4 @@
-%% Demo for my DSS2Step (DSS 2-step algorithm) using MATLAB's built-in algorithm
+%% Demo for my DSS2Step (DSS 2-step algorithm) using VSS algorithm
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -55,12 +55,12 @@ fprintf('The starting value for sigma^2_2 is %d .\n', exp(logpara0(5)));
 
 SSM = fme2ss(n, fixedArray, randomArray, t, logpara0, diffusePrior);
 
-%% Starting point: Built_in filter
+%% Starting point: KalmanAll
 tic;
-NlogLik_built_in = NlogLik(@BuiltIn, Y, fixedArray, randomArray, t, logpara0, diffusePrior);
-eval_built_in = toc;
-fprintf('Built-in: Negative log-likelihood value for the start point is %d \n', NlogLik_built_in);
-fprintf('A single evaluation in built-in function takes %d seconds \n', eval_built_in);
+NlogLik_kalman = NlogLik(@KalmanAll, Y, fixedArray, randomArray, t, logpara0, diffusePrior);
+eval_kalman = toc;
+fprintf('KalmanAll: Negative log-likelihood value for the start point is %d \n', NlogLik_kalman);
+fprintf('A single evaluation in KalmanAll function takes %d seconds.\n', eval_kalman);
 
 %% Starting point: DSS2Step
 tic;
@@ -69,18 +69,17 @@ eval_dss2step = toc;
 fprintf('DSS2Step: Negative log-likelihood value for the start point is %d \n', NlogLik_dss2step);
 fprintf('A single evaluation in DSS2Step function takes %d seconds.\n', eval_dss2step);
 
-%% Training parameters: Built_in filter
-
+%% Training parameters: KalmanAll
 tic;
-logparahat_built_in = fmeTraining(@BuiltIn, Y, fixedArray, randomArray, t, logpara0, diffusePrior);
-opti_built_in = toc;
+[logparahat_kalman, fval_kalman] = fmeTraining(@KalmanAll, Y, fixedArray, randomArray, t, logpara0, diffusePrior);
+opti_kalman = toc;
 
-fprintf('MLE for built-in function takes %d seconds.\n', opti_built_in);
-fprintf('The built-in estimated variance of measurement error is %d .\n', exp(logparahat_built_in(1)));
-fprintf('The built-in estimated lambda_b is %d .\n', exp(logparahat_built_in(2)));
-fprintf('The built-in estimated lambda_a is %d .\n', exp(logparahat_built_in(3)));
-fprintf('The built-in estimated sigma^2_1 is %d .\n', exp(logparahat_built_in(4)));
-fprintf('The built-in estimated sigma^2_2 is %d .\n', exp(logparahat_built_in(5)));
+fprintf('MLE for KalmanAll function takes %d seconds.\n', opti_kalman);
+fprintf('The KalmanAll estimated variance of measurement error is %d .\n', exp(logparahat_kalman(1)));
+fprintf('The KalmanAll estimated lambda_b is %d .\n', exp(logparahat_kalman(2)));
+fprintf('The KalmanAll estimated lambda_a is %d .\n', exp(logparahat_kalman(3)));
+fprintf('The KalmanAll estimated sigma^2_1 is %d .\n', exp(logparahat_kalman(4)));
+fprintf('The KalmanAll estimated sigma^2_2 is %d .\n', exp(logparahat_kalman(5)));
 
 %% Training parameters: DSS2Step
 tic;
@@ -94,14 +93,13 @@ fprintf('The DSS2Step estimated lambda_a is %d .\n', exp(logparahat_dss2step(3))
 fprintf('The DSS2Step estimated sigma^2_1 is %d .\n', exp(logparahat_dss2step(4)));
 fprintf('The DSS2Step estimated sigma^2_2 is %d .\n', exp(logparahat_dss2step(5)));
 
-%% Model fitting: Built_in smoother
+%% Model fitting: KalmanAll
 
-SSM_built_in = fme2ss(n, fixedArray, randomArray, t, logparahat_built_in, diffusePrior);
+SSM_kalman = fme2ss(n, fixedArray, randomArray, t, logparahat_kalman, diffusePrior);
 
-[logL_built_in, Output_built_in] = BuiltInSmoother(SSM_built_in, Y);
+[logL_kalman, Output_kalman] = KalmanAll(SSM_kalman, Y);
 
-fprintf('The built-in maximized log-likelihood is %d .\n', logL_built_in);
-
+fprintf('The KalmanAll maximized log-likelihood is %d .\n', logL_kalman);
 %% Model fitting: DSS2Step
 
 SSM_dss2step = fme2ss(n, fixedArray, randomArray, t, logparahat_dss2step, diffusePrior);
@@ -114,12 +112,12 @@ fprintf('The DSS2Step maximized log-likelihood is %d .\n', logL_dss2step);
 k = 1;  %  the real fixed effect state parameter
 ConfidenceLevel = 0.95;     % confidence level
 
-%  built-in
-[Smoothed_built_in, SmoothedVar_built_in] =...
-    StatesMeanVar(Output_built_in, 'built-in', 'smooth');
+%  KalmanAll
+[Smoothed_kalman, SmoothedVar_kalman] =...
+    StatesMeanVar(Output_kalman, 'kalman-all', 'smooth');
 
-[Smoothed95Upper_built_in, Smoothed95Lower_built_in] = ...
-    NormalCI(Smoothed_built_in, SmoothedVar_built_in, ConfidenceLevel);
+[Smoothed95Upper_kalman, Smoothed95Lower_kalman] = ...
+    NormalCI(Smoothed_kalman, SmoothedVar_kalman, ConfidenceLevel);
 
 %  dss-2step
 [Smoothed_dss2step, SmoothedVar_dss2step] =...
@@ -135,14 +133,14 @@ for i=1:2
     Smoothed_dss2step_i = reshape(Smoothed_dss2step(k,:,i), 1, m);
     Smoothed95Upper_dss2step_i = reshape(Smoothed95Upper_dss2step(k,:,i), 1, m);
     Smoothed95Lower_dss2step_i = reshape(Smoothed95Lower_dss2step(k,:,i), 1, m);
-    plot(t, Smoothed_built_in(k,:),...
+    plot(t, Smoothed_kalman(k,:),...
         t, Smoothed_dss2step_i,...
         t, realFixedEffect,...
-        t, Smoothed95Upper_built_in(k,:), ':',...
-        t, Smoothed95Lower_built_in(k,:), ':',...
+        t, Smoothed95Upper_kalman(k,:), ':',...
+        t, Smoothed95Lower_kalman(k,:), ':',...
         t, Smoothed95Upper_dss2step_i, '--',...
         t, Smoothed95Lower_dss2step_i, '--')
-    legend('MATLAB with :', 'DSS2Step with --', 'real fixed effect')
+    legend('KalmanAll with :', 'DSS2Step with --', 'real fixed effect')
     tit = strcat('Group average: DSS2Step at step ', num2str(i));
     title(tit)
 end
@@ -151,20 +149,20 @@ end
 for i=1:2
     figure;
     SmoothedVar_dss2step_i = reshape(SmoothedVar_dss2step(k,:,i), 1, m);
-    plot(t, SmoothedVar_built_in(k,:),...
+    plot(t, SmoothedVar_kalman(k,:),...
         t, SmoothedVar_dss2step_i);
-    legend('MATLAB', 'DSS2Step');
+    legend('KalmanAll', 'DSS2Step');
     tit = strcat('Group average variance: DSS2Step at step ', num2str(i));
     title(tit)
 end
 
 %% Subject-fit
-%  built-in
-[YFitted_built_in, YFittedVar_built_in] = ...
-    SpaceMeanVar(Output_built_in, SSM_built_in, 'built-in', 'smooth');
+%  kalman-all
+[YFitted_kalman, YFittedVar_kalman] = ...
+    SpaceMeanVar(Output_kalman, SSM_kalman, 'kalman-all', 'smooth');
 
-[YFitted95Upper_built_in, YFitted95Lower_built_in] = ...
-    NormalCI(YFitted_built_in, YFittedVar_built_in, ConfidenceLevel);
+[YFitted95Upper_kalman, YFitted95Lower_kalman] = ...
+    NormalCI(YFitted_kalman, YFittedVar_kalman, ConfidenceLevel);
 
 %  dss-2step
 [YFitted_dss2step, YFittedVar_dss2step] = ...
@@ -178,13 +176,13 @@ end
 for n_i = 1:n
     figure;
     subplot(1,2,1);
-    plot(t, YFitted_built_in(n_i, :),...
+    plot(t, YFitted_kalman(n_i, :),...
         t, Y(n_i,:),...
         t, realY(n_i,:),...
-        t, YFitted95Upper_built_in(n_i, :), '--',...
-        t, YFitted95Lower_built_in(n_i, :), '--')
+        t, YFitted95Upper_kalman(n_i, :), '--',...
+        t, YFitted95Lower_kalman(n_i, :), '--')
     legend('Fitted', 'Observation', 'Real')
-    title(strcat('Subject fit: built in n=', num2str(n_i)))
+    title(strcat('Subject fit: KalmanAll n=', num2str(n_i)))
     
     subplot(1,2,2);
     plot(t, YFitted_dss2step(n_i, :),...
@@ -198,8 +196,8 @@ end
 
 %% Tesing
 fprintf('-Group average: \n');
-fprintf('MATLAB group mean at t=1 is %5.4f \n', Smoothed_built_in(1,1));
-fprintf('MATLAB group var at t=1 is %5.4f \n', SmoothedVar_built_in(1,1));
+fprintf('KalmanAll group mean at t=1 is %5.4f \n', Smoothed_kalman(1,1));
+fprintf('KalmanAll group var at t=1 is %5.4f \n', SmoothedVar_kalman(1,1));
 
 fprintf('DSS2Step step 1 group mean at t=1 is %5.4f \n', Smoothed_dss2step(1,1,1));
 fprintf('DSS2Step step 1 group var at t=1 is %5.4f \n', SmoothedVar_dss2step(1,1,1));
@@ -208,10 +206,10 @@ fprintf('DSS2Step(converged) group mean at t=1 is %5.4f \n', Smoothed_dss2step(1
 fprintf('DSS2Step(converged) group var at t=1 is %5.4f \n', SmoothedVar_dss2step(1,1,2));
 
 fprintf('-Subject fit: \n');
-fprintf('MATLAB subject 1 mean at t=1 is %5.4f \n', YFitted_built_in(1,1));
-fprintf('MATLAB subject 1 var at t=1 is %5.4f \n', YFittedVar_built_in(1,1));
-fprintf('MATLAB subject 20 mean at t=1 is %5.4f \n', YFitted_built_in(20,1));
-fprintf('MATLAB subject 20 var at t=1 is %5.4f \n', YFittedVar_built_in(20,1));
+fprintf('KalmanAll subject 1 mean at t=1 is %5.4f \n', YFitted_kalman(1,1));
+fprintf('KalmanAll subject 1 var at t=1 is %5.4f \n', YFittedVar_kalman(1,1));
+fprintf('KalmanAll subject 20 mean at t=1 is %5.4f \n', YFitted_kalman(20,1));
+fprintf('KalmanAll subject 20 var at t=1 is %5.4f \n', YFittedVar_kalman(20,1));
 
 fprintf('DSS2Step(converged) subject 1 mean at t=1 is %5.4f \n', YFitted_dss2step(1,1));
 fprintf('DSS2Step(converged) subject 1 var at t=1 is %5.4f \n', YFittedVar_dss2step(1,1));
