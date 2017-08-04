@@ -234,7 +234,7 @@ newSub_7Sin = newSub_7Sin_real + sqrt(sigma_e1)*randn(1,m);
 
 
 % 7Sin_shift
-newSub_7Sin_shift_real = 7 * sin(2*pi*t + pi/4) + randn(1,4) * ...
+newSub_7Sin_shift_real = 7 * sin(2*pi*t + pi/2) + randn(1,4) * ...
     [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
 newSub_7Sin_shift = newSub_7Sin_shift_real + sqrt(sigma_e1)*randn(1,m); 
 
