@@ -48,7 +48,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
     
     Switches = 1;
     loopNum = 0;
-    SwitchHistory = [];
+    SwitchHistory = zeros(1, MAX_LOOP);
     
     while ~ShouldStop(Switches, loopNum, MAX_LOOP)
         Switches = 0;
@@ -93,7 +93,7 @@ function [ ClusterIDs, ClusterMembers, Theta, SwitchHistory] = ...
         end
         loopNum = loopNum + 1;
         
-        SwitchHistory = [SwitchHistory, Switches];
+        SwitchHistory(loopNum) = Switches;
     end
 end
 

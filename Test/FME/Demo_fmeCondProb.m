@@ -145,6 +145,55 @@ plot(t, Smoothed_kalman(k,:),...
 legend('Smoothed', 'real fixed effect')
 title('Group average: KalmanAll')
 
+% variance
+figure;
+subplot(1,2,1);
+plot(t, SmoothedVar_built_in(k,:));
+title('Group average variance: built in')
+subplot(1,2,2);
+plot(t, SmoothedVar_kalman(k,:));
+title('Group average variance: KalmanAll')
+
+    
+
+%% Subject-fit
+%  built-in
+[YFitted_built_in, YFittedVar_built_in] = ...
+    SpaceMeanVar(Output_built_in, SSM_built_in, 'built-in', 'smooth');
+
+[YFitted95Upper_built_in, YFitted95Lower_built_in] = ...
+    NormalCI(YFitted_built_in, YFittedVar_built_in, ConfidenceLevel);
+
+%  kalman-all
+[YFitted_kalman, YFittedVar_kalman] = ...
+    SpaceMeanVar(Output_kalman, SSM_kalman, 'kalman-all', 'smooth');
+
+
+[YFitted95Upper_kalman, YFitted95Lower_kalman] = ...
+    NormalCI(YFitted_kalman, YFittedVar_kalman, ConfidenceLevel);
+
+%  mean and confidence interval
+for n_i = 1:n
+    figure;
+    subplot(1,2,1);
+    plot(t, YFitted_built_in(n_i, :),...
+        t, Y(n_i,:),...
+        t, realY(n_i,:),...
+        t, YFitted95Upper_built_in(n_i, :), '--',...
+        t, YFitted95Lower_built_in(n_i, :), '--')
+    legend('Fitted', 'Observation', 'Real')
+    title(strcat('Subject fit: built in n=', num2str(n_i)))
+    
+    subplot(1,2,2);
+    plot(t, YFitted_kalman(n_i, :),...
+        t, Y(n_i,:),...
+        t, realY(n_i,:),...
+        t, YFitted95Upper_kalman(n_i, :), '--',...
+        t, YFitted95Lower_kalman(n_i, :), '--')
+    legend('Fitted', 'Observation', 'Real')
+    title(strcat('Subject fit: KalmanAll n=', num2str(n_i)))
+end
+
 
 %% New subject
 
@@ -154,29 +203,29 @@ newSub_7Sin_real = 7 * sin(2*pi*t) + randn(1,4) * ...
 newSub_7Sin = newSub_7Sin_real + sqrt(sigma_e)*randn(1,m);   
 
 
-% 5Sins
-newSub_5Sin_real = 5 * sin(2*pi*t) + randn(1,4) * ...
+% 7Sin_shift
+newSub_7Sin_shift_real = 7 * sin(2*pi*t + pi/4) + randn(1,4) * ...
     [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
-newSub_5Sin = newSub_5Sin_real + sqrt(sigma_e)*randn(1,m); 
+newSub_7Sin_shift = newSub_7Sin_shift_real + sqrt(sigma_e)*randn(1,m); 
 
-% 7SinShifted
+% 7Cos
 newSub_7Cos_real = 7 * cos(2*pi*t) + randn(1,4) * ...
     [cos(2*pi*t);cos(4*pi*t);cos(6*pi*t);ones(1,m)];
 newSub_7Cos = newSub_7Cos_real + sqrt(sigma_e)*randn(1,m); 
 
 figure;
 subplot(1,2,1)
-plot(t, newSub_5Sin,...
+plot(t, newSub_7Sin_shift,...
      t, newSub_7Sin,...
      t, newSub_7Cos);
-legend('5Sin', '7Sin', '7Cos');
+legend('7Sin_shift', '7Sin', '7Cos');
 title('Observations for 3 new subjects');
 
 subplot(1,2,2)
-plot(t, newSub_5Sin_real,...
+plot(t, newSub_7Sin_shift_real,...
      t, newSub_7Sin_real,...
      t, newSub_7Cos_real);
-legend('5Sin', '7Sin', '7Cos');
+legend('7Sin_shift', '7Sin', '7Cos');
 title('Real values for 3 new subjects');
 
 
@@ -187,14 +236,14 @@ SSMTotal = SSM_kalman;
 
 logCondProb_7Sin = ...
     fmeCondProb(Algo, Y(1:end-1,:), newSub_7Sin, SSMTotal, 1, 1);
-logCondProb_5Sin = ...
-    fmeCondProb(Algo, Y(1:end-1,:), newSub_5Sin, SSMTotal, 1, 1);
+logCondProb_7Sin_shift = ...
+    fmeCondProb(Algo, Y(1:end-1,:), newSub_7Sin_shift, SSMTotal, 1, 1);
 logCondProb_7Cos = ...
     fmeCondProb(Algo, Y(1:end-1,:), newSub_7Cos, SSMTotal, 1, 1);
  
 fprintf('Using KalmanAll to train parameters and DSS2Step to calculate log conditional probability: \n');
 fprintf('-7Sin: %d \n', logCondProb_7Sin);
-fprintf('-5Sin: %d \n', logCondProb_5Sin);
+fprintf('-7Sin_shift: %d \n', logCondProb_7Sin_shift);
 fprintf('-7Cos: %d \n', logCondProb_7Cos);
 
 
