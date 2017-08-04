@@ -18,7 +18,7 @@ sigma_e = 1;                                  % variance of white noise
 
 d = 2*(p+n*q);                                % dimension of states
 
-realFixedEffect = 7*sin(2*pi*t + pi/4);              % p-by-m
+realFixedEffect = 5*sin(2*pi*t);              % p-by-m
 realRandomEffect = randn(n,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
                  
