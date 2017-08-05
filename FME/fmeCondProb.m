@@ -5,7 +5,7 @@
 function logCondProb = ...
     fmeCondProb(Algo, ClusterData, subdata, SSMTotal, nFixedEffects, nRandomEffects)
 %Input: t=1:T
-%   -Algo: @DSSFull / @DSS2Step
+%   -Algo: @BuiltIn / @KalmanAll / @DSSFull / @DSS2Step
 %   -ClusterData: (i,t) is the observation of group member i at time t.
 %   -subdata: (t) is the observation of new subject at time t.
 %   -SSMTotal: the total state-space model for all subjects over all
@@ -30,6 +30,6 @@ function logCondProb = ...
     SSM.StateCov0 = SSMTotal.StateCov0(1:d, 1:d, :);
     
     %  calculate log conditional probability
-    logCondProb = LogCondProb(Algo, allData, SSM);
+    logCondProb = LogCondProb(Algo, allData, SSM, nFixedEffects, nRandomEffects);
     
 end
