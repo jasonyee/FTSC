@@ -1,7 +1,7 @@
 function [ xSmoothMean, xSmoothVar, ConvMX] = FixedIntervalSmootherUpdate(xSmoothMean,...
     xSmoothVar, xFilterMean, xFilterVar, xPredictMean, xPredictVar, TranMX)
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
+%fixed interval smoothing algorithm for one-step
+%   see Durbin and Koopman (2012)
     
     % Converting matrix
     ConvMX = xFilterVar * TranMX' / xPredictVar;

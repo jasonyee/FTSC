@@ -1,7 +1,15 @@
 function [Filtered, FilteredCov, Predicted, PredictedCov, logLik] = ...
     KalmanFilter(Y, TranMX, DistMean, DistCov, MeasMX, ObseCov, State0, StateCov0)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%KalmanFilter output the filtered and predicted estimates of latent states
+%   -Y: n-by-T
+%   -TranMX: d-by-d-by-T
+%   -DistMean: d-by-T
+%   -DistCov: d-by-d-by-T
+%   -MeasMX: n-by-by-d-byT
+%   -ObseCov: n-by-n-by-T
+%   -State0: d-by-1
+%   -StateCov0: d-by-d
+%   -logLik is the log likelihood for Y(:,1:T)
     
     [~, d, T] = size(MeasMX);
     Filtered = zeros(d, T);

@@ -1,6 +1,6 @@
 function [logLik, Kalman] = KalmanAll(SSM, Y)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%KalmanAll returns the log-likelihood for Y(:,1:T) and a Kalman structure
+%   -SSM is a state-space model structure for Y(:,:)
     
     % Kalman filtering
     [Kalman.Filtered,...
