@@ -1,7 +1,7 @@
 function [Smoothed, SmoothedCov, Smoothed0, SmoothedCov0, ConvMinus ] = ...
     FixedIntervalSmoother(Filtered, FilteredCov, Predicted, PredictedCov, TranMX, State0, StateCov0)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%FixedIntervalSmoother computes the smooth estimates of states
+%   see Durbin and Koopman (2012)
     
     % get dimensions
     [~, d, T] = size(TranMX);

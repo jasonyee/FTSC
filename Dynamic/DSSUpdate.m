@@ -1,7 +1,21 @@
 function [Kalman, TranMX, DistMean, DistCov, State0, StateCov0] =...
     DSSUpdate(Y, TranMX, DistMean, DistCov, MeasMX, ObseCov, State0, StateCov0)
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
+%DSSUPDATE computes one-step condtional state-space model and update priors
+% Description:
+%
+% For every subject, the filtered/smoothed states and prior information are
+% updated. see Guo (2003)
+%
+% Input Arguments:
+%   
+%   Information - Y
+%   Priors - TranMX, DistMean, DistCov, State0, StateCov0
+%   Measurement - MeasMX, ObseCov 
+%
+% Output Arguments:
+%
+%   Kalman - a Kalman structure containing filtering and smoothing
+%   Priors - TranMX, DistMean, DistCov, State0, StateCov0
     
     % Kalman filter
     [Kalman.Filtered,...

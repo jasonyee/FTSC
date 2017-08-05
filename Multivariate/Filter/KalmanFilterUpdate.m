@@ -1,6 +1,12 @@
 function [xFilterMean, xFilterVar, xPredictMean, xPredictVar, logL] = ...
     KalmanFilterUpdate( xFilterMean, xFilterVar, yt, At, mut, Bt, Ct, Dt)
-
+%KalmanFilterUpdate compute one-step predicting and filtering estimates
+%   see Durbin and Koopman (2012)
+%   -At: transition matrix
+%   -mut: disturbance mean
+%   -Bt: disturbance variance-covariance matrix
+%   -Ct: measurement matrix
+%   -Dt: observation variance-covariance matrix
 
     % Predict the states
     xPredictMean = At * xFilterMean + mut;
