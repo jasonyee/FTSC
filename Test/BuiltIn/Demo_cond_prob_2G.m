@@ -1,4 +1,4 @@
-%% Test for DSS2Step and DSSFull using MATLAB's built-in algorithm 
+%% Test for fmeCond
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -92,12 +92,13 @@ SSMTotal2 = fme2ss(n, fixedArray, randomArray, t, logparahat2, diffusePrior);
 
 
 %% log condtional probability
+Algo = @BuiltIn;
 tic;
-logCondProb1 = fmeCondProb(@BuiltIn, Y1(1:end-1,:), Y1(end,:), SSMTotal1, p, q);
+logCondProb1 = fmeCondProb(Algo, Y1(1:end-1,:), Y1(end,:), SSMTotal1, p, q);
 condprobtime1 = toc;
 %%
 tic;
-logCondProb2 = fmeCondProb(@BuiltIn, Y2, Y1(end,:), SSMTotal2, p, q);
+logCondProb2 = fmeCondProb(Algo, Y2, Y1(end,:), SSMTotal2, p, q);
 condprobtime2 = toc;
 
 
