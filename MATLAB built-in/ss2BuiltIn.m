@@ -1,6 +1,19 @@
 function Md = ss2BuiltIn(SSM)
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
+%SS2BUILTIN convert a state-space model structure to a ssm object
+% Description:
+%
+% In MATLAB's ssm, disturbance covariance matrix and observation covariance
+% matrix are the lower triangular Cholesky decompostion matrix of those in
+% state-space model structure.
+%
+% Input Arguments:
+%   
+%   Initial state space model structure: SSM
+%
+% Output Arguments:
+%
+%   Md - MATLAB's ssm object
+
     [~,~,T] = size(SSM.TranMX);
     A = cell(1, T);
     B = cell(1, T);
