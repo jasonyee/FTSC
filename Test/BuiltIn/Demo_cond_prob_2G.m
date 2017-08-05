@@ -5,7 +5,7 @@
 %% Clear
 clear;
 clc;
-rng(1)                                       % control the randomness
+rng(2)                                       % control the randomness
 
 nClusters = 2;
 
@@ -86,8 +86,21 @@ fprintf('The Group 2 estimated sigma^2_1 is %d .\n', exp(logparahat2(4)));
 fprintf('The Group 2 estimated sigma^2_2 is %d .\n', exp(logparahat2(5)));
 
 %% State-space model: Group 1 and Group 2
-SSMTotal_1 = fme2ss(n, fixedArray, randomArray, t, logparahat1, diffusePrior);
+SSMTotal1 = fme2ss(n, fixedArray, randomArray, t, logparahat1, diffusePrior);
 
-SSMTotal_2 = fme2ss(n, fixedArray, randomArray, t, logparahat2, diffusePrior);
+SSMTotal2 = fme2ss(n, fixedArray, randomArray, t, logparahat2, diffusePrior);
+
+
+%% log condtional probability
+tic;
+logCondProb1 = fmeCondProb(@BuiltIn, Y1(1:end-1,:), Y1(end,:), SSMTotal1, p, q);
+condprobtime1 = toc;
+%%
+tic;
+logCondProb2 = fmeCondProb(@BuiltIn, Y2, Y1(end,:), SSMTotal2, p, q);
+condprobtime2 = toc;
+
+
+
 
 
