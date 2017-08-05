@@ -5,7 +5,7 @@
 %% Clear
 clear;
 clc;
-rng(2)                                       % control the randomness
+rng(14)                                       % control the randomness
 
 nClusters = 2;
 
@@ -61,45 +61,102 @@ logpara0 = [0;                                    % log of e
 
 diffusePrior = 1e7;
 
-%% Training parameters: Group 1
-tic;
-[logparahat1, fval1] = fmeTraining(@BuiltIn, Y1, fixedArray, randomArray, t, logpara0, diffusePrior);
-opti1 = toc;
+%% Training state-space model for each group
+logparahat = zeros(5, nClusters);
+fval = zeros(1, nClusters);
+opti = zeros(1, nClusters);
 
-fprintf('MLE for Group 1 takes %d seconds.\n', opti1);
-fprintf('The Group 1 estimated variance of measurement error is %d .\n', exp(logparahat1(1)));
-fprintf('The Group 1 estimated lambda_b is %d .\n', exp(logparahat1(2)));
-fprintf('The Group 1 estimated lambda_a is %d .\n', exp(logparahat1(3)));
-fprintf('The Group 1 estimated sigma^2_1 is %d .\n', exp(logparahat1(4)));
-fprintf('The Group 1 estimated sigma^2_2 is %d .\n', exp(logparahat1(5)));
+SSMTotal = repmat(struct('TranMX', {}, 'DistMean', {}, 'DistCov', {}, ...
+             'MeasMX', {}, 'ObseCov', {}, ...
+             'StateMean0', {}, 'StateCov0', {}),nClusters, 1);
+         
+for k=1:nClusters
+    tic;
+    [logparahat(:,k), fval(k)] = ...
+        fmeTraining(@BuiltIn, realClusterData{k}, fixedArray, randomArray, t, logpara0, diffusePrior);
+    opti(k) = toc;
+    
+    fprintf(strcat('Group ', num2str(k), ':\n'));
+    fprintf('MLE takes %d seconds.\n', opti(k));
+    fprintf('The estimated variance of measurement error is %d .\n', exp(logparahat(1,k)));
+    fprintf('The estimated lambda_b is %d .\n', exp(logparahat(2,k)));
+    fprintf('The estimated lambda_a is %d .\n', exp(logparahat(3,k)));
+    fprintf('The estimated sigma^2_1 is %d .\n', exp(logparahat(4,k)));
+    fprintf('The estimated sigma^2_2 is %d .\n', exp(logparahat(5,k)));
+    
+    fprintf(strcat('Training ssm for group ', num2str(k), '\n'));
+    SSMTotal(k) = fme2ss(n, fixedArray, randomArray, t, logparahat(:,k), diffusePrior);
+    fprintf(strcat('Training for group ', num2str(k), ' completed \n'));
+end
 
-%% Training parameters: Group 2
-tic;
-[logparahat2, fval2] = fmeTraining(@BuiltIn, Y2, fixedArray, randomArray, t, logpara0, diffusePrior);
-opti2 = toc;
 
-fprintf('MLE for Group 2 takes %d seconds.\n', opti2);
-fprintf('The Group 2 estimated variance of measurement error is %d .\n', exp(logparahat2(1)));
-fprintf('The Group 2 estimated lambda_b is %d .\n', exp(logparahat2(2)));
-fprintf('The Group 2 estimated lambda_a is %d .\n', exp(logparahat2(3)));
-fprintf('The Group 2 estimated sigma^2_1 is %d .\n', exp(logparahat2(4)));
-fprintf('The Group 2 estimated sigma^2_2 is %d .\n', exp(logparahat2(5)));
-
-%% State-space model: Group 1 and Group 2
-SSMTotal1 = fme2ss(n, fixedArray, randomArray, t, logparahat1, diffusePrior);
-
-SSMTotal2 = fme2ss(n, fixedArray, randomArray, t, logparahat2, diffusePrior);
-
-
-%% log condtional probability
+%% log conditional probability
 Algo = @BuiltIn;
-tic;
-logCondProb1 = fmeCondProb(Algo, Y1(1:end-1,:), Y1(end,:), SSMTotal1, p, q);
-condprobtime1 = toc;
-%%
-tic;
-logCondProb2 = fmeCondProb(Algo, Y2, Y1(end,:), SSMTotal2, p, q);
-condprobtime2 = toc;
+Switches = 0;
+logCondProb = zeros(n, nClusters);
+
+for i=1:n
+    subjData = dataset(i,:);
+    oldClusterID = realClusterIDs(i);
+    oldClusterMembers = realClusterMembers{oldClusterID};
+    % leave out the ith subject
+    oldClusterMembers(oldClusterMembers == i) = [];
+    oldLeaveOneClusterData = dataset(oldClusterMembers,:);
+    
+    for k=1:nClusters
+        if k == oldClusterID
+            LeaveOneClusterData = oldLeaveOneClusterData;
+        else
+            LeaveOneClusterData = dataset(realClusterMembers{k},:);
+        end
+        logCondProb(i, k) = fmeCondProb(Algo, LeaveOneClusterData, subjData, SSMTotal(k), p, q);
+    end
+    fprintf(strcat('Subject ', num2str(i), ':\n'));
+    fprintf('log-conditional probability computing completed. \n')
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
