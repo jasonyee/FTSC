@@ -1,6 +1,19 @@
 function [logLik, Kalman2Step] = DSS2Step(SSM, Y)
-%UNTITLED6 Summary of this function goes here
-%   Detailed explanation goes here
+%DSS2STEP computes the dynamic state space model in 2-step updating process
+% Description:
+%
+% In the first step, Y(1:end-1, :) is processed.
+% in the second step, Y(end, :) is processed. see Guo (2003)
+%
+% Input Arguments:
+%   
+%   Information: Y
+%   Initial state space model structure: SSM
+%
+% Output Arguments:
+%
+%   logLik - log-likelihood for Y(:,:)
+%   KalmanFull - 2-by-1 Kalman structure array
     
     % set-up
     nstep = 2;

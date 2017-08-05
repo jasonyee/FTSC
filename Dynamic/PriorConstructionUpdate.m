@@ -1,7 +1,6 @@
 function [ TranMX, DistMean, DistCov ] = ...
     PriorConstructionUpdate( Smoothedt, SmoothedtMinus, SmoothedCovt, SmoothedCovtMinus, ConvtMinus )
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%PriorConstructionUpdate is one-step update in PriorConstruction
 
     TranMX = SmoothedCovt * ConvtMinus' / SmoothedCovtMinus;
     

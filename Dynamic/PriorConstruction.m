@@ -1,7 +1,7 @@
 function [ TranMX, DistMean, DistCov, State0, StateCov0] = ...
     PriorConstruction(Smoothed, SmoothedCov, Smoothed0, SmoothedCov0, ConvMinus)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%PriorConstruction computes the prior information for the next condtional 
+%   state-space model
 
     % initialize the storage
     [d, T] = size(Smoothed);

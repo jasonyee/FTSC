@@ -1,6 +1,18 @@
 function [logLik, KalmanFull] = DSSFull(SSM, Y)
-%UNTITLED6 Summary of this function goes here
-%   Detailed explanation goes here
+%DSSFULL computes the dynamic state space model in full updating process
+% Description:
+%
+% In every step, one subject is processed. see Guo (2003)
+%
+% Input Arguments:
+%   
+%   Information: Y
+%   Initial state space model structure: SSM
+%
+% Output Arguments:
+%
+%   logLik - log-likelihood for Y(:,:)
+%   KalmanFull - n-by-1 Kalman structure array
     
     % set-up
     [nstep, ~] = size(Y);
