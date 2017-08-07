@@ -115,12 +115,25 @@ for i=1:n
     fprintf('log-conditional probability computing completed. \n')
 end
 
+%% posterior probability
+Priors = 0.5*ones(n,nClusters);
+CondProbs = exp(logCondProb);
+Posteriors = BayesUpdate(Priors, CondProbs);
 
+% get variable names
+VarNames = repmat({}, 1, nClusters);
+for k=1:nClusters
+    VarNames{k} = strcat('Group ', num2str(k));
+end
 
+% get row names
+RowNames = repmat({}, n, 1);
+for i=1:n
+    RowNames{i} = strcat('Subject ', num2str(i));
+end
 
-
-
-
+PosteriorsTable = ...
+    array2table(round(Posteriors,4), 'VariableNames', VarNames, 'RowNames', RowNames)
 
 
 
