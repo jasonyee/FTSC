@@ -5,7 +5,7 @@
 %% Clear
 clear;
 clc;
-rng(14)                                       % control the randomness
+rng(1)                                       % control the randomness
 
 nClusters = 2;
 
@@ -116,7 +116,7 @@ for i=1:n
 end
 
 %% posterior probability
-Priors = 0.5*ones(n,nClusters);
+Priors = repmat(prior, n, 1);
 CondProbs = exp(logCondProb);
 Posteriors = BayesUpdate(Priors, CondProbs);
 
