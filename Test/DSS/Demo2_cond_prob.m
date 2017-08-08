@@ -1,4 +1,4 @@
-%% Test for Conditional Probability using VSS, unshuffled
+%% Test for fmeCond using DSS, unshuffled
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -17,7 +17,7 @@ q = 1;                                        % # of random effects
 %% Simulation: Group 1
 n1 = 20;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
-realFixedEffect1 = 5 * sin(2*pi*t);             % p-by-m
+realFixedEffect1 = 5*sin(2*pi*t);             % p-by-m
 realRandomEffect1 = randn(n1,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
                  
@@ -31,7 +31,7 @@ Y1 = realY1+ sqrt(sigma_e)*randn(n1,m);
 n2 = 20;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 
-realFixedEffect2 = 7 * sin(2*pi*t + pi/4);              % p-by-m
+realFixedEffect2 = 7*sin(2*pi*t + pi/4);              % p-by-m
 realRandomEffect2 = randn(n2,4)*[cos(2*pi*t);cos(4*pi*t);...
                                cos(6*pi*t);ones(1,m)];
                  
@@ -73,18 +73,13 @@ logCondProb0 = - fval;
 % Y2 = Y2(randperm(size(Y2,1)),:);
 
 %% Fitting SSM model
-% group 1
-SSMp1(1) = fme2ss(n1+1, fixedArray, randomArray, t, logparahat(:,1), diffusePrior);
-SSMm1(1) = fme2ss(n1-1, fixedArray, randomArray, t, logparahat(:,1), diffusePrior);
+SSM_G1 = fme2ss(n1+n2, fixedArray, randomArray, t, logparahat(:,1), diffusePrior);
+SSM_G2 = fme2ss(n1+n2, fixedArray, randomArray, t, logparahat(:,2), diffusePrior);
 
-% group 2
-SSMp1(2) = fme2ss(n2+1, fixedArray, randomArray, t, logparahat(:,2), diffusePrior);
-SSMm1(2) = fme2ss(n2-1, fixedArray, randomArray, t, logparahat(:,2), diffusePrior);
 
-Algo = @BuiltIn;
+Algo = @DSS2Step;
 Switches = 0;
 logCondProb = zeros(n1+n2, nClusters);
-
 
 %% logCondProb for subjects from group 1
 correct_G1 = 0;
@@ -92,10 +87,10 @@ for i=1:n1
     % compute the logcondprob for cluster 1
     Members1 = 1:n1;
     Members1(Members1 == i) = [];
-    logCondProb(i,1) = logCondProb0(1) - Algo(SSMm1(1), Y1(Members1,:));
+    logCondProb(i,1) = fmeCondProb(Algo, Y1(Members1,:), Y1(i,:), SSM_G1, p, q);
     
     % compute the logcondprob for cluster 2
-    logCondProb(i,2) = Algo(SSMp1(2), [Y2; Y1(i,:)]) - logCondProb0(2);
+    logCondProb(i,2) = fmeCondProb(Algo, Y2, Y1(i,:), SSM_G2, p, q);
     
     if logCondProb(i,1) > logCondProb(i,2)
         correct_G1 = correct_G1 + 1;
@@ -106,18 +101,17 @@ end
 correct_G2 = 0;
 for j=1:n2
     % compute the logcondprob for cluster 1
-    logCondProb(n1+j,1) = Algo(SSMp1(1), [Y1; Y2(j,:)]) - logCondProb0(1);
+    logCondProb(n1+j,1) = fmeCondProb(Algo, Y1, Y2(j,:), SSM_G1, p, q);
     
     % compute the logcondprob for cluster 2
     Members2 = 1:n2;
     Members2(Members2 == j) = [];
-    logCondProb(n1+j,2) = logCondProb0(2) - Algo(SSMm1(2), Y2(Members2,:));
+    logCondProb(n1+j,2) = fmeCondProb(Algo, Y2(Members2,:), Y2(j,:), SSM_G2, p, q);
     
     if logCondProb(n1+j,1) < logCondProb(n1+j,2)
         correct_G2 = correct_G2 + 1;
     end
 end
-
 
 %% posterior probability
 Priors = repmat(prior, n1+n2, 1);
@@ -141,49 +135,6 @@ PosteriorsTable = ...
 
 SensTable = array2table([correct_G1, n1 - correct_G1; n2 - correct_G2, correct_G2],...
     'VariableNames', {'Cluster1', 'Cluster2'}, 'RowNames', {'Group1', 'Group2'})
-
-%% Group 1 state space model
-SSM_G1 = fme2ss(n1, fixedArray, randomArray, t, logparahat(:,1), diffusePrior);
-[logL_G1, Output_G1] = BuiltInSmoother(SSM_G1, Y1);
-
-%% Group 2 state space model
-SSM_G2 = fme2ss(n2, fixedArray, randomArray, t, logparahat(:,2), diffusePrior);
-[logL_G2, Output_G2] = BuiltInSmoother(SSM_G2, Y2);
-
-%% group average
-k = 1; % the real fixed effect state parameter
-ConfidenceLevel = 0.95; % confidence level
-% group 1
-[Smoothed_G1, SmoothedVar_G1] =...
-StatesMeanVar(Output_G1, 'built-in', 'smooth');
-[Smoothed95Upper_G1, Smoothed95Lower_G1] = ...
-NormalCI(Smoothed_G1, SmoothedVar_G1, ConfidenceLevel);
-% group 2
-[Smoothed_G2, SmoothedVar_G2] =...
-StatesMeanVar(Output_G2, 'built-in', 'smooth');
-[Smoothed95Upper_G2, Smoothed95Lower_G2] = ...
-NormalCI(Smoothed_G2, SmoothedVar_G2, ConfidenceLevel);
-
-%%
-r = 20;
-figure;
-plot(t, Y1(r,:),...
-t, Smoothed_G1(k,:),...
-t, Smoothed_G2(k,:),...
-t, Smoothed95Upper_G1(k,:), '--',...
-t, Smoothed95Lower_G1(k,:), '--',...
-t, Smoothed95Upper_G2(k,:), ':',...
-t, Smoothed95Lower_G2(k,:), ':');
-legend('raw', 'group 1', 'group 2');
-title(strcat('misclassified subhject, n=', num2str(r)));
-
-
-
-
-
-
-
-
 
 
 
