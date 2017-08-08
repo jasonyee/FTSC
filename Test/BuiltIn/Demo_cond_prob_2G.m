@@ -66,8 +66,8 @@ fval = zeros(1, nClusters);
 [logparahat(:,2), fval(2)] = ...
         fmeTraining(@BuiltIn, Y2, fixedArray, randomArray, t, logpara0, diffusePrior); 
 %%    
-logCondProb0 = - fval;
-
+logCondProb0 = - fval
+logparahat
 %% Shuffle data
 % Y1 = Y1(randperm(size(Y1,1)),:);
 % Y2 = Y2(randperm(size(Y2,1)),:);
