@@ -5,7 +5,7 @@
 %% Clear
 clear;
 clc;
-rng(1)                                       % control the randomness
+rng(100)                                       % control the randomness
 
 nClusters = 2;
 
@@ -21,13 +21,13 @@ randomArray = ones(1,q);
 
 % Start point
 logpara0 = [0;                                    % log of e  
-         -10;-10;                                 % logs of lambdaF, lambdaR
-         1*ones(2*q,1)];                          % log of randomDiag
+         -5;-5;                                 % logs of lambdaF, lambdaR
+         0;-20];                          % log of randomDiag
 
 diffusePrior = 1e7;
 
 %% Simulation: Group 1
-n1 = 20;                                      % number of subjects
+n1 = 30;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 realFixedEffect1 = 5 * sin(2*pi*t);             % p-by-m
 realRandomEffect1 = randn(n1,4)*[cos(2*pi*t);cos(4*pi*t);...
@@ -39,7 +39,7 @@ Y1 = realY1+ sqrt(sigma_e)*randn(n1,m);
 
 
 %% Simulation: Group 2
-n = 20;                                      % number of subjects
+n = 30;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 
 realFixedEffect = 7 * sin(2*pi*t + pi/4);              % p-by-m
