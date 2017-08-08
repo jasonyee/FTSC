@@ -164,7 +164,8 @@ StatesMeanVar(Output_G2, 'built-in', 'smooth');
 [Smoothed95Upper_G2, Smoothed95Lower_G2] = ...
 NormalCI(Smoothed_G2, SmoothedVar_G2, ConfidenceLevel);
 
-%%
+
+%% Misclassified subject
 r = 20;
 figure;
 plot(t, Y1(r,:),...
@@ -177,10 +178,34 @@ t, Smoothed95Lower_G2(k,:), ':');
 legend('raw', 'group 1', 'group 2');
 title(strcat('misclassified subhject, n=', num2str(r)));
 
+%% subject-fit of misclassified subject : group 1
 
+[yFittedMean_G1, yFittedVar_G1] = SpaceMeanVar(Output_G1, SSM_G1, 'built-in', 'smooth');
 
+[yFitted95Upper_G1, yFitted95Lower_G1] = ...
+NormalCI(yFittedMean_G1, yFittedVar_G1, ConfidenceLevel);
 
+%% subject-fit of misclassified subject : group 2
 
+[logL_G2p1, Output_G2p1] = BuiltInSmoother(SSMp1(2), [Y2; Y1(r,:)]);
+
+[yFittedMean_G2, yFittedVar_G2] = SpaceMeanVar(Output_G2p1, SSMp1(2), 'built-in', 'smooth');
+
+[yFitted95Upper_G2, yFitted95Lower_G2] = ...
+NormalCI(yFittedMean_G2, yFittedVar_G2, ConfidenceLevel);
+
+%% plot the subject-fit of the misclassified subject
+
+figure;
+plot(t, Y1(r,:),...
+t, yFittedMean_G1(r,:),...
+t, yFittedMean_G2(end,:),...
+t, yFitted95Upper_G1(r,:), '--',...
+t, yFitted95Lower_G1(r,:), '--',...
+t, yFitted95Upper_G2(end,:), ':',...
+t, yFitted95Lower_G2(end,:), ':');
+legend('raw', 'group 1 fit with --', 'group 2 fit with :');
+title(strcat('misclassified subject, n=', num2str(r)));
 
 
 
