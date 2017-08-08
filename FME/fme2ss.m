@@ -44,18 +44,32 @@ function SSM = fme2ss(nSubj, fixedArray, randomArray, t, logpara, diffusePrior)
         CosTwoPiDeltaTj = cos(twoPiDeltaTj);
         SinFourPiDeltaTj = sin(fourPiDeltaTj);
         CosFourPiDeltaTj = cos(fourPiDeltaTj);
-        HjBasic = [CosTwoPiDeltaTj, SinTwoPiDeltaTj/(2*pi);...
+        % periodic fixed effect
+        HjFixedBasic = [CosTwoPiDeltaTj, SinTwoPiDeltaTj/(2*pi);...
                     -2*pi*SinTwoPiDeltaTj, CosTwoPiDeltaTj];
-        WjBasic = [deltaT(j)/(8*pi^2) - SinFourPiDeltaTj/(32*pi^3),...
+%         % general fixed effect
+%         HjFixedBasic = [1, deltaT(j);
+%                         0, 1];        
+        HjRandomBasic = [CosTwoPiDeltaTj, SinTwoPiDeltaTj/(2*pi);...
+                    -2*pi*SinTwoPiDeltaTj, CosTwoPiDeltaTj];
+        % periodic fixed effect
+        WjFixedBasic = [deltaT(j)/(8*pi^2) - SinFourPiDeltaTj/(32*pi^3),...
                     (1-CosFourPiDeltaTj)/(16*pi^2);...
                     (1-CosFourPiDeltaTj)/(16*pi^2),...
-                    SinFourPiDeltaTj/(8*pi) + 0.5*deltaT(j)];
-        WjFixedBasic = WjBasic/lambdaF;
-        WjRandomBasic = WjBasic/lambdaR;
+                    SinFourPiDeltaTj/(8*pi) + 0.5*deltaT(j)]/lambdaF;
+%         % general fixed effect
+%         WjFixedBasic = [deltaT(j)^3/3, deltaT(j)^2/2;...
+%                         deltaT(j)^2/2, deltaT(j)];
+        WjRandomBasic = [deltaT(j)/(8*pi^2) - SinFourPiDeltaTj/(32*pi^3),...
+                    (1-CosFourPiDeltaTj)/(16*pi^2);...
+                    (1-CosFourPiDeltaTj)/(16*pi^2),...
+                    SinFourPiDeltaTj/(8*pi) + 0.5*deltaT(j)]/lambdaR;
         
         % Transition matrix
-        HjCell = repmat({HjBasic}, 1, p+nSubj*q);
-        SSM.TranMX(:,:,j) = blkdiag(HjCell{:});
+        HjFixedCell = repmat({HjFixedBasic}, 1, p);
+        HjRandomCell = repmat({HjRandomBasic}, 1, nSubj*q);
+        SSM.TranMX(:,:,j) = blkdiag(HjFixedCell{:}, HjRandomCell{:});
+
         
         % Disturbance covariance matrix
         WjFixedCell = repmat({WjFixedBasic}, 1, p);
