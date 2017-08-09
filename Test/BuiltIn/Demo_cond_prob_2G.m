@@ -28,7 +28,7 @@ Y1 = realY1+ sqrt(sigma_e)*randn(n1,m);
 
 
 %% Simulation: Group 2
-n2 = 30;                                      % number of subjects
+n2 = 20;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 
 realFixedEffect2 = 7 * sin(2*pi*t + pi/4);              % p-by-m
