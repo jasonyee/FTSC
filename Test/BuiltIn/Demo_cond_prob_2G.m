@@ -5,7 +5,7 @@
 %% Clear
 clear;
 clc;
-rng(1)                                       % control the randomness
+rng(100)                                       % control the randomness
 
 nClusters = 2;
 
@@ -15,7 +15,7 @@ p = 1;                                        % # of fixed effects
 q = 1;                                        % # of random effects
 
 %% Simulation: Group 1
-n1 = 20;                                      % number of subjects
+n1 = 30;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 realFixedEffect1 = 5 * sin(2*pi*t);             % p-by-m
 realRandomEffect1 = randn(n1,4)*[cos(2*pi*t);cos(4*pi*t);...
@@ -28,7 +28,7 @@ Y1 = realY1+ sqrt(sigma_e)*randn(n1,m);
 
 
 %% Simulation: Group 2
-n2 = 20;                                      % number of subjects
+n2 = 30;                                      % number of subjects
 sigma_e = 1;                                  % variance of white noise
 
 realFixedEffect2 = 7 * sin(2*pi*t + pi/4);              % p-by-m
@@ -46,9 +46,9 @@ fixedArray = ones(1,p);
 randomArray = ones(1,q);
 
 % Start point
-logpara0 = [0;                                    % log of e  
-         -10;-10;                                 % logs of lambdaF, lambdaR
-         1;1];                          % log of randomDiag
+logpara0 = [0.3;                                    % log of e  
+         -20;-20;                                 % logs of lambdaF, lambdaR
+         0.2;20];                          % log of randomDiag
 
 diffusePrior = 1e7;
 
@@ -136,6 +136,9 @@ for i=1:n1+n2
     RowNames{i} = strcat('Subject ', num2str(i));
 end
 
+logCondProbsTable = ...
+    array2table(round(logCondProb,4), 'VariableNames', VarNames, 'RowNames', RowNames)
+
 PosteriorsTable = ...
     array2table(round(Posteriors,4), 'VariableNames', VarNames, 'RowNames', RowNames)
 
@@ -166,7 +169,7 @@ NormalCI(Smoothed_G2, SmoothedVar_G2, ConfidenceLevel);
 
 
 
-%% Misclassified subject
+%% Misclassified subject: 20
 r = 20;
 figure;
 plot(t, Y1(r,:),...
@@ -177,7 +180,8 @@ t, Smoothed95Lower_G1(k,:), '--',...
 t, Smoothed95Upper_G2(k,:), ':',...
 t, Smoothed95Lower_G2(k,:), ':');
 legend('raw', 'group 1', 'group 2');
-title(strcat('misclassified subhject, n=', num2str(r)));
+title(strcat('group average misclassified subject, n=', num2str(r)));
+
 
 %% subject-fit of misclassified subject : group 1
 
@@ -206,11 +210,50 @@ t, yFitted95Lower_G1(r,:), '--',...
 t, yFitted95Upper_G2(end,:), ':',...
 t, yFitted95Lower_G2(end,:), ':');
 legend('raw', 'group 1 fit with --', 'group 2 fit with :');
-title(strcat('misclassified subject, n=', num2str(r)));
+title(strcat('subject fit misclassified subject, n=', num2str(r)));
 
 
 
+%% Misclassified subject: 24
+r = 14;
+figure;
+plot(t, Y2(r,:),...
+t, Smoothed_G1(k,:),...
+t, Smoothed_G2(k,:),...
+t, Smoothed95Upper_G1(k,:), '--',...
+t, Smoothed95Lower_G1(k,:), '--',...
+t, Smoothed95Upper_G2(k,:), ':',...
+t, Smoothed95Lower_G2(k,:), ':');
+legend('raw', 'group 1', 'group 2');
+title(strcat('group average misclassified subject, n=', num2str(r+n1)));
 
+%% subject-fit of misclassified subject : group 1
+[logL_G1p1, Output_G1p1] = BuiltInSmoother(SSMp1(1), [Y1; Y2(r,:)]);
 
+[y2FittedMean_G1, y2FittedVar_G1] = SpaceMeanVar(Output_G1p1, SSMp1(1), 'built-in', 'smooth');
 
+[y2Fitted95Upper_G1, y2Fitted95Lower_G1] = ...
+NormalCI(y2FittedMean_G1, y2FittedVar_G1, ConfidenceLevel);
+
+%% subject-fit of misclassified subject : group 2
+[y2FittedMean_G2, y2FittedVar_G2] = SpaceMeanVar(Output_G2, SSM_G2, 'built-in', 'smooth');
+
+[y2Fitted95Upper_G2, y2Fitted95Lower_G2] = ...
+NormalCI(y2FittedMean_G2, y2FittedVar_G2, ConfidenceLevel);
+
+%% plot the subject-fit of the misclassified subject
+
+figure;
+plot(t, Y2(r,:),...
+t, y2FittedMean_G1(end,:),...
+t, y2FittedMean_G2(r,:),...
+t, y2Fitted95Upper_G1(end,:), '--',...
+t, y2Fitted95Lower_G1(end,:), '--',...
+t, y2Fitted95Upper_G2(r,:), ':',...
+t, y2Fitted95Lower_G2(r,:), ':');
+legend('raw', 'group 1 fit with --', 'group 2 fit with :');
+title(strcat('subject fit misclassified subject, n=', num2str(r+n1)));
+
+%% kmeans
+ClusterIDs = kmeans([Y1;Y2], nClusters);
 
