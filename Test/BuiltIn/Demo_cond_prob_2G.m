@@ -48,7 +48,7 @@ randomArray = ones(1,q);
 % Start point
 logpara0 = [0;                                    % log of e  
          -10;-10;                                 % logs of lambdaF, lambdaR
-         1*ones(2*q,1)];                          % log of randomDiag
+         1;1];                          % log of randomDiag
 
 diffusePrior = 1e7;
 
@@ -66,8 +66,8 @@ fval = zeros(1, nClusters);
 [logparahat(:,2), fval(2)] = ...
         fmeTraining(@BuiltIn, Y2, fixedArray, randomArray, t, logpara0, diffusePrior); 
 %%    
-logCondProb0 = - fval;
-
+logCondProb0 = - fval
+logparahat
 %% Shuffle data
 % Y1 = Y1(randperm(size(Y1,1)),:);
 % Y2 = Y2(randperm(size(Y2,1)),:);
@@ -163,6 +163,7 @@ NormalCI(Smoothed_G1, SmoothedVar_G1, ConfidenceLevel);
 StatesMeanVar(Output_G2, 'built-in', 'smooth');
 [Smoothed95Upper_G2, Smoothed95Lower_G2] = ...
 NormalCI(Smoothed_G2, SmoothedVar_G2, ConfidenceLevel);
+
 
 
 %% Misclassified subject
