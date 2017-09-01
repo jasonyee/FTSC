@@ -10,12 +10,13 @@ function SensTable = SensTable(RealClusterMembers, AlgoClusterMembers)
 %   -SensTable: (d, k) is how many members in AlgoClusterMembers{k} come from
 %   RealClusterMembers{d}.
 
-    nClusters = length(RealClusterMembers);
-    SensMX = zeros(nClusters, nClusters);
+    nClusters_real = length(RealClusterMembers);
+    nClusters_algo = length(AlgoClusterMembers);
+    SensMX = zeros(nClusters_real, nClusters_algo);
     
     %Sensitivity Table
-    for d=1:nClusters
-        for k=1:nClusters
+    for d=1:nClusters_real
+        for k=1:nClusters_algo
             newMembers = AlgoClusterMembers{k};
             oldMembers = RealClusterMembers{d};
             commMembers = intersect(newMembers, oldMembers);
@@ -24,14 +25,14 @@ function SensTable = SensTable(RealClusterMembers, AlgoClusterMembers)
     end
     
     % get variable names
-    VarNames = repmat({}, 1, nClusters);
-    for k=1:nClusters
+    VarNames = repmat({}, 1, nClusters_algo);
+    for k=1:nClusters_algo
         VarNames{k} = strcat('Cluster ', num2str(k));
     end
     
     % get row names
-    RowNames = repmat({}, nClusters, 1);
-    for i=1:nClusters
+    RowNames = repmat({}, nClusters_real, 1);
+    for i=1:nClusters_real
         RowNames{i} = strcat('Group ', num2str(i));
     end
 

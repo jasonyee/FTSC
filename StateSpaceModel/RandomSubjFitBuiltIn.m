@@ -1,4 +1,4 @@
-function RandomSubjFitBuiltIn(nSubj, ClusterData, ClusterMember, SSM, Output, scale)
+function RandomSubjFitBuiltIn(nSubj, ClusterData, ClusterMember, SSM, Output, scale, ParentFig)
 %RandomSubjBuiltIn randomly picks some subject from dataset to see the subject
 %   fit plot
 %The subject is choosed without replacement.
@@ -11,6 +11,7 @@ function RandomSubjFitBuiltIn(nSubj, ClusterData, ClusterMember, SSM, Output, sc
 %   -SSM: state space model structure for this cluster
 %   -Output: Kalman structure for this cluster
 %   -scale: [ymin, ymax]
+%   -ParentFig: the parent figure for subplots
 
 
 
@@ -27,9 +28,8 @@ SampleFitMean = SpaceMean(SampleIndex,:);
 SampleFitUpper = Upper(SampleIndex,:);
 SampleFitLower = Lower(SampleIndex,:);
 
-figure;
 for j = 1:nSubj
-    subplot(3,3,j);
+    subplot(3,3,j,'Parent',ParentFig);
     plot(t, SampleData(j,:),...
         t, SampleFitMean(j,:),...
         t, SampleFitUpper(j,:),'--',...
