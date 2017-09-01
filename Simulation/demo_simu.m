@@ -45,8 +45,8 @@ SensTable(TrueMembers, ClusterMembers)
 %% Switches plot
 plot(SwitchHistory);
 title(strcat('Switches when', {' '},...
-        'nsim=', num2str(nSim), ',', {' '},...
-        'nc=', num2str(NumC)));
+        'nSim=', num2str(nSim), ',', {' '},...
+        'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
 GrewPoints = .8 * ones(1,3);
@@ -55,7 +55,14 @@ GrewPoints = .8 * ones(1,3);
 ymin = min(dataset(:));
 ymax = max(dataset(:));
 
-figure();
+f = figure;
+p = uipanel('Parent',f,'BorderType','none'); 
+p.Title = strcat('Spaghetti plot for', {' '}, ...
+                'nSim=',num2str(nSim), {', '}, ...
+                'nClusters=',num2str(nClusters)); 
+p.TitlePosition = 'centertop'; 
+p.FontSize = 12;
+p.FontWeight = 'bold';
 for k=1:nClusters
     
     Y = ClusterData{k};
@@ -73,7 +80,7 @@ for k=1:nClusters
     [Smoothed95Upper, Smoothed95Lower] = ...
         NormalCI(Smoothed, SmoothedVar, ConfidenceLevel);
     
-    subplot(1,nClusters,k);
+    subplot(1,nClusters,k,'Parent',p);
     plot(t, Y', 'Color', GrewPoints);
     hold on;
     plot(t, Smoothed(1,:),...
@@ -88,7 +95,7 @@ for k=1:nClusters
 end
 
 %% Subject-fit plotting
-nSubj = 9;
+nSubj = min([9, min(cellfun('length', ClusterMembers))]);
 
 % get scale for dataset
 ymin = min(min(dataset));
@@ -105,5 +112,12 @@ for k=1:nClusters
         fmeRandomSinPriorBuiltIn(n, t, logparahat(:,k), diffusePrior);    
     [~, logLikSmooth, Output_builtin] = smooth(SSM_kalman{k}, Y');
     
-    RandomSubjFitBuiltIn(nSubj, Y, Members, SSM_kalman{k}, Output_builtin, [ymin, ymax]);
+    f = figure;
+    p = uipanel('Parent',f,'BorderType','none'); 
+    p.Title = strcat('Random selected subjects in Cluster',num2str(k)); 
+    p.TitlePosition = 'centertop'; 
+    p.FontSize = 12;
+    p.FontWeight = 'bold';
+
+    RandomSubjFitBuiltIn(nSubj, Y, Members, SSM_kalman{k}, Output_builtin, [ymin, ymax], p);
 end
