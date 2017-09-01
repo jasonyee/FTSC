@@ -6,15 +6,21 @@
 clear;
 clc;
 
-dataGen = '1';
-NumC = '3';
+%% truth 
+TrueID = [ones(50,1); 2*ones(50,1); 3*ones(50,1)];
+TrueMembers = ClusteringMembers(3, TrueID);
 
-simul = 'C:\Users\jialinyi\Documents\MATLAB\FTSC\Simulation\result\simu';
+%% Data I/O
+nSim = 1;
+NumC = 2;
 
-load(strcat(simul, num2str(dataGen),'_',num2str(NumC), 'C.mat'));
+path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
+
+load(strcat(path_result, 'simu_result_', num2str(nSim),'_', num2str(NumC),'C.mat'));
 
 %% clustering running time
-fprintf('The clustering algorithm running time is %.2f minutes.\n', clustertime/60)
+id = sum(clustertime(nSim,:) ~= 0);
+fprintf('The clustering algorithm running time is %.2f minutes.\n', clustertime(nSim,id)/60)
 
 %% preallocation
 % get data in each cluster
@@ -26,9 +32,6 @@ diffusePrior = 1e7;
 ConfidenceLevel = 0.95;     % confidence level
 
 %% sensitivity analysis
-% truth 
-TrueID = [ones(50,1); 2*ones(50,1); 3*ones(50,1)];
-TrueMembers = ClusteringMembers(nClusters, TrueID);
 
 % wald's minimum variance
 WaldMembers = ClusteringMembers(nClusters, WaldClusterID);
@@ -42,7 +45,9 @@ SensTable(TrueMembers, ClusterMembers)
 
 %% Switches plot
 plot(SwitchHistory);
-title(strcat('switches in each iteration'))
+title(strcat('Switches when', {' '},...
+        'nsim=', num2str(nSim), ',', {' '},...
+        'nc=', num2str(NumC)));
 
 %% Subject-fit plotting
 nSubj = 9;
