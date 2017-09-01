@@ -11,10 +11,9 @@ The aim of the project is to classify the time series data collected from the pa
 
 This is the version with:
 
-*  numerical stable filtering and smoothing
-*  time-variant model
-*  balanced time points for all subjects.
-*  dss2step algorithm
-*  parellel computing in DSSClustering
-*  fast fmeCondProb
-*  fast state space model construction
+*  numerical stable filtering and smoothing algorithm for time-variant state space model
+*  functional mixed effect model for periodic data
+*  allow missing data
+*  functional clustering on time series data
+*  choosing optimal number of clusters
+
