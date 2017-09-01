@@ -14,8 +14,8 @@ path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
 
 %% Simulation setting
 nSim = 1;
-nCLower = 2;
-nCUpper = 3;
+nCLower = 1;
+nCUpper = 5;
 dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
@@ -54,6 +54,10 @@ for i = 1:nSim
 
         % save result
         save(strcat(path_result, 'simu_result_', num2str(nSim),'_',num2str(nClusters),'C.mat'));
+        
+        ProgressInfo = ['In simulation ', num2str(i),...
+            ': nClusters = ', num2str(nClusters), ' is finised.'];
+        display(ProgressInfo);
         
         count = count + 1;
     end
