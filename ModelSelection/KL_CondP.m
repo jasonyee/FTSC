@@ -4,11 +4,11 @@ function KLD = KL_CondP(logP)
 %
 %   dK = - sum_n ( log(sum_k wk p(Y_i | Y^{(k)-i}, theta_k)) ) /n
 %   
-%Optimal weights are equal weights over clusters
+%Optimal weights are weights over clusters
 %
 %   wk = p(Y_i | Y^{(k)-i}, theta_k) / sum_l p(Y_i | Y^{(l)-i}, theta_l)
 
-%More weights are given to the "true" cluster
+%More weight are given to the "true" cluster
 
 % get dimensions
 [n, ~] = size(logP);
