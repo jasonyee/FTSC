@@ -1,5 +1,5 @@
-function KLD = KL_equal(logP)
-%KL_equal returns the Kullback Leibler information distance of clustering 
+function KLD = KLUnif(logP)
+%KLUnif returns the Kullback Leibler information distance of clustering 
 %   to choose the optimal number of clusters, see Guo and Landis (2017)
 %
 %   dK = - sum_n ( log(sum_k wk p(Y_i | Y^{(k)-i}, theta_k)) ) /n
