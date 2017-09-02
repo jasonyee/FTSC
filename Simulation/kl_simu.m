@@ -23,8 +23,9 @@ for NumC = nCL:nCU
     
     q = NumC - nCL + 1;
     
-    KLD(q) = KL_equal(logP);
-
+    %KLD(q) = KL_equal(logP);
+    KLD(q) = KL_CondP(logP);
+    
 end
 
 %% KL distance curve and optimal number of clusters
