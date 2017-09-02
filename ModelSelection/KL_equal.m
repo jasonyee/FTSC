@@ -1,4 +1,4 @@
-function KLD = KL_equal(dataset, nClusters, logP)
+function KLD = KL_equal(logP)
 %KL_equal returns the Kullback Leibler information distance of clustering 
 %   to choose the optimal number of clusters, see Guo and Landis (2017)
 %
@@ -11,7 +11,7 @@ function KLD = KL_equal(dataset, nClusters, logP)
 %Optimal weights are 1/nClusters
 
 % get dimensions
-[n, ~] = size(dataset);
+[n, nClusters] = size(logP);
 
 % Kullback Leibler information distance 
 

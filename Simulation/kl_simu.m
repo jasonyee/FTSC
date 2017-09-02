@@ -23,8 +23,7 @@ for NumC = nCL:nCU
     
     q = NumC - nCL + 1;
     
-    KLD(q) = ...
-        KL_equal(dataset, nClusters, logP);
+    KLD(q) = KL_equal(logP);
 
 end
 
