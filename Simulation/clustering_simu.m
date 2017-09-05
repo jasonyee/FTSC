@@ -15,12 +15,12 @@ path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
 %% Simulation setting
 nSim = 1;
 nCLower = 1;
-nCUpper = 5;
+nCUpper = 10;
 dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
 MAX_LOOP = 20;
-logpara0 = [5;10;10;0;0];
+logpara0 = [5;10;0;0;0];
 
 clustertime = zeros(nSim, dif);
 
@@ -41,7 +41,7 @@ for i = 1:nSim
 
         % clustering starts
         tic;
-        [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
+        [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
             SSMBuiltInClustering(dataset, nClusters, IniClusterIDs, logpara0, MAX_LOOP);
         clustertime(i, nClusters - nCLower + 1) = toc;
 

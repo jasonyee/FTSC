@@ -37,7 +37,7 @@ for nClusters = nCLower:nCUpper
 
     % clustering starts
     tic;
-    [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
+    [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
         SSMBuiltInClustering(dataset, nClusters, IniClusterIDs, logpara0, MAX_LOOP);
     clustertime = toc;
 

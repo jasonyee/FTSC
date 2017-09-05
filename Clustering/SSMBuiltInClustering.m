@@ -1,4 +1,4 @@
-function [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
+function [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
     SSMBuiltInClustering(dataset, nClusters, IniClusterIDs, logpara0, MAX_LOOP)
 %SSMBuiltInClustering returns a fixed number of clusters. 
 %   using functional mixed effect model clustering, see Guo and Landis (2017)
@@ -15,6 +15,7 @@ function [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
 %   cluster.
 %   -SwitchHistory records the number of switches in each step.
 %   -logparahat stores the MLEs of state space model for each cluster.
+%   -logLik stores the loglikelihood for each cluster
 
 % diffuse variance for fixed effect
 diffusePrior = 1e7;
