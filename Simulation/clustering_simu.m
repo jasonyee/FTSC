@@ -8,14 +8,14 @@ clc;
 
 %% Data I/O
 
-path_data = 'Y:\Users\Jialin Yi\output\paper simulation\KL\data\';
+path_data = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\data\';
 
-path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
+path_result = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\result\';
 
 %% Simulation setting
 nSim = 1;
 nCLower = 1;
-nCUpper = 5;
+nCUpper = 10;
 dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
@@ -41,7 +41,7 @@ for i = 1:nSim
 
         % clustering starts
         tic;
-        [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
+        [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
             SSMBuiltInClustering(dataset, nClusters, IniClusterIDs, logpara0, MAX_LOOP);
         clustertime(i, nClusters - nCLower + 1) = toc;
 

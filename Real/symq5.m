@@ -10,7 +10,7 @@ clc;
 
 path_data = 'Y:\Users\Jialin Yi\data\SYMQ5\';
 
-path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\KL\';
+path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
 
 %% Clustering setting
 nCLower = 2;
@@ -37,7 +37,7 @@ for nClusters = nCLower:nCUpper
 
     % clustering starts
     tic;
-    [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP] =...
+    [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
         SSMBuiltInClustering(dataset, nClusters, IniClusterIDs, logpara0, MAX_LOOP);
     clustertime = toc;
 

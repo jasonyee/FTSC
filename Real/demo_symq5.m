@@ -10,7 +10,7 @@ clc;
 nSim = 1;
 NumC = 3;
 
-path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\KL\';
+path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
 
 load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
 

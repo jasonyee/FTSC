@@ -14,7 +14,7 @@ TrueMembers = ClusteringMembers(3, TrueID);
 nSim = 1;
 NumC = 3;
 
-path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
+path_result = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\result\';
 
 load(strcat(path_result, 'simu_result_', num2str(nSim),'_', num2str(NumC),'C.mat'));
 

@@ -31,7 +31,7 @@ for i=1:3
     %  Computing the Kullback-Leibler distance for different clustering
     for NumC = nCL:nCU
 
-        path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\KL\';
+        path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
 
         load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
 
