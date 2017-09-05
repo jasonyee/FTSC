@@ -16,34 +16,34 @@ ICCell = {@AIC};
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'Information Criterions for Simulated Data';
+p.Title = 'Information Criterion for SYMQ5';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
 
+
 for i=1:length(ICCell)
-
+    
     IC = ICCell{i};
-
     % preallocation
     InfoCri = zeros(1,d);
 
-    %  Computing the Kullback-Leibler distance for different clustering
+    %  Computing the information criterion for different clustering
     for NumC = nCL:nCU
 
-        path_result = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\result\';
+        path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
 
-        load(strcat(path_result, 'simu_result_', num2str(nSim),'_', num2str(NumC),'C.mat'));
+        load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
 
         q = NumC - nCL + 1;
 
-        InfoCri(q) = IC(logLik, logparahat);
+        InfoCri(q) = IC(logLik, zeros(5, NumC));
     end
 
     % Information criterion curve and optimal number of clusters
-    subplot(1,length(ICCell),i,'Parent',p);
+    subplot(1,length(ICCell),i,'Parent',p)
     plot(InfoCri);
     [IC_opti, nclusters_opti] = min(InfoCri);
-    text = strcat(func2str(IC),': optimal nClusters', {' '}, num2str(nclusters_opti));
+    text = strcat(func2str(IC),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
     title(text);
 end
