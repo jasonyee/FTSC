@@ -1,5 +1,5 @@
 function AIC = AIC(loglik, logparahat)
-%AIC01 returns the Akaike information criterion of clustering 
+%AIC returns the Akaike information criterion of clustering 
 %   to choose the optimal number of clusters, see Guo and Landis (2017)
 %
 %   AIC = 2*M - 2 * logP(Y_1,...,Y_n|theta^, M)
