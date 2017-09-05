@@ -11,7 +11,7 @@ nCU = 10;
 d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
-ICCell = {@AIC, @BIC};
+ICCell = {@AIC, @BIC, @AICC};
 
 %% Plotting
 f = figure;
