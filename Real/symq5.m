@@ -13,13 +13,13 @@ path_data = 'Y:\Users\Jialin Yi\data\SYMQ5\';
 path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
 
 %% Clustering setting
-nCLower = 2;
+nCLower = 1;
 nCUpper = 10;
 dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
-MAX_LOOP = 23;
-logpara0 = [0.5;6;5;-5;0];
+MAX_LOOP = 20;
+logpara0 = [0;6;6;0;-1];
 
 %% 
 
