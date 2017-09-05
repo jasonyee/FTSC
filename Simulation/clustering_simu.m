@@ -8,9 +8,9 @@ clc;
 
 %% Data I/O
 
-path_data = 'Y:\Users\Jialin Yi\output\paper simulation\KL\data\';
+path_data = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\data\';
 
-path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
+path_result = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\result\';
 
 %% Simulation setting
 nSim = 1;
@@ -20,7 +20,7 @@ dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
 MAX_LOOP = 20;
-logpara0 = [5;10;0;0;0];
+logpara0 = [5;10;10;0;0];
 
 clustertime = zeros(nSim, dif);
 

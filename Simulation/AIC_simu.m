@@ -19,7 +19,7 @@ InfoCri = zeros(1,d);
 %%  Computing the Kullback-Leibler distance for different clustering
 for NumC = nCL:nCU
     
-    path_result = 'Y:\Users\Jialin Yi\output\paper simulation\KL\result\';
+    path_result = 'Y:\Users\Jialin Yi\output\paper simulation\Model Selection\result\';
     
     load(strcat(path_result, 'simu_result_', num2str(nSim),'_', num2str(NumC),'C.mat'));
     
