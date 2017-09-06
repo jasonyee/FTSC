@@ -50,4 +50,5 @@ for ii=1:length(ICCell)
     [IC_opti, nclusters_opti] = min(InfoCri);
     text = strcat(func2str(IC),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
     title(text);
+    ylim([2e4,2.5e4]);
 end
