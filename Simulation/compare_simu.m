@@ -47,7 +47,7 @@ for jj=1:length(KLCell)
     KLD = BigKL(:,:,jj);
     plot(KLD);
     legend('VSS','KPVSS');
-    ylim([60,80]);
+    ylim([64,70]);
     title(func2str(KLCell{jj}))
 end
     
