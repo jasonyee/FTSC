@@ -1,7 +1,15 @@
 function [logLik, KalmanFull] = DSSFull(SSM, Y)
-%UNTITLED6 Summary of this function goes here
-%   Detailed explanation goes here
-    
+%DSSFull returns the dynamic state-space model fitting for Y
+%   see (Guo, 2002)
+%
+%Input:
+%   -SSM: state space model structure
+%   -Y: n-by-T matrix
+%
+%Output:
+%   -logLik: log likelihood value for all Y
+%   -KalmanFull: T-by-1 structure array
+
     % set-up
     [nstep, ~] = size(Y);
     TranMX = SSM.TranMX;

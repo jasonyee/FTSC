@@ -1,7 +1,9 @@
 function [ TranMX, DistMean, DistCov ] = ...
     PriorConstructionUpdate( Smoothedt, SmoothedtMinus, SmoothedCovt, SmoothedCovtMinus, ConvtMinus )
-%PriorConstructionUpdate Summary of this function goes here
-%   Detailed explanation goes here
+%PriorConstructionUpdate update:
+%   transition matrix: TranMX d-by-d
+%   disturbance mean: DistMean d-by-1
+%   disturbance covariance matrix: DistCov d-by-d
 
     TranMX = SmoothedCovt * ConvtMinus' / SmoothedCovtMinus;
     

@@ -1,7 +1,10 @@
 function [ TranMX, DistMean, DistCov, State0, StateCov0] = ...
     PriorConstruction(Smoothed, SmoothedCov, Smoothed0, SmoothedCov0, ConvMinus)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%PriorConstruction returns
+%   transition matrix: TranMX d-by-d-by-T
+%   disturbance mean: DistMean d-by-T
+%   disturbance covariance matrix: DistCov d-by-d-by-T
+%for the state-space model of next subject
 
     % initialize the storage
     [d, T] = size(Smoothed);

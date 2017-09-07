@@ -1,7 +1,21 @@
 function [Kalman, TranMX, DistMean, DistCov, State0, StateCov0] =...
     DSSUpdate(Y, TranMX, DistMean, DistCov, MeasMX, ObseCov, State0, StateCov0)
-%UNTITLED5 Summary of this function goes here
-%   Detailed explanation goes here
+%DSSUpdate returns the fitting information of one subject (stored in Kalman)
+%and construct the prior information of state-space model for next subject.
+%
+%Input:
+%   -Y: 1-by-T
+%   -TranMX: d-by-d-by-T
+%   -DistMean: d-by-T
+%   -DistCov: d-by-d-by-T
+%   -MeasMX: 1-by-d-by-T
+%   -ObseCov: 1-by-1-by-T
+%   -State0: d-by-1
+%   -StateCov0: d-by-d
+%
+%Output:
+%   -Kalman (prediction, filteration, smoothing, loglik, covariance)
+
     
     % Kalman filter
     [Kalman.Filtered,...
