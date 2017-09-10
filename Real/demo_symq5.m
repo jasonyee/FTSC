@@ -1,4 +1,4 @@
-%%  Sensitivity analysis, switches plot and random subject fit plotting
+%%  SYMQ5: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
 %   -FTSC2
 

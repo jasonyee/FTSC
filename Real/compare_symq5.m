@@ -1,4 +1,4 @@
-%% Compare KL curve using different algorithms to compute condtitional probabitlity
+%% SYMQ5: Compare KL curve using different algorithms to compute condtitional probabitlity
 clear;
 clc;
 

@@ -1,4 +1,4 @@
-%% Optimal number of clusters
+%% SYMQ5: Optimal number of clusters
 %  plot the Akeika information criterion curve
 %  For different dataset, change filename
 clear;
