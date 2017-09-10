@@ -1,6 +1,6 @@
 %% Paper simulation data, built-in, cubic spline(F), sin prior(R)
 %  Adding the following folders to the path:
-%   -FTSC2
+%   -FTSC
 
 %% Clear
 clear;

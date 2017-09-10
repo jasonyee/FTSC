@@ -1,6 +1,6 @@
 %%  Pain severity: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
-%   -FTSC2
+%   -FTSC
 
 %% loading clustering result
 clear;
