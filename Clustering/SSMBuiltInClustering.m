@@ -75,14 +75,17 @@ while ~ShouldStop(NSwitches, loopNum, MAX_LOOP)
         oldMembers(oldMembers == i) = [];
                 
         % Computing the logCondProb
-        
-        % Cluster oldID: leave one
-        leaveOneData = dataset(oldMembers,:);
-        % Constructing leave-one ssm
-        leaveOneNum = length(oldMembers);
-        leaveOneSSM = SubSSMBuiltIn(leaveOneNum, SSMTotal{oldID});
-        % logLik for leave-one data
-        [~, leaveOnelogLik, ~] = filter(leaveOneSSM, leaveOneData');
+        if ~isempty(oldMembers)
+            % Cluster oldID: leave one
+            leaveOneData = dataset(oldMembers,:);
+            % Constructing leave-one ssm
+            leaveOneNum = length(oldMembers);
+            leaveOneSSM = SubSSMBuiltIn(leaveOneNum, SSMTotal{oldID});
+            % logLik for leave-one data
+            [~, leaveOnelogLik, ~] = filter(leaveOneSSM, leaveOneData');
+        else
+            leaveOnelogLik = 0;
+        end
         logCondProb(oldID) = logLik(oldID) - leaveOnelogLik;
         
         % Other Clusters: include one

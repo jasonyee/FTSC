@@ -1,6 +1,6 @@
-%% Paper simulation data, built-in, cubic spline(F), sin prior(R)
+%% SYMQ5 data, built-in, cubic spline(F), sin prior(R)
 %  Adding the following folders to the path:
-%   -FTSC5
+%   -FTSC
 
 %% Clear
 clear;
