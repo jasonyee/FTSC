@@ -17,6 +17,13 @@ switch AlgoFlag
         logP =...
     logCPBuiltIn(dataset, nClusters, ClusterIDs, ClusterMembers,...
                 logLik, logparahat,diffusePrior, true);
+            
+    case 'DSSFull'
+        
+        logP =...
+    logCPDSS(dataset, nClusters, ClusterIDs, ClusterMembers,...
+                logparahat,diffusePrior);
+end
 
 end
 

@@ -10,7 +10,7 @@ d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
 KLCell = {@KL01, @KLCondP, @KLUnif};
-AlgoFlag = {'VSS', 'KPVSS'};
+AlgoFlag = {'DSSFull'};
 
 BigKL = zeros(d,length(AlgoFlag), length(KLCell));
 
@@ -46,7 +46,7 @@ for jj=1:length(KLCell)
     subplot(1,length(KLCell),jj,'Parent',p);
     KLD = BigKL(:,:,jj);
     plot(KLD);
-    legend('VSS','KPVSS');
+    legend(AlgoFlag{:});
     ylim([64,70]);
     title(func2str(KLCell{jj}))
 end
