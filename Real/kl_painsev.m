@@ -1,4 +1,4 @@
-%% SYMQ5: Optimal number of clusters
+%% Pain Severity: Optimal number of clusters
 %  plot the Kullback-Leibler information distance curve
 %  For different dataset, change filename
 clear;
@@ -16,7 +16,7 @@ KLCell = {@KLCondP, @KL01, @KLUnif};
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'KL distnance for SYMQ5';
+p.Title = 'KL distnance for PAINSEV';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
@@ -31,9 +31,9 @@ for i=1:3
     %  Computing the Kullback-Leibler distance for different clustering
     for NumC = nCL:nCU
 
-        path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+        path_result = 'Y:\Users\Jialin Yi\output\PAINSEV\Model Selection\';
 
-        load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
+        load(strcat(path_result, 'PAINSEV_dif_FC_', num2str(NumC),'C.mat'));
 
         q = NumC - nCL + 1;
 
@@ -46,5 +46,5 @@ for i=1:3
     [KL_opti, nclusters_opti] = min(KLD);
     text = strcat(func2str(KL),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
     title(text);
-    ylim([25,32]);
+    ylim([38,43]);
 end

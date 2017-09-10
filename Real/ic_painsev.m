@@ -1,4 +1,4 @@
-%% SYMQ5: Optimal number of clusters
+%% PAINSEV: Optimal number of clusters
 %  plot the Akeika information criterion curve
 %  For different dataset, change filename
 clear;
@@ -16,7 +16,7 @@ ICCell = {@AIC, @BIC, @AICC};
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'Information Criterion for SYMQ5';
+p.Title = 'Information Criterion for PAINSEV';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
@@ -31,9 +31,9 @@ for ii=1:length(ICCell)
     %  Computing the information criterion for different clustering
     for NumC = nCL:nCU
 
-        path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+        path_result = 'Y:\Users\Jialin Yi\output\PAINSEV\Model Selection\';
 
-        load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
+        load(strcat(path_result, 'PAINSEV_dif_FC_', num2str(NumC),'C.mat'));
 
         q = NumC - nCL + 1;
         
@@ -50,5 +50,5 @@ for ii=1:length(ICCell)
     [IC_opti, nclusters_opti] = min(InfoCri);
     text = strcat(func2str(IC),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
     title(text);
-    ylim([2e4,2.5e4]);
+    ylim([3e4,3.5e4]);
 end

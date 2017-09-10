@@ -1,4 +1,4 @@
-%%  SYMQ5: Sensitivity analysis, switches plot and random subject fit plotting
+%%  Pain severity: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
 %   -FTSC
 
@@ -7,12 +7,11 @@ clear;
 clc;
 
 %% Data I/O
-nSim = 1;
 NumC = 3;
 
-path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+path_result = 'Y:\Users\Jialin Yi\output\PAINSEV\Model Selection\';
 
-load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
+load(strcat(path_result, 'PAINSEV_dif_FC_', num2str(NumC),'C.mat'));
 
 %% clustering running time
 fprintf('The clustering algorithm running time is %.2f minutes.\n', clustertime/60)
@@ -37,7 +36,7 @@ SensTable(WaldMembers, ClusterMembers)
 %% Switches plot
 plot(SwitchHistory);
 title(strcat('Switches when', {' '},...
-        'SYMQ5', {', '}, ...
+        'PAINSEV', {', '}, ...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
@@ -50,7 +49,7 @@ ymax = max(dataset(:));
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
 p.Title = strcat('Spaghetti plot for', {' '}, ...
-                'SYMQ5', {', '}, ...
+                'PAINSEV', {', '}, ...
                 'nClusters=',num2str(nClusters)); 
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
@@ -106,7 +105,7 @@ for k=1:nClusters
     
     f = figure;
     p = uipanel('Parent',f,'BorderType','none'); 
-    p.Title = strcat('SYMQ5: subjects in Cluster',num2str(k)); 
+    p.Title = strcat('PAINSEV: subjects in Cluster',num2str(k)); 
     p.TitlePosition = 'centertop'; 
     p.FontSize = 12;
     p.FontWeight = 'bold';

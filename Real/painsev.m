@@ -1,4 +1,4 @@
-%% SYMQ5 data, built-in, cubic spline(F), sin prior(R)
+%% Pain severity data, built-in, cubic spline(F), sin prior(R)
 %  Adding the following folders to the path:
 %   -FTSC
 
@@ -8,18 +8,18 @@ clc;
 
 %% Data I/O
 
-path_data = 'Y:\Users\Jialin Yi\data\SYMQ5\';
+path_data = 'Y:\Users\Jialin Yi\data\PAINSEV\';
 
-path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+path_result = 'Y:\Users\Jialin Yi\output\PAINSEV\Model Selection\';
 
 %% Clustering setting
-nCLower = 1;
+nCLower = 7;
 nCUpper = 10;
 dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
 MAX_LOOP = 20;
-logpara0 = [0.5;6;6;-5;0];
+logpara0 = [1;10;6;-5;0];
 
 %% 
 
@@ -27,8 +27,8 @@ logpara0 = [0.5;6;6;-5;0];
 for nClusters = nCLower:nCUpper
 
     % load data
-    load(strcat(path_data, 'SYMQ5_dif_',num2str(nClusters),'C.mat'));
-    dataset = SYMQ5_dif;
+    load(strcat(path_data, 'painsev_dif_',num2str(nClusters),'C.mat'));
+    dataset = painsev_dif;
     IniClusterIDs = WaldClusterID;
 
     % get time points
@@ -45,13 +45,13 @@ for nClusters = nCLower:nCUpper
     subplot(2, 5, nClusters);
     plot(SwitchHistory)
     title(strcat('Switches when', {' '},...
-                'SYMQ5', {', '}, ...
+                'PAINSEV', {', '}, ...
                 'nClusters=', num2str(nClusters)));
 
     % save result
-    save(strcat(path_result, 'SYMQ5_dif_FC_',num2str(nClusters),'C.mat'));
+    save(strcat(path_result, 'PAINSEV_dif_FC_',num2str(nClusters),'C.mat'));
 
-    ProgressInfo = ['SYMQ5 ', ...
+    ProgressInfo = ['PAINSEV ', ...
         ': nClusters = ', num2str(nClusters), ' is finised.'];
     display(ProgressInfo);
     
