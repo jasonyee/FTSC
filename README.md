@@ -21,7 +21,16 @@ This is the version with:
 
 ## Simulatated data
 
-Model Selection in FTSC
+![Figure 1 choose the number of clusters](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/raw.png)
 
-![Figure 1 choose the number of clusters](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/kl_curve.png)
+| kmeans + imputation | Cluster1 | Cluster2 | Cluster3 |
+|:-------------------:|----------|----------|----------|
+| True Group 1        | 48       | 2        | 0        |
+| True Group 2        | 0        | 1        | 49       |
+| True Group 3        | 6        | 44       | 0        |
 
+|     FTSC     | Cluster1 | Cluster2 | Cluster3 |
+|:------------:|----------|----------|----------|
+| True Group 1 | 49       | 1        | 0        |
+| True Group 2 | 0        | 0        | 50       |
+| True Group 3 | 2        | 48       | 0        |
