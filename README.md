@@ -57,15 +57,15 @@ An increasing SYM-Q5 score indicates that the overall urologiv or pelvic symptom
 
 Clustering the patients through their SYM-Q5 scores over a period time can help hospital to evaluate the effectness of treatment and concentrate resources on the patients who get worse.
 
-We use FTSC on the SYM-Q5 data with number of clusters equal to 3, the results are:
+We use FTSC on the SYM-Q5 data from 397 patients with number of clusters equal to 3, the results are:
 
 ![Figure 4 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.png)
 
-*  109 (27.5%) getting better (improving, symptom change scores decrease over time); 
+*  110 (27.7%) getting better (improving, symptom change scores decrease over time); 
 *  126 (31.7%) remaining stable (symptom change scores vary around 0); 
-*  162 (40.8%) worsening (symptom change scores increase over time).
+*  161 (40.6%) worsening (symptom change scores increase over time).
 
-# Features
+# Features of FTSC code
 
 This is the version with:
 
@@ -73,4 +73,4 @@ This is the version with:
 *  functional mixed effect model for periodic data
 *  allow missing data
 *  functional clustering on time series data
-*  choosing optimal number of clusters
+*  choosing optimal number of clusters through estimated Kullback-Leibler divergence
