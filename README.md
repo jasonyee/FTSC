@@ -1,11 +1,17 @@
-# FTSC
-Functional Time Series Clustering
+# Functional Time Series Clustering
 
-This is a summer project I am working on at the biostatistics department in Perelman school of medicine, University of Pennsylvania.
+Functional Time Series Clustering (FTSC) is an *unsurpervised* learning algorithm for *time series* data.
+Unlike kmeans, PCA and many other clustering algorithms, FTSC could handle the data with *missing values* in a most natural way.
 
-I am very fortunate to be co-advised by Prof. Richard Landis and Prof. Wensheng Guo.
+In real-world data set, missing values are inevitable and also imply important information.
+Traditional way to handle missing values like data imputation will sometimes destroy the information conveyed by missing values.
 
-The aim of the project is to classify the time series data collected from the patients to make statistical inference.
+In the case of missing data, FTSC outperforms the traditional workflow, like imputing-data-first-then-using-kmeans.
+
+This is a summer research project I worked on at the biostatistics department in Perelman school of medicine, University of Pennsylvania.
+
+I am very fortunate to be co-advised by Prof. [J. Richard Landis](https://scholar.google.com/citations?user=WDSnxagAAAAJ&hl=en) and Prof. [Wensheng Guo](https://scholar.google.com/citations?user=WYCrBGUAAAAJ&hl=en).
+Without their detailed guidance and caring support, I cannot finish the whole project.
 
 # Demo
 
