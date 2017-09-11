@@ -23,5 +23,5 @@ This is the version with:
 
 Model Selection in FTSC
 
-![Figure 1 choose the number of clusters](https://github.com/jasonyee/FTSC/blob/readme/demo/simulation/kl_curve.png)
+![Figure 1 choose the number of clusters](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/kl_curve.png)
 
