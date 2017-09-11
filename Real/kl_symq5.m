@@ -16,7 +16,7 @@ KLCell = {@KLCondP, @KL01, @KLUnif};
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'KL distnance for SYMQ5';
+p.Title = 'KL divergence for SYMQ5';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
