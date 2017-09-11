@@ -61,9 +61,9 @@ We use FTSC on the SYM-Q5 data from 397 patients with number of clusters equal t
 
 ![Figure 4 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.png)
 
-*  110 (27.7%) getting better (improving, symptom change scores decrease over time); 
+*  109 (27.5%) getting better (improving, symptom change scores decrease over time); 
 *  126 (31.7%) remaining stable (symptom change scores vary around 0); 
-*  161 (40.6%) worsening (symptom change scores increase over time).
+*  162 (40.8%) worsening (symptom change scores increase over time).
 
 # Features of FTSC code
 
