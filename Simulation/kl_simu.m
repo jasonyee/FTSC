@@ -11,7 +11,7 @@ nCU = 10;
 d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
-KL = @KL01;
+KL = @KLUnif;
 
 %% preallocation
 KLD = zeros(1,d);
@@ -36,4 +36,5 @@ plot(KLD);
 [KL_opti, nclusters_opti] = min(KLD);
 text = strcat(func2str(KL),' information: The optimal number of clusters is', {' '}, num2str(nclusters_opti));
 title(text);
+ylim([min(KLD)-0.5, max(KLD)+0.5]);
 
