@@ -1,4 +1,4 @@
-%% SYMQ5: Compare KL curve using different algorithms to compute condtitional probabitlity
+%% URINSEV: Compare KL curve using different algorithms to compute condtitional probabitlity
 clear;
 clc;
 
@@ -17,9 +17,9 @@ BigKL = zeros(d,length(AlgoFlag), length(KLCell));
 %% Compute KL distances
 for NumC = nCL:nCU
 
-    path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+    path_result = 'Y:\Users\Jialin Yi\output\URINSEV\Model Selection\';
 
-    load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
+    load(strcat(path_result, 'URINSEV_dif_FC_', num2str(NumC),'C.mat'));
 
     q = NumC - nCL + 1;
     
@@ -37,7 +37,7 @@ end
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'KL divergence for SYMQ5';
+p.Title = 'KL divergence for URINSEV';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
@@ -47,7 +47,7 @@ for jj=1:length(KLCell)
     KLD = BigKL(:,:,jj);
     plot(KLD);
     legend(AlgoFlag{:});
-    ylim([25,32]);
+    ylim([30,40]);
     title(func2str(KLCell{jj}))
 end
     

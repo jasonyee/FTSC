@@ -16,7 +16,7 @@ KLCell = {@KLCondP, @KL01, @KLUnif};
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'KL distnance for PAINSEV';
+p.Title = 'KL divergence for PAINSEV';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';

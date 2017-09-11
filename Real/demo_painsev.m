@@ -43,8 +43,8 @@ title(strcat('Switches when', {' '},...
 GrewPoints = .8 * ones(1,3);
 
 % get scale for dataset
-ymin = min(dataset(:));
-ymax = max(dataset(:));
+ymin = min(dataset(:))-1;
+ymax = max(dataset(:))+1;
 
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 

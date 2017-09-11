@@ -10,7 +10,7 @@ d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
 KLCell = {@KL01, @KLCondP, @KLUnif};
-AlgoFlag = {'VSS', 'KPVSS', 'DSSFull'};
+AlgoFlag = {'DSSFull'};
 
 BigKL = zeros(d,length(AlgoFlag), length(KLCell));
 
@@ -37,7 +37,7 @@ end
 %% Plotting
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'KL distance for PAINSEV';
+p.Title = 'KL divergence for PAINSEV';
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
@@ -47,7 +47,7 @@ for jj=1:length(KLCell)
     KLD = BigKL(:,:,jj);
     plot(KLD);
     legend(AlgoFlag{:});
-    %ylim([20,30]);
+    ylim([38,43]);
     title(func2str(KLCell{jj}))
 end
     
