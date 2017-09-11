@@ -17,3 +17,11 @@ This is the version with:
 *  functional clustering on time series data
 *  choosing optimal number of clusters
 
+# Demo
+
+## Simulatated data
+
+Model Selection in FTSC
+
+![Figure 1 choose the number of clusters](https://github.com/jasonyee/FTSC/blob/readme/demo/simulation/kl_curve.png)
+
