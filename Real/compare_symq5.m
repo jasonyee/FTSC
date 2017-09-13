@@ -3,14 +3,13 @@ clear;
 clc;
 
 %% Simulation setting
-nSim = 1;
-nCL = 1;
-nCU = 1;
+nCL = 5;
+nCU = 5;
 d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
 KLCell = {@KL01, @KLCondP, @KLUnif};
-AlgoFlag = {'DSSFull'};
+AlgoFlag = {'DSS2Step'};
 
 BigKL = zeros(d,length(AlgoFlag), length(KLCell));
 

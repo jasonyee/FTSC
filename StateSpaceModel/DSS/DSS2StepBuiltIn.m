@@ -1,3 +1,4 @@
+% Under construction
 function [logLik, KalmanFull] = DSS2StepBuiltIn(ssm, Y)
 %DSS2StepBuiltIn returns the dynamic state-space model fitting for Y
 %   see (Guo, 2002)
@@ -38,7 +39,7 @@ function [logLik, KalmanFull] = DSS2StepBuiltIn(ssm, Y)
         Filtered(:,t) = fOut(t).FilteredStates;
         FilteredCov(:,:,t) = fOut(t).FilteredStatesCov;
         Predicted(:,t) = fOut(t).ForecastedStates;
-        PredictedCov(:,t) = fOut(t).ForecastedStatesCov;
+        PredictedCov(:,:,t) = fOut(t).ForecastedStatesCov;
         Smoothed(:,t) = sOut(t).SmoothedStates;
         SmoothedCov(:,:,t) = sOut(t).SmoothedStatesCov;
     end
@@ -49,7 +50,10 @@ function [logLik, KalmanFull] = DSS2StepBuiltIn(ssm, Y)
     
     % ConvMinus
     for t=T-1:-1:1
-        ConvMinus(:,:,t+1) = FilteredCov(:,:,t) * TranMX(:,:,t+1)' / PredictedCov(:,t+1);
+        xFilterCov = FilteredCov(:,:,t);
+        Tran = TranMX(:,:,t+1);
+        xPredCov = PredictedCov(:,:,t+1);
+        ConvMinus(:,:,t+1) =  xFilterCov* Tran' / xPredCov;
     end
     ConvMinus(:,:,1) = ssm.Cov0 * ssm.A' / fOut(1).ForecastedStatesCov;
     
