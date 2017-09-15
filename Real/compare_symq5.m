@@ -3,9 +3,8 @@ clear;
 clc;
 
 %% Simulation setting
-nSim = 1;
-nCL = 1;
-nCU = 1;
+nCL = 5;
+nCU = 5;
 d = nCU - nCL + 1;
 diffusePrior = 1e7;
 
@@ -47,7 +46,7 @@ for jj=1:length(KLCell)
     KLD = BigKL(:,:,jj);
     plot(KLD);
     legend(AlgoFlag{:});
-    ylim([25,32]);
+    %ylim([25,32]);
     title(func2str(KLCell{jj}))
 end
     
