@@ -1,4 +1,4 @@
-% Under construction
+% Under construction...
 function [logLik, KalmanFull] = DSS2StepBuiltIn(ssm, Y)
 %DSS2StepBuiltIn returns the dynamic state-space model fitting for Y
 %   see (Guo, 2002)
