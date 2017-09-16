@@ -1,4 +1,4 @@
-# Wald hierachical clustering
+# Wald hierarchical clustering
 
 "xxx" for symq5/symq6/painsev/urinsev
 
@@ -9,7 +9,7 @@
 
 # Data transfer
 
-convert the result from hierachical clustering to mat file
+convert the result from hierarchical clustering to mat file
 
 * Wald2MATLAB.R: "Y:\Users\Jialin Yi\programs\R\Wald2MATLAB.R"
 
@@ -24,5 +24,5 @@ convert the result from hierachical clustering to mat file
 
 ## Programs
 * Functional Clustering program: "FTSC\Real\xxx\xxx.m"
-* Demo program (spaghetti plot, subject fit): "FTSC\Real\xxx\demo_xxx.m"
-* KL divergence (KL divergence curve): "FTSC\Real\xxx\kl_xxx.m"
+* Demo program (spaghetti plot, switches, subject fit): "FTSC\Real\xxx\demo_xxx.m"
+* KL divergence (KL divergence curves): "FTSC\Real\xxx\kl_xxx.m"
