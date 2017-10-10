@@ -22,7 +22,7 @@ p.FontSize = 12;
 p.FontWeight = 'bold';
 
 
-for i=1:3
+for i=1:length(KLCell)
     
     KL = KLCell{i};
     % preallocation
@@ -41,7 +41,7 @@ for i=1:3
     end
 
     % KL distance curve and optimal number of clusters
-    subplot(1,3,i,'Parent',p)
+    subplot(1,length(KLCell),i,'Parent',p)
     plot(KLD);
     [KL_opti, nclusters_opti] = min(KLD);
     text = strcat(func2str(KL),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
