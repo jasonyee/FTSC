@@ -44,6 +44,8 @@ for i=1:length(KLCell)
     subplot(1,length(KLCell),i,'Parent',p)
     plot(KLD);
     [KL_opti, nclusters_opti] = min(KLD);
+    %hline = refline([0 min(KLD) + std(KLD)]);
+    %hline.Color = 'r';
     text = strcat(func2str(KL),' : The optimal number of clusters is', {' '}, num2str(nclusters_opti));
     title(text);
     ylim([25,32]);
