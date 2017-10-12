@@ -10,7 +10,7 @@ Path_OutputBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\CR
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 5;
+nSim = 100;
 group_size = 20;
 var_random = 900;
 var_noise = 1;
