@@ -1,4 +1,5 @@
-%% Generating data
+
+% Generating data
 group_size = 20;
 nsamples = 3*group_size;
 var_random = 9;
@@ -21,22 +22,33 @@ SampleFixedEffect = [repmat(FixedEffect(1,:),group_size,1);...
                      repmat(FixedEffect(2,:),group_size,1);...
                      repmat(FixedEffect(3,:),group_size,1)];
                  
-%% Truth                 
+% Truth                 
 Y = SampleFixedEffect + RandomEffect + WhiteNoise;
 TrueID = [ones(group_size,1); 2*ones(group_size,1); 3*ones(group_size,1)];
 TrueMemebers = ClusteringMembers(3, TrueID);
 
-%% kmeans
+% kmeans
 kmeansID = kmeans(Y,3);
 kmeansMembers = ClusteringMembers(3, kmeansID);
 
+kmeans3by3 = table2array(SensTable(TrueMemebers, kmeansMembers));
 
-%% FTSC
+kmeans_CRate = mean(max(kmeans3by3, [], 2))/group_size;
+
+[~, kmeans_GroupNum] = max(kmeans3by3);
+
+kmeans_isSeparated = (length(unique(kmeans_GroupNum)) == 3);
+
+% FTSC
 IniClusterIDs = kmeansID;
 nClusters = 3;
 [ClusterIDs, ClusterMembers, SwitchHistory, logparahat, logP, logLik] =...
     SSMBuiltInClustering(Y, nClusters, IniClusterIDs, logpara0, MAX_LOOP);
 
-%% Results
-SensTable(TrueMemebers, kmeansMembers)
-SensTable(TrueMemebers, ClusterMembers)
+FTSC3by3 = table2array(SensTable(TrueMemebers, ClusterMembers));
+
+FTSC_CRate = mean(max(FTSC3by3, [], 2))/group_size;
+
+[~, FTSC_GroupNum] = max(FTSC3by3);
+
+FTSC_isSeparated = (length(unique(FTSC_GroupNum)) == 3);
