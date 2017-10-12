@@ -2,7 +2,7 @@ clear;clc;
 % Simulation scenario
 nSim = 100;
 load('Y:\Users\Jialin Yi\output\SYMQ5\MATLAB\C3\FixedEffect.mat');
-group_size = 20;
+group_size = 50;
 var_random = 16;
 var_noise = 16;
 
