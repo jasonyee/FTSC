@@ -4,7 +4,7 @@ nSim = 100;
 load('Y:\Users\Jialin Yi\output\SYMQ5\MATLAB\C3\FixedEffect.mat');
 group_size = 20;
 var_random = 900;
-var_noise = 3;
+var_noise = 1;
 
 FixSimulationSeed = @(seed) ...
     FixSimulation(seed, FixedEffect, group_size, var_random, var_noise);
