@@ -1,6 +1,6 @@
 clear;clc;
 % Simulation scenario
-nSim = 5;
+nSim = 100;
 load('Y:\Users\Jialin Yi\output\SYMQ5\MATLAB\C3\FixedEffect.mat');
 group_size = 20;
 var_random = 3;
@@ -19,5 +19,10 @@ parfor i=1:nSim
         kmeans_CRate(i), kmeans_isSeparated(i)] = feval(FixSimulationSeed, i);
 end
 
+
 plot([FTSC_CRate, kmeans_CRate]);
 legend('FTSC', 'kmeans');
+plottitle = strcat('random effect variance = ', {' '}, num2str(var_random), ...
+                   ', noise variance = ', {' '}, num2str(var_noise), ...
+                   ', group size = ', {' '}, num2str(group_size));
+title(plottitle)
