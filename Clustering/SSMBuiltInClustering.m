@@ -54,9 +54,13 @@ while ~ShouldStop(NSwitches, loopNum, MAX_LOOP)
     
     for k=1:nClusters
         Y = ClusterData{k};
-        % MLE fitting
-        [logparahat(:,k), logLik(k)] = ...
-            fmeTrainingBuiltIn(Y, t, logpara0, diffusePrior);
+        if ~isempty(Y)
+            % MLE fitting
+            [logparahat(:,k), logLik(k)] = ...
+                fmeTrainingBuiltIn(Y, t, logpara0, diffusePrior);
+        else
+            logLik(k) = 0;
+        end
         % Constructing ssm objects for all batch data
         SSMTotal{k} = ...
             fmeRandomSinPriorBuiltIn(n, t, logparahat(:,k), diffusePrior);
