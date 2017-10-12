@@ -1,4 +1,4 @@
-
+clear;clc;
 % Generating data
 group_size = 20;
 nsamples = 3*group_size;
@@ -18,9 +18,7 @@ RandomEffect = func_dev(nsamples, t, var_random);
 WhiteNoise = sqrt(var_noise)*randn(nsamples, T);
 % fixed effect
 load('Y:\Users\Jialin Yi\output\SYMQ5\MATLAB\C3\FixedEffect.mat');
-SampleFixedEffect = [repmat(FixedEffect(1,:),group_size,1);...
-                     repmat(FixedEffect(2,:),group_size,1);...
-                     repmat(FixedEffect(3,:),group_size,1)];
+SampleFixedEffect = kron(FixedEffect, ones(group_size,1));
                  
 % Truth                 
 Y = SampleFixedEffect + RandomEffect + WhiteNoise;
