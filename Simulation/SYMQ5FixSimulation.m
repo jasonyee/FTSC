@@ -14,12 +14,12 @@ FTSC_isSeparated = zeros(nSim, 1);
 kmeans_CRate = zeros(nSim, 1);
 kmeans_isSeparated = zeros(nSim, 1);
 
-start = tic;
+tic;
 parfor i=1:nSim
     [FTSC_CRate(i), FTSC_isSeparated(i), ...
         kmeans_CRate(i), kmeans_isSeparated(i)] = feval(FixSimulationSeed, i);
 end
-duration = toc - tic;
+duration = toc;
 
 plot([FTSC_CRate, kmeans_CRate]);
 legend('FTSC', 'kmeans');
