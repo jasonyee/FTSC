@@ -13,7 +13,7 @@ Plot_filetype = '.pdf';
 nSim = 100;
 group_size = 20;
 var_random = 900;
-var_noise = 1;
+var_noise = 9;
 
 % loading data
 load(strcat(Path_FEffect, 'FixedEffect.mat'));
