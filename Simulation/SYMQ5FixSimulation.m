@@ -44,11 +44,13 @@ save(strcat(Path_OutputData, ...
             '.mat'));
 
 
+
 % curve plot
+CRateRange = [.4, 1];
 curve = figure('visible', 'off');
 plot([FTSC_CRate, kmeans_CRate]);
 legend('FTSC', 'kmeans');
-ylim([.5, 1]);
+ylim(CRateRange);
 plottitle = strcat(' classification rate when ', ...
                    ' noise variance = ', {' '}, num2str(var_noise), ...
                    ', group size = ', {' '}, num2str(group_size));
@@ -63,7 +65,7 @@ close(curve);
 % box plot
 BOXplot = figure('visible', 'off');
 boxplot([FTSC_CRate,kmeans_CRate],'Labels',{'FTSC','kmeans'})
-ylim([.5,1])
+ylim(CRateRange)
 title(plottitle);
 % save figure
 saveas(BOXplot, strcat(Path_OutputBoxplot, ...
