@@ -7,11 +7,19 @@ library(dplyr)
 nSim = 100
 Group_size = 20
 var_random = 900
-var_noise = 9
+var_noise = 1
+
+# High SNR
+ basisSNR = 10
+# Low SNR
+# basisSNR = 18
+
+
 
 # Data I/O
 path_data <- "Y:/Users/Jialin Yi/output/paper simulation/FixNClusters/data/"
-path_out <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/data/"
+path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/data/"
+path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/plot/"
 name_file <- paste(toString(nSim), toString(Group_size), 
                    toString(var_random), toString(var_noise), sep = "-")
 
@@ -36,7 +44,7 @@ CRate <- function(ClusterMatrix){
   return(ClassRate)
 }
 
-FixSimulation <- function(data_nSim, nbasis = 18, norder = 2){
+FixSimulation <- function(data_nSim, nbasis = 18, norder = 3){
   CR = 1:ncol(data_nSim)
   for(i in 1:ncol(data_nSim)){
     dataset <- matrix(pull(data_nSim, i), ncol = 60, byrow = TRUE)
@@ -61,9 +69,41 @@ data_set <- split(All$data,
 data_set <- bind_rows(data_set)
 
 # FunHDDC on simulated data
-CRFunHDDC = FixSimulation(data_set)
+CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
+
+# FTSC on simulation data
+CRFTSC = as.vector(All$FTSC.CRate)
+
+# K-means on simulation data
+CRKmeans = as.vector(All$kmeans.CRate)
 
 # Save classification rate
-save(CRFunHDDC, file = paste(path_out, name_file, ".Rdata", sep = " "))
+CRates.Data <- data.frame(rep(c("FTSC", "FunHDDC", "Kmeans"), each=nSim),
+                          c(CRFTSC, CRFunHDDC, CRKmeans)) 
+colnames(CRates.Data) <- c("Method", "CRate")
+save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
 
+
+# Plots
+pdf(paste(path_out_plot, name_file, ".pdf", sep = ""),
+    width = 8.05, height = 5.76)
+
+par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
+yRange = c(min(CRates.Data$CRate), max(CRates.Data$CRate))
+## plot like time series
+ts.plot(cbind(CRFTSC, CRFunHDDC, CRKmeans),
+        gpars = list(
+          xlab = "",
+          col=c("blue", "red", "black"),
+          ylim = yRange
+        ))
+legend("topright", legend=c("FTSC", "FunHDDC", "K-means"),
+       col=c("blue", "red", "black"), lty=c(1,1,1), cex=0.8)
+# box plot
+boxplot(CRate ~ Method, data = CRates.Data, ylim = yRange)
+
+mtext(paste("Var of noise =", toString(var_noise), ",",
+            "Group size =", toString(Group_size)), outer = TRUE, cex = 1.5)
+
+dev.off()
 
