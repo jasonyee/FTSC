@@ -11,7 +11,7 @@ Plot_filetype = '.pdf';
 
 % Simulation scenario
 nSim = 100;
-group_size = 20;
+group_size = 100;
 var_random = 900;
 var_noise = 9;
 
