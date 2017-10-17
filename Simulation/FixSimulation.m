@@ -1,4 +1,4 @@
-function [FTSC_CRate, FTSC_isSeparated, kmeans_CRate, kmeans_isSeparated, Y, ClusterIDs, logparahat] = ... 
+function [FTSC_CRate, FTSC_isSeparated, FTSC_cost, kmeans_CRate, kmeans_isSeparated, kmeans_cost, Y, ClusterIDs, logparahat] = ... 
                     FixSimulation(seed, FixedEffect, group_size, var_random, var_noise)
 %FIXSIMULATION Simulation for FTSC with exogenous group effect
 %   Detailed explanation goes here
@@ -32,7 +32,9 @@ kmeansMembers = ClusteringMembers(nGroup, kmeansID);
 
 kmeans_nbyn = table2array(SensTable(TrueMemebers, kmeansMembers));
 
-kmeans_CRate = mean(max(kmeans_nbyn, [], 2))/group_size;
+kmeans_CRate = CRate(kmeans_nbyn, group_size);
+
+kmeans_cost = BalancedCost(kmeans_nbyn);
 
 [~, kmeans_GroupNum] = max(kmeans_nbyn);
 
@@ -46,11 +48,13 @@ nClusters = nGroup;
 
 FTSC_nbyn = table2array(SensTable(TrueMemebers, ClusterMembers));
 
-FTSC_CRate = mean(max(FTSC_nbyn, [], 2))/group_size;
+FTSC_CRate = CRate(FTSC_nbyn, group_size);
 
 [~, FTSC_GroupNum] = max(FTSC_nbyn);
 
 FTSC_isSeparated = (length(unique(FTSC_GroupNum)) == nGroup);
+
+FTSC_cost = BalancedCost(FTSC_nbyn);
 
 end
 
