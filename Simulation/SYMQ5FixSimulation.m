@@ -10,8 +10,8 @@ Path_OutputBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\CR
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 100;
-group_size = 100;
+nSim = 10;
+group_size = 20;
 var_random = 900;
 var_noise = 9;
 
@@ -28,12 +28,19 @@ kmeans_CRate = zeros(nSim, 1);
 kmeans_isSeparated = zeros(nSim, 1);
 data = repmat(kron(FixedEffect, ones(group_size,1)), 1, 1, nSim);
 
+nClusters = size(FixedEffect,1);
+para_len = 5;
+logpara_hats = zeros(para_len, nClusters, nSim);
+ClusterIDs_simu = zeros(group_size*nClusters, nSim);
+
 % simulation starts
 tic;
 parfor i=1:nSim
     [FTSC_CRate(i), FTSC_isSeparated(i), ...
         kmeans_CRate(i), kmeans_isSeparated(i),...
-        data(:,:,i)] = feval(FixSimulationSeed, i+1231516);
+        data(:,:,i),...
+        ClusterIDs_simu(:,i),...
+        logpara_hats(:,:,i)] = feval(FixSimulationSeed, i+1231516);
 end
 duration = toc;
 

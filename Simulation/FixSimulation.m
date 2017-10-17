@@ -1,5 +1,5 @@
-function [FTSC_CRate, FTSC_isSeparated, kmeans_CRate, kmeans_isSeparated, Y] = ... 
-                    FixSimulation(seed, FixedEffect, group_size, var_random, var_noise )
+function [FTSC_CRate, FTSC_isSeparated, kmeans_CRate, kmeans_isSeparated, Y, ClusterIDs, logparahat] = ... 
+                    FixSimulation(seed, FixedEffect, group_size, var_random, var_noise)
 %FIXSIMULATION Simulation for FTSC with exogenous group effect
 %   Detailed explanation goes here
 
