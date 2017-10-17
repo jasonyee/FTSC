@@ -5,16 +5,19 @@ library(dplyr)
 
 # Simulation Scenario
 nSim = 100
-Group_size = 20
+Group_size = 100
 var_random = 900
-var_noise = 1
+var_noise = 9
 
-# High SNR
- basisSNR = 10
-# Low SNR
+# High SNR, Group_size = 20
+# basisSNR = 10
+ 
+# Low SNR, Group_size = 20
 # basisSNR = 18
 
-
+ # Low SNR, Group_size = 100
+ basisSNR = 7
+ orderSNR = 2
 
 # Data I/O
 path_data <- "Y:/Users/Jialin Yi/output/paper simulation/FixNClusters/data/"
@@ -69,7 +72,7 @@ data_set <- split(All$data,
 data_set <- bind_rows(data_set)
 
 # FunHDDC on simulated data
-CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
+CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR, norder = orderSNR)
 
 # FTSC on simulation data
 CRFTSC = as.vector(All$FTSC.CRate)
