@@ -16,10 +16,10 @@ Path_OutputBCostBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\FixNCluste
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 10;
+nSim = 100;
 group_size = 20;
 var_random = 900;
-var_noise = 9;
+var_noise = 1;
 
 % loading data
 load(strcat(Path_FEffect, 'FixedEffect.mat'));
