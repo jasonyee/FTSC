@@ -6,12 +6,12 @@ Path_OutputSubject = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\Su
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 10;
+nSim = 100;
 group_size = 20;
 var_random = 900;
 var_noise = 9;
 
-Simu = 9;
+Simu = 63;
 
 % loading data
 load(strcat(Path_InputData, ...
