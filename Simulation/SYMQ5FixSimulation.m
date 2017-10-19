@@ -34,7 +34,11 @@ FTSC_cost = zeros(nSim,1);
 kmeans_CRate = zeros(nSim, 1);
 kmeans_isSeparated = zeros(nSim, 1);
 kmeans_cost = zeros(nSim, 1);
+
 data = repmat(kron(FixedEffect, ones(group_size,1)), 1, 1, nSim);
+SampleFixedEffect = zeros(size(data));
+RandomEffect = SampleFixedEffect;
+WhiteNoise = RandomEffect;
 
 nClusters = size(FixedEffect,1);
 para_len = 5;
@@ -46,7 +50,7 @@ tic;
 parfor i=1:nSim
     [FTSC_CRate(i), FTSC_isSeparated(i), FTSC_cost(i), ...
         kmeans_CRate(i), kmeans_isSeparated(i), kmeans_cost(i), ...
-        data(:,:,i),...
+        data(:,:,i), SampleFixedEffect(:,:,i), RandomEffect(:,:,i), WhiteNoise(:,:,i), ...
         ClusterIDs_simu(:,i),...
         logpara_hats(:,:,i)] = feval(FixSimulationSeed, i+1231516);
 end
