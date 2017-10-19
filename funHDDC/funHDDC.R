@@ -6,15 +6,15 @@ library(dplyr)
 # Simulation Scenario
 nSim = 100
 Group_size = 20
-var_random = 900
-var_noise = 9
+var_random = 10
+var_noise = 1
 
 # High SNR, Group_size = 20
 # basisSNR = 10
 # orderSNR = 3
 
 # Low SNR, Group_size = 20
- basisSNR = 18
+ basisSNR = 7
  orderSNR = 3
  
 # Low SNR, Group_size = 100
