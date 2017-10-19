@@ -6,7 +6,7 @@ library(dplyr)
 # Simulation Scenario
 nSim = 100
 Group_size = 20
-var_random = 10
+var_random = 50
 var_noise = 1
 
 # High SNR, Group_size = 20
