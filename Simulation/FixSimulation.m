@@ -20,7 +20,24 @@ RandomEffect = func_dev(nsamples, t, var_random);
 WhiteNoise = sqrt(var_noise)*randn(nsamples, T);
 % fixed effect
 SampleFixedEffect = kron(FixedEffect, ones(group_size,1));
-                 
+
+% subplot(2,2,1)
+% plot(SampleFixedEffect')
+% ylim([-5, 5])
+% title('fixed effect')
+% subplot(2,2,2)
+% plot(RandomEffect')
+% ylim([-5, 5])
+% title(strcat('random effect var scale', {' '}, num2str(var_random)))
+% subplot(2,2,3)
+% plot(WhiteNoise')
+% title(strcat('measurement error var scale', {' '}, num2str(var_noise)))
+% ylim([-5, 5])
+% subplot(2,2,4)
+% plot(SampleFixedEffect'+RandomEffect')
+% title('signal')
+% ylim([-5, 5])
+
 % Truth                 
 Y = SampleFixedEffect + RandomEffect + WhiteNoise;
 TrueID = kron((1:nGroup)', ones(group_size,1));
