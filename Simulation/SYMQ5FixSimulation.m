@@ -18,8 +18,8 @@ Plot_filetype = '.pdf';
 % Simulation scenario
 nSim = 100;
 group_size = 20;
-var_random = 50;
-var_noise = 1;
+var_random = 400;
+var_noise = 9;
 
 % loading data
 load(strcat(Path_FEffect, 'FixedEffect.mat'));
@@ -61,7 +61,8 @@ save(strcat(Path_OutputData, ...
             num2str(nSim), '-', num2str(group_size), '-', ...
             num2str(var_random), '-', num2str(var_noise),...
             '.mat'));
-
+        
+        
 %% CRATE
 
 % curve plot
