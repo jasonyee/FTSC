@@ -5,19 +5,21 @@ library(dplyr)
 
 # Simulation Scenario
 nSim = 100
-Group_size = 100
-var_random = 900
-var_noise = 9
+Group_size = 20
+var_random = 200
+var_noise = 1
 
 # High SNR, Group_size = 20
-# basisSNR = 10
- 
-# Low SNR, Group_size = 20
-# basisSNR = 18
+# basisSNR = 7
+# orderSNR = 3
 
- # Low SNR, Group_size = 100
+# Low SNR, Group_size = 20
  basisSNR = 7
- orderSNR = 2
+ orderSNR = 3
+ 
+# Low SNR, Group_size = 100
+# basisSNR = 7
+# orderSNR = 2
 
 # Data I/O
 path_data <- "Y:/Users/Jialin Yi/output/paper simulation/FixNClusters/data/"
