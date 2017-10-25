@@ -18,8 +18,8 @@ Plot_filetype = '.pdf';
 % Simulation scenario
 nSim = 100;
 group_size = 20;
-var_random = 400;
-var_noise = 9;
+var_random = 200;
+var_noise = 1;
 
 % loading data
 load(strcat(Path_FEffect, 'FixedEffect.mat'));
