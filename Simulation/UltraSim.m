@@ -1,5 +1,5 @@
 function UltraSim(nSim, nSeed, var_random, var_noise)
-%ULTRASIM Ultimate simulation
+%ULTRASIM Ultimate simulation--LINUX
 
 % add path
 addpath(genpath('/home/jialinyi/FTSC'));
