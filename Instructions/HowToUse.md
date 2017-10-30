@@ -1,3 +1,10 @@
+# Data processing
+
+* Get (pid, vnum, raw_data) in to raw.csv
+* SAS imputation program : "Y:\Users\Jialin Yi\data\imputation\imputation.sas"
+* create R program to get yvar.R
+* convert csv to sas7bdat file: "Y:\Users\Jialin Yi\data\imputation\csv2sas7bdat.sas"
+
 # Wald hierarchical clustering
 
 *  SAS clustering program: "Y:\Users\Jialin Yi\programs\SAS\FTSC_SAS\RealData\code\WaldClustering.sas"
