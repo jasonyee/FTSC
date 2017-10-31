@@ -7,7 +7,7 @@ clear;
 clc;
 
 %% Data I/O
-NumC = 8;
+NumC = 3;
 
 path_result = 'Y:\Users\Jialin Yi\output\SYMQ6\Model Selection\';
 
