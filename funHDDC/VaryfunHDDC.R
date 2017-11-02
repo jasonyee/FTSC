@@ -96,24 +96,14 @@ save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
 pdf(paste(path_out_plot, name_file, ".pdf", sep = ""),
     width = 8.05, height = 5.76)
 
-par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
+
 yRange = c(min(CRates.Data$CRate), max(CRates.Data$CRate))
-## plot like time series
-ts.plot(cbind(CRFTSC, CRFunHDDC, CRKmeans),
-        gpars = list(
-          xlab = "",
-          col=c("blue", "red", "black"),
-          ylim = yRange
-        ))
-legend("topright", legend=c("FTSC", "FunHDDC", "K-means"),
-       col=c("blue", "red", "black"), lty=c(1,1,1), cex=0.8)
 # box plot
 boxplot(CRate ~ Method, data = CRates.Data, ylim = yRange)
 
 mtext(paste("Var of noise =", toString(var_noise), ",",
             "Heterogeneous random effect =", 
-            toString(c(var_random1,var_random2,var_random3)), 
-            outer = TRUE, cex = 1.5))
+            toString(c(var_random1,var_random2,var_random3))))
 
 dev.off()
 
