@@ -19,7 +19,7 @@ dif = nCUpper - nCLower + 1;
 
 %% Clustering setting
 MAX_LOOP = 20;
-logpara0 = [0;2;-5;2;5];
+logpara0 = [0.5;6;6;-5;0];
 
 %% 
 
