@@ -1,32 +1,38 @@
 %% simulation script for FTSC, output data in following name:
-%   'nSim-group_size-var_random-var_noise.mat'
+%   'nSim-group_size-var_random1-var_random2-var_random3-var_noise.mat'
 
 clear;clc;
 % Specify data I/O
 Path_FEffect = 'Y:\Users\Jialin Yi\output\SYMQ5\MATLAB\C3\';
-Path_OutputData = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\data\';
+Path_OutputData = 'Y:\Users\Jialin Yi\output\paper simulation\VaryClusters\data\';
 
-Path_OutputCRateCurve = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\CRate_curve\';
-Path_OutputCRateBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\CRate_boxplot\';
+Path_OutputCRateCurve = 'Y:\Users\Jialin Yi\output\paper simulation\VaryClusters\CRate_curve\';
+Path_OutputCRateBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\VaryClusters\CRate_boxplot\';
 
-Path_OutputBCostCurve = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\BCost_curve\';
-Path_OutputBCostBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\BCost_boxplot\';
-
+Path_OutputBCostCurve = 'Y:\Users\Jialin Yi\output\paper simulation\VaryClusters\BCost_curve\';
+Path_OutputBCostBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\VaryClusters\BCost_boxplot\';
 
 Plot_filetype = '.pdf';
 
 % Simulation scenario
 nSim = 100;
 group_size = 20;
-var_random = 200;
+var_random = [50, 200, 100];
 var_noise = 1;
+
+file_name = strcat(num2str(nSim), '-', num2str(group_size), '-');
+for j=1:length(var_random)
+    file_name = strcat(file_name, num2str(var_random(j)), '-');
+end
+file_name = strcat(file_name, num2str(var_noise));
+
 
 % loading data
 load(strcat(Path_FEffect, 'FixedEffect.mat'));
 
 % initializing
-FixSimulationSeed = @(seed) ...
-    FixSimulation(seed, FixedEffect, group_size, var_random, var_noise);
+VarySimulationSeed = @(seed) ...
+    VarySimulation(seed, FixedEffect, group_size, var_random, var_noise);
 
 FTSC_CRate = zeros(nSim,1);
 FTSC_isSeparated = zeros(nSim, 1);
@@ -47,20 +53,17 @@ ClusterIDs_simu = zeros(group_size*nClusters, nSim);
 
 % simulation starts
 tic;
-parfor i=1:nSim
+for i=1:nSim
     [FTSC_CRate(i), FTSC_isSeparated(i), FTSC_cost(i), ...
         kmeans_CRate(i), kmeans_isSeparated(i), kmeans_cost(i), ...
         data(:,:,i), SampleFixedEffect(:,:,i), RandomEffect(:,:,i), WhiteNoise(:,:,i), ...
         ClusterIDs_simu(:,i),...
-        logpara_hats(:,:,i)] = feval(FixSimulationSeed, i+1231516);
+        logpara_hats(:,:,i)] = feval(VarySimulationSeed, i+1231516);
 end
 duration = toc;
 
 % save all variables
-save(strcat(Path_OutputData, ...
-            num2str(nSim), '-', num2str(group_size), '-', ...
-            num2str(var_random), '-', num2str(var_noise),...
-            '.mat'));
+save(strcat(Path_OutputData, file_name, '.mat'));
         
         
 %% CRATE
@@ -76,10 +79,7 @@ CRate__plottitle = strcat(' classification rate when ', ...
                    ', group size = ', {' '}, num2str(group_size));
 title(CRate__plottitle)
 % save figure
-saveas(CRate__curve, strcat(Path_OutputCRateCurve, ...
-                     num2str(nSim), '-', num2str(group_size), '-', ...
-                     num2str(var_random), '-', num2str(var_noise), ...
-                     Plot_filetype));
+saveas(CRate__curve, strcat(Path_OutputCRateCurve, file_name, Plot_filetype));
 close(CRate__curve);
 
 % box plot
@@ -88,10 +88,7 @@ boxplot([FTSC_CRate,kmeans_CRate],'Labels',{'FTSC','kmeans'})
 ylim(CRateRange)
 title(CRate__plottitle);
 % save figure
-saveas(CRate__BOXplot, strcat(Path_OutputCRateBoxplot, ...
-                       num2str(nSim), '-', num2str(group_size), '-', ...
-                       num2str(var_random), '-', num2str(var_noise), ...
-                       Plot_filetype));
+saveas(CRate__BOXplot, strcat(Path_OutputCRateBoxplot, file_name, Plot_filetype));
 close(CRate__BOXplot);
 
 %% BCOST
@@ -107,10 +104,7 @@ BCost__plottitle = strcat(' cost when ', ...
                    ', group size = ', {' '}, num2str(group_size));
 title(BCost__plottitle)
 % save figure
-saveas(BCost__curve, strcat(Path_OutputBCostCurve, ...
-                     num2str(nSim), '-', num2str(group_size), '-', ...
-                     num2str(var_random), '-', num2str(var_noise), ...
-                     Plot_filetype));
+saveas(BCost__curve, strcat(Path_OutputBCostCurve, file_name, Plot_filetype));
 close(BCost__curve);
 
 % box plot
@@ -119,8 +113,5 @@ boxplot([FTSC_cost,kmeans_cost],'Labels',{'FTSC','kmeans'})
 ylim(BCostRange)
 title(BCost__plottitle);
 % save figure
-saveas(BCost__BOXplot, strcat(Path_OutputBCostBoxplot, ...
-                       num2str(nSim), '-', num2str(group_size), '-', ...
-                       num2str(var_random), '-', num2str(var_noise), ...
-                       Plot_filetype));
+saveas(BCost__BOXplot, strcat(Path_OutputBCostBoxplot, file_name, Plot_filetype));
 close(BCost__BOXplot);

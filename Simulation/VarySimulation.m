@@ -18,7 +18,11 @@ logpara0 = [0.5;6;6;-5;0];
 rng(seed);
 
 % random effect
-RandomEffect = func_dev(nsamples, t, var_random);
+RandomEffect = zeros(size(FixedEffect));
+for j=1:nGroup
+    RandomEffect((j-1)*group_size+1:j*group_size,:) = func_dev(group_size, t, var_random(j));
+end
+
 % white noise
 WhiteNoise = sqrt(var_noise)*randn(nsamples, T);
 % fixed effect
