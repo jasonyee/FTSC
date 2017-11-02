@@ -7,7 +7,7 @@ library(dplyr)
 nSim = 100
 Group_size = 20
 var_random = 200
-var_noise = 1
+var_noise = 2
 
 # High SNR, Group_size = 20
 # basisSNR = 7
@@ -108,7 +108,7 @@ legend("topright", legend=c("FTSC", "FunHDDC", "K-means"),
 boxplot(CRate ~ Method, data = CRates.Data, ylim = yRange)
 
 mtext(paste("Var of noise =", toString(var_noise), ",",
-            "Group size =", toString(Group_size)), outer = TRUE, cex = 1.5)
+            "Var scale of random effect =", toString(var_random)), outer = TRUE, cex = 1.5)
 
 dev.off()
 

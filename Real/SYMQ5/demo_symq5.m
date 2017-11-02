@@ -80,7 +80,7 @@ for k=1:nClusters
     hold on;
     plot(t, zeros(1,T),'--');
     hold off;
-    ylim([ymin, ymax]);
+    ylim([-10, 10]);
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
     title(plottitle);
 end
