@@ -9,7 +9,7 @@ Group_size = 20
 var_random1 = 50
 var_random2 = 200
 var_random3 = 100
-var_noise = 1
+var_noise = 2
 
 # High SNR, Group_size = 20
 # basisSNR = 7

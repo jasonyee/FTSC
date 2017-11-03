@@ -18,7 +18,7 @@ Plot_filetype = '.pdf';
 nSim = 100;
 group_size = 20;
 var_random = [50, 200, 100];
-var_noise = 1;
+var_noise = 2;
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-');
 for j=1:length(var_random)
@@ -53,12 +53,12 @@ ClusterIDs_simu = zeros(group_size*nClusters, nSim);
 
 % simulation starts
 tic;
-for i=1:nSim
+parfor i=1:nSim
     [FTSC_CRate(i), FTSC_isSeparated(i), FTSC_cost(i), ...
         kmeans_CRate(i), kmeans_isSeparated(i), kmeans_cost(i), ...
         data(:,:,i), SampleFixedEffect(:,:,i), RandomEffect(:,:,i), WhiteNoise(:,:,i), ...
         ClusterIDs_simu(:,i),...
-        logpara_hats(:,:,i)] = feval(VarySimulationSeed, i+1231516);
+        logpara_hats(:,:,i)] = feval(VarySimulationSeed, i*20);
 end
 duration = toc;
 
