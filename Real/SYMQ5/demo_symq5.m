@@ -1,4 +1,4 @@
-%%  SYMQ5: Sensitivity analysis, switches plot and random subject fit plotting
+%%  SYMQ-5: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
 %   -FTSC
 
@@ -6,9 +6,12 @@
 clear;
 clc;
 
-%% K=1 Spaghetti Plot
 yvar = 'symq5';
-YVAR = 'SYMQ5';
+YVAR_path = 'SYMQ5';
+YVAR_plot = 'SYM-Q5';
+
+%% K=1 Spaghetti Plot
+
 k1_path = strcat('Y:\Users\Jialin Yi\data\imputation\', yvar, '\');
 load(strcat(k1_path, yvar, '_3dif.mat'))
 
@@ -16,16 +19,16 @@ figure;
 plot(Threedif');
 ylim([min(Threedif(:))-1, max(Threedif(:))+1])
 xlim([0, 26])
-title(strcat('Longitudinal', {' '}, YVAR, ': Change from Week 4 (vnum=3)'));
+title(strcat('Longitudinal', {' '}, YVAR_plot, ': Change from Week 4 (vnum=3)'));
 ylabel('Change from vnum=3')
 xlabel('vnum')
 
 %% Data I/O
 NumC = 3;
 
-path_result = 'Y:\Users\Jialin Yi\output\SYMQ5\Model Selection\';
+path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
 
-load(strcat(path_result, 'SYMQ5_dif_FC_', num2str(NumC),'C.mat'));
+load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'));
 
 %% clustering running time
 fprintf('The clustering algorithm running time is %.2f minutes.\n', clustertime/60)
@@ -51,7 +54,7 @@ SensTable(WaldMembers, ClusterMembers)
 figure;
 plot(SwitchHistory);
 title(strcat('Switches when', {' '},...
-        'SYMQ5', {', '}, ...
+        YVAR_plot, {', '}, ...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
@@ -64,7 +67,7 @@ ymax = max(dataset(:))+1;
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
 p.Title = strcat('Spaghetti plot for', {' '}, ...
-                'SYMQ5', {', '}, ...
+                YVAR_plot, {', '}, ...
                 'nClusters=',num2str(nClusters)); 
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
@@ -120,7 +123,7 @@ for k=1:nClusters
     
     f = figure;
     p = uipanel('Parent',f,'BorderType','none'); 
-    p.Title = strcat('SYMQ5: subjects in Cluster',num2str(k)); 
+    p.Title = strcat(YVAR_plot, ': subjects in Cluster',num2str(k)); 
     p.TitlePosition = 'centertop'; 
     p.FontSize = 12;
     p.FontWeight = 'bold';
