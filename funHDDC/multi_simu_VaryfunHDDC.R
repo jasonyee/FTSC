@@ -5,11 +5,13 @@ library(dplyr)
 
 # Simulation Scenario
 nSim = 50
-Group_size = 100
-var_random = 100
+Group_size = 20
+var_random1 = 50
+var_random2 = 200
+var_random3 = 100
 var_noise = 1
 
-njobs = 6
+njobs = 20
 random_seed <- c(0, 100*(1:(njobs-1)))
 
 True.nSim = nSim*njobs
@@ -19,7 +21,7 @@ True.nSim = nSim*njobs
 # orderSNR = 3
 
 # Low SNR, Group_size = 20
-basisSNR = 20
+basisSNR = 7
 orderSNR = 3
 
 # Low SNR, Group_size = 100
@@ -27,13 +29,15 @@ orderSNR = 3
 # orderSNR = 2
 
 # Data I/O
-path_data <- "Y:/Users/Jialin Yi/output/paper simulation/FixNClusters/data/"
+path_data <- "Y:/Users/Jialin Yi/output/paper simulation/VaryClusters/data/"
 path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/data/"
 path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/plot/"
 name_file <- paste(toString(nSim), toString(Group_size), 
-                   toString(var_random), toString(var_noise), sep = "-")
+                   toString(var_random1), toString(var_random2), toString(var_random3),
+                   toString(var_noise), sep = "-")
 True.name_file <- paste(toString(True.nSim), toString(Group_size), 
-                        toString(var_random), toString(var_noise), sep = "-")
+                        toString(var_random1), toString(var_random2), toString(var_random3),
+                        toString(var_noise), sep = "-")
 
 # Functions
 EncapFunHDDC <- function(dataset, n_cl, n_b, n_o, modeltype, init_cl){
