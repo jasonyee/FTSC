@@ -11,11 +11,14 @@ yvar = 'symq5';
 YVAR = 'SYMQ5';
 k1_path = strcat('Y:\Users\Jialin Yi\data\imputation\', yvar, '\');
 load(strcat(k1_path, yvar, '_3dif.mat'))
+
+figure;
 plot(Threedif');
 ylim([min(Threedif(:))-1, max(Threedif(:))+1])
 xlim([0, 26])
-title(strcat('Longitudinal', {' '}, YVAR, ': adjusted by vnum=3'));
+title(strcat('Longitudinal', {' '}, YVAR, ': Change from Week 4 (vnum=3)'));
 ylabel('Change from vnum=3')
+xlabel('vnum')
 
 %% Data I/O
 NumC = 3;
@@ -45,6 +48,7 @@ fprintf('Functional clustering v.s. kmeans: \n')
 SensTable(WaldMembers, ClusterMembers)
 
 %% Switches plot
+figure;
 plot(SwitchHistory);
 title(strcat('Switches when', {' '},...
         'SYMQ5', {', '}, ...
@@ -85,11 +89,11 @@ for k=1:nClusters
     subplot(1,nClusters,k,'Parent',p);
     plot(t, Y', 'Color', GrewPoints);
     hold on;
-    plot(t, Smoothed(1,:),...
-        t, Smoothed95Upper(1,:), '--',...
-        t, Smoothed95Lower(1,:), '--');
+    plot(t, Smoothed(1,:), 'Color', [0;0;156]/255, 'LineWidth', 1.3)
+    plot(t, Smoothed95Upper(1,:), 'LineStyle', '--', 'Color', [192;0;0]/255, 'LineWidth', 0.8)
+    plot(t, Smoothed95Lower(1,:), 'LineStyle', '--', 'Color', [192;0;0]/255, 'LineWidth', 0.8);
     hold on;
-    plot(t, zeros(1,T),'--');
+    plot(t, zeros(1,T),'-- k');
     hold off;
     ylim([ymin, ymax]);
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
