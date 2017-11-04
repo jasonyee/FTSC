@@ -6,6 +6,17 @@
 clear;
 clc;
 
+%% K=1 Spaghetti Plot
+yvar = 'symq5';
+YVAR = 'SYMQ5';
+k1_path = strcat('Y:\Users\Jialin Yi\data\imputation\', yvar, '\');
+load(strcat(k1_path, yvar, '_3dif.mat'))
+plot(Threedif');
+ylim([min(Threedif(:))-1, max(Threedif(:))+1])
+xlim([0, 26])
+title(strcat('Longitudinal', {' '}, YVAR, ': adjusted by vnum=3'));
+ylabel('Change from vnum=3')
+
 %% Data I/O
 NumC = 3;
 
@@ -80,7 +91,7 @@ for k=1:nClusters
     hold on;
     plot(t, zeros(1,T),'--');
     hold off;
-    ylim([-10, 10]);
+    ylim([ymin, ymax]);
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
     title(plottitle);
 end
