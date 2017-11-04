@@ -53,7 +53,7 @@ SensTable(WaldMembers, ClusterMembers)
 %% Switches plot
 figure;
 plot(SwitchHistory);
-title(strcat('Switches when', {' '},...
+title(strcat('Swaps in iterations for ', {' '},...
         YVAR_plot, {', '}, ...
         'nClusters=', num2str(nClusters)));
     
@@ -123,7 +123,7 @@ for k=1:nClusters
     
     f = figure;
     p = uipanel('Parent',f,'BorderType','none'); 
-    p.Title = strcat(YVAR_plot, ': subjects in Cluster',num2str(k)); 
+    p.Title = strcat(YVAR_plot, ': subject-fit in Cluster',num2str(k)); 
     p.TitlePosition = 'centertop'; 
     p.FontSize = 12;
     p.FontWeight = 'bold';
