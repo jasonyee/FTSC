@@ -99,6 +99,9 @@ for k=1:nClusters
     plot(t, zeros(1,T),'-- k');
     hold off;
     ylim([ymin, ymax]);
+    if k== 1 
+        ylabel('Change from Week 4 (vnum = 3)'); 
+    end
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
     title(plottitle);
 end
