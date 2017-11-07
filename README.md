@@ -50,7 +50,7 @@ Clustering the patients through their SYM-Q5 scores over a period time can help 
 
 We use FTSC on the SYM-Q5 data from 397 patients with number of clusters equal to 3, the results are:
 
-![Figure 5 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.png)
+![Figure 5 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.pdf)
 
 *  110 (27.5%) getting better (improving, symptom change scores decrease over time); 
 *  126 (31.7%) remaining stable (symptom change scores vary around 0); 
