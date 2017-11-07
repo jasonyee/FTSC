@@ -1,4 +1,8 @@
-Take `gupisub` and `nCluster=3` as an example, remember to change the variables before running each program, and change number of clusters if needed.
+The general function is in "C:\Users\jialinyi\Documents\MATLAB\FTSC\Clustering":
+
+`SSMBuiltInClustering` function
+
+As for the process to produce the existing workflow, take `gupisub` and `nCluster=3` as an example, remember to change the variables before running each program, and change number of clusters if needed.
 Note that all the names are case-sensitive, so DO NOT change.
 
 # Create folders
