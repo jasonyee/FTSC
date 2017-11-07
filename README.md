@@ -1,8 +1,8 @@
 # Functional Time Series Clustering
 
-Functional Time Series Clustering (*FTSC*) is an nonparametric clustering algorithm for time series data.
-Unlike kmeans, PCA and many other clustering algorithms, FTSC could handle the data with *missing values* in a most natural way.
-Besides,  *FTSC* is very flexible and works well even when groups in dataset have heterogeneous structure as *FTSC* takes into consideration the with-in group variability.
+Functional Time Series Clustering (FTSC) is a nonparametric clustering algorithm for time series data.
+Unlike kmeans, PCA and many other clustering algorithms, FTSC could handle the data with missing values in a most natural way.
+Besides,  FTSC is very flexible and works well even when groups in dataset have heterogeneous structures as FTSC takes into consideration the with-in group variability.
 
 This is a summer research project I participate in at Department of Biostatistics, Epidemiology and Informatics in Perelman school of medicine, University of Pennsylvania.
 
