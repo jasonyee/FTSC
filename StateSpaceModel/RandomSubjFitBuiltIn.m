@@ -30,10 +30,12 @@ SampleFitLower = Lower(SampleIndex,:);
 
 for j = 1:nSubj
     subplot(3,3,j,'Parent',ParentFig);
-    plot(t, SampleData(j,:),...
-        t, SampleFitMean(j,:),...
-        t, SampleFitUpper(j,:),'--',...
-        t, SampleFitLower(j,:),'--');
+    plot(t, SampleData(j,:), 'Color', 'k')
+    hold on
+    plot(t, SampleFitMean(j,:), 'Color', [0;0;156]/255)
+    plot(t, SampleFitUpper(j,:), 'LineStyle', '--', 'Color', [192;0;0]/255)
+    plot(t, SampleFitLower(j,:), 'LineStyle', '--', 'Color', [192;0;0]/255)
+    hold off
 %     legend('raw', 'fitted');
     title(strcat('n=', num2str(ClusterMember(SampleIndex(j)))));
     ylim(scale);
