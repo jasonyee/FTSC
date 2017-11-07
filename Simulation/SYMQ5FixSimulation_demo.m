@@ -1,3 +1,5 @@
+%% Homogeneous Random Effects, single simulations
+
 clear;clc;
 % Specify data I/O
 Path_InputData = 'Y:\Users\Jialin Yi\output\paper simulation\FixNClusters\data\';
@@ -8,7 +10,7 @@ Plot_filetype = '.pdf';
 % Simulation scenario
 nSim = 100;
 group_size = 20;
-var_random = 900;
+var_random = 400;
 var_noise = 9;
 
 Simu = 63;
