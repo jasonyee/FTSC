@@ -15,30 +15,20 @@ Without their detailed guidance and caring support, I cannot finish the whole pr
 
 # Demo
 
-## Simulation
-
-3 groups of data with different time series structure, each has 50 subjects.
-
-![Figure 1 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.png)
-
-
 ## Performance
 
-![Figure 2 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.png)
+![Figure 1 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.png)
 
+## Simulation
+
+3 groups of data (sin curves) with different time series structure, each has 50 subjects.
+
+![Figure 2 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.png)
 
 The visualization of the clustering results from FTSC is
 
-![Figure 3 FTSC for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Spaghetti.png)
+![Figure 3 FTSC Recovery plot for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Spaghetti.png)
 
-
-## Model selection
-
-The number of clusters is determined by data itself, through an estimator of Kullback-Leibler divergence.
-
-The optimal number of clusters minimized the Kullback-Leibler divergence.
-
-![Figure 4 KL for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/kl_curve.png)
 
 ## Real data: SYM-Q5
 
