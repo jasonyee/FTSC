@@ -19,17 +19,17 @@ Without their detailed guidance and caring support, I cannot finish the whole pr
 
 3 groups of data with different time series structure, each has 50 subjects.
 
-![Figure 1 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.eps)
+![Figure 1 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.jpg)
 
 
 ## Performance
 
-![Figure 2 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.pdf)
+![Figure 2 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.jpg)
 
 
 The visualization of the clustering results from FTSC is
 
-![Figure 3 FTSC for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Spaghetti.eps)
+![Figure 3 FTSC for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Spaghetti.jpg)
 
 
 ## Model selection
@@ -50,7 +50,7 @@ Clustering the patients through their SYM-Q5 scores over a period time can help 
 
 We use FTSC on the SYM-Q5 data from 397 patients with number of clusters equal to 3, the results are:
 
-![Figure 5 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.pdf)
+![Figure 5 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.jpg)
 
 *  110 (27.5%) getting better (improving, symptom change scores decrease over time); 
 *  126 (31.7%) remaining stable (symptom change scores vary around 0); 
