@@ -1,17 +1,13 @@
 # Functional Time Series Clustering
 
-Functional Time Series Clustering (FTSC) is an *unsurpervised* learning algorithm for *time series* data.
+Functional Time Series Clustering (*FTSC*) is an nonparametric clustering algorithm for time series data.
 Unlike kmeans, PCA and many other clustering algorithms, FTSC could handle the data with *missing values* in a most natural way.
+Besides,  *FTSC* is very flexible and works well even when groups in dataset have heterogeneous structure as *FTSC* takes into consideration the with-in group variability.
 
-In real-world data set, missing values are inevitable and also imply important information.
-Traditional way to handle missing values like data imputation will sometimes destroy the information conveyed by missing values.
-
-In the case of missing data, FTSC outperforms the traditional workflow, like imputing-data-first-then-using-kmeans.
-
-This is a summer research project I worked on at the biostatistics department in Perelman school of medicine, University of Pennsylvania.
+This is a summer research project I participate in at Department of Biostatistics, Epidemiology and Informatics in Perelman school of medicine, University of Pennsylvania.
 
 I am very fortunate to be co-advised by Prof. [J. Richard Landis](https://scholar.google.com/citations?user=WDSnxagAAAAJ&hl=en) and Prof. [Wensheng Guo](https://scholar.google.com/citations?user=WYCrBGUAAAAJ&hl=en).
-Without their detailed guidance and caring support, I cannot finish the whole project.
+Without their detailed guidance and caring support, I wouldn't have finished the whole project.
 
 # Demo
 
@@ -21,9 +17,9 @@ Without their detailed guidance and caring support, I cannot finish the whole pr
 
 ## Simulation
 
-3 groups of data (sin curves) with different time series structure, each has 50 subjects.
+3 groups of data with different time series structure, each has 50 subjects.
 
-![Figure 2 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.png)
+![Figure 2 Simulated data (sin curves)](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.png)
 
 The visualization of the clustering results from FTSC is
 
