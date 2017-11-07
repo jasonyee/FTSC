@@ -49,11 +49,11 @@ for k=1:nClusters
     subplot(1,nClusters,k,'Parent',p);
     plot(t, Y', 'Color', GrewPoints);
     hold on;
-    plot(t, Smoothed(1,:),...
-        t, Smoothed95Upper(1,:), '--',...
-        t, Smoothed95Lower(1,:), '--');
+    plot(t, Smoothed(1,:), 'Color', [0;0;156]/255, 'LineWidth', 1.3)
+    plot(t, Smoothed95Upper(1,:), 'LineStyle', '--', 'Color', [192;0;0]/255, 'LineWidth', 0.8)
+    plot(t, Smoothed95Lower(1,:), 'LineStyle', '--', 'Color', [192;0;0]/255, 'LineWidth', 0.8);
     hold on;
-    plot(t, zeros(1,T),'--');
+    plot(t, zeros(1,T),'-- k');
     hold off;
     ylim([ymin, ymax]);
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
