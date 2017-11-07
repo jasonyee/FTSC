@@ -14,6 +14,7 @@ Note that all the names are case-sensitive, so DO NOT change.
 *  Create a folder under "Y:\Users\Jialin Yi\data", named as `GUBISUB`
 *  Create a folder under "Y:\Users\Jialin Yi\output\GUPISUB", named as `Model Selection`
 *  Create a folder under "Y:\Users\Jialin Yi\output\GUPISUB", named as `MATLAB`
+*  Create a folder under "Y:\Users\Jialin Yi\output\GUPISUB\MATLAB", named as `C3`
 
 
 # Data processing
@@ -23,6 +24,7 @@ Note that all the names are case-sensitive, so DO NOT change.
 *  Move results into "Y:\Users\Jialin Yi\data\imputation\gupisub"
 *  Get dif, nomiss variables: run "~\FTSC\DataProcessing\yvar.R"
 *  Convert csv to sas7bdat file: "~\FTSC\DataProcessing\csv2sas7bdat.sas"
+*  Spaghetti plot for raw data: "~\FTSC\DataProcessing\raw_data_spaghetti.R"
 
 
 # Wald hierarchical clustering
