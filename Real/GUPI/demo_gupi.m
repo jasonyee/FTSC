@@ -8,7 +8,7 @@ clc;
 
 yvar = 'gupi';
 YVAR_path = 'GUPI';
-YVAR_plot = 'Gupi_qssymfeel';
+YVAR_plot = 'GUPI-Q9';
 
 %% K=1 Spaghetti Plot
 
