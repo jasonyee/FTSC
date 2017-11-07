@@ -19,26 +19,17 @@ Without their detailed guidance and caring support, I cannot finish the whole pr
 
 3 groups of data with different time series structure, each has 50 subjects.
 
-![Figure 1 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/raw.png)
+![Figure 1 simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti_Keq1.eps)
 
 
 ## Performance
 
-| kmeans + imputation | Cluster1 | Cluster2 | Cluster3 |
-|:-------------------:|----------|----------|----------|
-| True Group 1        | 48       | 2        | 0        |
-| True Group 2        | 0        | 1        | 49       |
-| True Group 3        | 6        | 44       | 0        |
+![Figure 2 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.pdf)
 
-|     FTSC     | Cluster1 | Cluster2 | Cluster3 |
-|:------------:|----------|----------|----------|
-| True Group 1 | 49       | 1        | 0        |
-| True Group 2 | 0        | 0        | 50       |
-| True Group 3 | 2        | 48       | 0        |
 
 The visualization of the clustering results from FTSC is
 
-![Figure 2 FTSC for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/spaghetti.png)
+![Figure 3 FTSC for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Spaghetti.eps)
 
 
 ## Model selection
@@ -47,7 +38,7 @@ The number of clusters is determined by data itself, through an estimator of Kul
 
 The optimal number of clusters minimized the Kullback-Leibler divergence.
 
-![Figure 3 KL for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/kl_curve.png)
+![Figure 4 KL for simulated data](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/kl_curve.png)
 
 ## Real data: SYM-Q5
 
@@ -59,11 +50,11 @@ Clustering the patients through their SYM-Q5 scores over a period time can help 
 
 We use FTSC on the SYM-Q5 data from 397 patients with number of clusters equal to 3, the results are:
 
-![Figure 4 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.png)
+![Figure 5 FTSC for SYM-Q5 data](https://github.com/jasonyee/FTSC/blob/master/demo/symq5/spaghetti.pdf)
 
-*  109 (27.5%) getting better (improving, symptom change scores decrease over time); 
+*  110 (27.5%) getting better (improving, symptom change scores decrease over time); 
 *  126 (31.7%) remaining stable (symptom change scores vary around 0); 
-*  162 (40.8%) worsening (symptom change scores increase over time).
+*  161 (40.8%) worsening (symptom change scores increase over time).
 
 # Features of FTSC code
 
