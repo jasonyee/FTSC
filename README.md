@@ -13,6 +13,10 @@ Without their detailed guidance and caring support, I wouldn't have finished the
 
 ## Performance
 
+Here is the performance comparison about the classification rate of FTSC, FunHDDC and K-means.
+
+[FunHDDC](https://cran.r-project.org/web/packages/funHDDC/index.html) is a popular model-based clustering method.
+
 ![Figure 1 Classification rate boxplot](https://github.com/jasonyee/FTSC/blob/master/demo/simulation/Heter_panel_crate.png)
 
 ## Simulation
