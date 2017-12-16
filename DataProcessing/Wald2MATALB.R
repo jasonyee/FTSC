@@ -1,8 +1,8 @@
 library(sas7bdat)
 library(R.matlab)
 
-bigyvar = "SF12_MCS"
-smallyvar = "sf12_mcs"
+bigyvar = "SF12_PCS"
+smallyvar = "sf12_pcs"
 exclude.day <- 0
 ncol <- 25
 
