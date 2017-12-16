@@ -1,6 +1,6 @@
 libname outdt "Y:/Users/Jialin Yi/data/imputation";
 
-%let yvar = gupisub;
+%let yvar = sf12_mcs;
 
 proc import datafile = 'Y:/Users/Jialin Yi/data/imputation/raw.csv'
 	out = raw

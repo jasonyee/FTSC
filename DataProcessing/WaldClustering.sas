@@ -6,9 +6,9 @@
 **/
 
 ***Specify the variable to analyze;
-%let yvar = gupisub;
-%let bigyvar = %str(GUPISUB);
-%let smallyvar = %str(gupisub);
+%let yvar = sf12_mcs;
+%let bigyvar = %str(SF12_MCS);
+%let smallyvar = %str(sf12_mcs);
 
 
 libname outdt "Y:\Users\Jialin Yi\output\&bigyvar.\Wald";

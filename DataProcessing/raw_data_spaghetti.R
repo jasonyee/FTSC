@@ -1,7 +1,7 @@
 library(sas7bdat)
 library(R.matlab)
 
-yvar = "gupisub"
+yvar = "sf12_mcs"
 
 path <- paste("Y:/Users/Jialin Yi/data/imputation/", yvar, "/", sep = "")
 

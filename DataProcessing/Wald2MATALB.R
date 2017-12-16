@@ -1,8 +1,10 @@
 library(sas7bdat)
 library(R.matlab)
 
-bigyvar = "GUPISUB"
-smallyvar = "gupisub"
+bigyvar = "SF12_MCS"
+smallyvar = "sf12_mcs"
+exclude.day <- 0
+ncol <- 25
 
 for(nClusters in 3:3){
   # Import wald clustering from SAS
@@ -13,14 +15,14 @@ for(nClusters in 3:3){
                                  sep = ""))
   # yvar_dif
   ## exclude visit 1 and visit 2
-  yvar_dif <- dataset[,5][dataset$visit>2]
+  yvar_dif <- dataset[,5][dataset$visit>exclude.day]
   ## convert into a matrix
-  yvar_dif_mat <- matrix(yvar_dif, nrow = 397, ncol = 23, byrow = TRUE)
+  yvar_dif_mat <- matrix(yvar_dif, nrow = 397, ncol = ncol, byrow = TRUE)
   
   # wald cluster id
   ## exclude visit 1 and visit 2
-  wald <- dataset$CLUSTER[dataset$visit>2]
-  wald_mat <- matrix(wald, nrow = 397, ncol = 23, byrow = TRUE)
+  wald <- dataset$CLUSTER[dataset$visit>exclude.day]
+  wald_mat <- matrix(wald, nrow = 397, ncol = ncol, byrow = TRUE)
   waldid <- wald_mat[,1]
   
   result_name = paste("Y:/Users/Jialin Yi/data/",bigyvar,"/",bigyvar,"_dif_",
