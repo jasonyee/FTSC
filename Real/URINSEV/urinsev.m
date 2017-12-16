@@ -58,6 +58,7 @@ title(strcat('Swaps in iterations for ', {' '},...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
+random_num = 20;
 GrewPoints = .8 * ones(1,3);
 
 % get scale for dataset
@@ -90,6 +91,11 @@ for k=1:nClusters
         NormalCI(Smoothed, SmoothedVar, ConfidenceLevel);
     
     subplot(1,nClusters,k,'Parent',p);
+    
+    if random_num
+        Y = datasample(Y, random_num, 'Replace', false);
+    end
+    
     plot(t, Y', 'Color', GrewPoints);
     hold on;
     plot(t, Smoothed(1,:), 'Color', [0;0;156]/255, 'LineWidth', 1.3)
