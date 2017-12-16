@@ -1,4 +1,4 @@
-%let dataset = %str(gupisub);
+%let dataset = %str(sf12_mcs);
 
 
 libname outdt "Y:/Users/Jialin Yi/data/imputation/&dataset.";

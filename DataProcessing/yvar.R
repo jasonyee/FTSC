@@ -1,6 +1,8 @@
 library(sas7bdat)
 
-pathname <- "gupisub"
+pathname <- "sf12_mcs"
+impu.day <- 1
+
 filepath <- paste("Y:/Users/Jialin Yi/data/imputation/",
                   pathname,"/",sep = "")
 
@@ -12,11 +14,11 @@ pred <- blup$Pred
 # nomiss
 yvar_nomiss <- yvar
 yvar_nomiss[is.nan(yvar)] <- pred[is.nan(yvar)]
-# 3impu
-yvar[(blup$vnum == 3) & is.nan(blup[,3])] <- 
-  pred[(blup$vnum == 3) & is.nan(blup[,3])]
+# impu
+yvar[(blup$vnum == impu.day) & is.nan(blup[,3])] <- 
+  pred[(blup$vnum == impu.day) & is.nan(blup[,3])]
 # dif
-yvar_vnum3s <- rep(yvar[blup$vnum == 3], each = 25) 
+yvar_vnum3s <- rep(yvar[blup$vnum == impu.day], each = 25) 
 yvar_dif <- yvar - yvar_vnum3s
 # dif_nomiss
 yvar_dif_nomiss <- yvar_dif
