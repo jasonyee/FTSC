@@ -1,6 +1,6 @@
 library(sas7bdat)
 
-pathname <- "sf12_mcs"
+pathname <- "sf12_pcs"
 impu.day <- 1
 
 filepath <- paste("Y:/Users/Jialin Yi/data/imputation/",
