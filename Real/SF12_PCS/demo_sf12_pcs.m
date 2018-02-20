@@ -20,10 +20,12 @@ Threedif = Threedif(:, selected_points);
 figure;
 plot(Threedif');
 ylim([min(Threedif(:))-1, max(Threedif(:))+1])
-xlim([0, 8])
-title(strcat('Longitudinal', {' '}, YVAR_plot, ': Change from Week 4 (vnum=3)'));
-ylabel('Change from vnum=3')
-xlabel('vnum')
+xlim([0.9, 8])
+title(strcat('Longitudinal', {' '}, YVAR_plot, ': Change from Week 0 (vnum=1)'));
+ylabel('Change from vnum=1')
+xticks([1 2 3 4 5 6 7])
+xticklabels({'0','8','16', '24', '32', '40', '48'})
+xlabel('Week')
 
 %% Data I/O
 NumC = 3;
@@ -61,7 +63,7 @@ title(strcat('Swaps in iterations for ', {' '},...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
-random_num = 20;
+random_num = 0;
 GrewPoints = .8 * ones(1,3);
 
 % get scale for dataset
@@ -80,7 +82,7 @@ for k=1:nClusters
     
     Y = ClusterData{k};
     [n, T] = size(Y);
-    t = (1:T)/T;
+    t = (0:T-1)/(T-1);
     
     % Constructing ssm object
     SSM_kalman{k} = ...
@@ -109,7 +111,7 @@ for k=1:nClusters
     hold off;
     ylim([ymin, ymax]);
     if k== 1 
-        ylabel('Change from Week 4 (vnum = 3)'); 
+        ylabel('Change from Week 0 (vnum = 1)'); 
     end
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
     title(plottitle);
