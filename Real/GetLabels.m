@@ -2,7 +2,7 @@ clear;clc;
 
 filepath = 'Y:\Users\Jialin Yi\output\Labels\';
 
-realdata = {'symq5','symq6','symq7','symq8','painsev','urinsev','gupi', 'gupisub'};
+realdata = {'symq5','symq6','symq7','symq8','painsev','urinsev','gupi', 'gupisub', 'sf12_mcs', 'sf12_pcs'};
 
 n = 397;
 

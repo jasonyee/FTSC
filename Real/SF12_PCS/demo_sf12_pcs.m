@@ -8,7 +8,7 @@ clc;
 
 yvar = 'sf12_pcs';
 YVAR_path = 'SF12_PCS';
-YVAR_plot = 'SF12 MCS';
+YVAR_plot = 'SF12 PCS';
 
 %% K=1 Spaghetti Plot
 
