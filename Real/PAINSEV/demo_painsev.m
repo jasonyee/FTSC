@@ -58,9 +58,10 @@ title(strcat('Swaps in iterations for ', {' '},...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
-GrewPoints = .8 * ones(1,3);
+order = [2, 1, 3];
+random_num = 0;
 
-random_num = 10;
+GrewPoints = .8 * ones(1,3);
 
 % get scale for dataset
 ymin = min(dataset(:))-1;
@@ -76,7 +77,7 @@ p.FontSize = 12;
 p.FontWeight = 'bold';
 for k=1:nClusters
     
-    Y = ClusterData{k};
+    Y = ClusterData{order(k)};
     [n, T] = size(Y);
     t = (1:T)/T;
     
