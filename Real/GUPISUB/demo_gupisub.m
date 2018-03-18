@@ -60,7 +60,8 @@ title(strcat('Swaps in iterations for ', {' '},...
 %% Spaghetti plot with group average fit
 GrewPoints = .8 * ones(1,3);
 
-random_num = 10;
+order = [2, 1, 3]; % improved, stable, worse
+random_num = 0;
 
 % get scale for dataset
 ymin = min(dataset(:))-1;
@@ -91,11 +92,12 @@ for k=1:nClusters
     [Smoothed95Upper, Smoothed95Lower] = ...
         NormalCI(Smoothed, SmoothedVar, ConfidenceLevel);
     
-    subplot(1,nClusters,k,'Parent',p);
-    
     if random_num
         Y = datasample(Y, random_num, 'Replace', false);
     end
+    
+    m = order(k); % the position that cluster k will be shown.
+    subplot(1,nClusters,m,'Parent',p);
     
     plot(t, Y', 'Color', GrewPoints);
     hold on;
@@ -106,7 +108,7 @@ for k=1:nClusters
     plot(t, zeros(1,T),'-- k');
     hold off;
     ylim([ymin, ymax]);
-    if k== 1 
+    if m== 1 
         ylabel('Change from Week 4 (vnum = 3)'); 
     end
     plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
