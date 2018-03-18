@@ -60,7 +60,7 @@ title(strcat('Swaps in iterations for ', {' '},...
 %% Spaghetti plot with group average fit
 GrewPoints = .8 * ones(1,3);
 
-order = [2, 1, 3]; % improved, stable, worse
+progress = [2, 1, 3]; % improved-1;stable-2;worse-3
 random_num = 0;
 
 % get scale for dataset
@@ -96,7 +96,7 @@ for k=1:nClusters
         Y = datasample(Y, random_num, 'Replace', false);
     end
     
-    m = order(k); % the position that cluster k will be shown.
+    m = progress(k); % the position that cluster k will be shown.
     subplot(1,nClusters,m,'Parent',p);
     
     plot(t, Y', 'Color', GrewPoints);
