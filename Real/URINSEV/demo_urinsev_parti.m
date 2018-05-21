@@ -9,10 +9,11 @@ clc;
 yvar = 'urinsev';
 YVAR_path = 'URINSEV';
 YVAR_plot = 'Urinary Severity First Period';
+period = '4to24\';
 %% Data I/O
 NumC = 3;
 
-path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Partition\');
+path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Partition\', period);
 
 load(strcat(path_result, YVAR_path,'_dif_F_', num2str(NumC),'C.mat'));
 
@@ -27,14 +28,6 @@ SSM_kalman = cell(1, nClusters);
 
 diffusePrior = 1e7;
 ConfidenceLevel = 0.95;     % confidence level
-
-%% sensitivity analysis
-
-% wald's minimum variance
-WaldMembers = ClusteringMembers(nClusters, WaldClusterID);
-% state-space model clustering
-fprintf('Functional clustering v.s. kmeans: \n')
-SensTable(WaldMembers, ClusterMembers)
 
 %% Switches plot
 figure;
@@ -128,3 +121,14 @@ for k=1:nClusters
 
     RandomSubjFitBuiltIn(nSubj, Y, Members, SSM_kalman{k}, Output_builtin, [ymin, ymax], p);
 end
+
+%% sensitivity analysis
+FirstPClusterMembers = ClusterMembers;
+path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
+load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'), '');
+
+SensTable = ThreeCatSensPlot(FirstPClusterMembers, progress, 'First_Period',...
+    ClusterMembers, progress, 'Full_Period');
+
+uitable('Data',SensTable{:,:},'ColumnName',SensTable.Properties.VariableNames,...
+    'RowName',SensTable.Properties.RowNames,'Units', 'Normalized', 'Position',[0, 0, 1, 1]);
