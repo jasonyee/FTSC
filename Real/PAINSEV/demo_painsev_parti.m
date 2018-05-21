@@ -8,7 +8,7 @@ clc;
 
 yvar = 'painsev';
 YVAR_path = 'PAINSEV';
-YVAR_plot = 'Pain Severity';
+YVAR_plot = 'Pain Severity First Period';
 %% Data I/O
 NumC = 3;
 
