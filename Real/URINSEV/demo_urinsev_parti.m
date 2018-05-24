@@ -123,12 +123,12 @@ for k=1:nClusters
 end
 
 %% sensitivity analysis
-FirstPClusterMembers = ClusterMembers;
-path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
-load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'), '');
-
-SensTable = ThreeCatSensPlot(FirstPClusterMembers, progress, 'First_Period',...
-    ClusterMembers, progress, 'Full_Period');
-
-uitable('Data',SensTable{:,:},'ColumnName',SensTable.Properties.VariableNames,...
-    'RowName',SensTable.Properties.RowNames,'Units', 'Normalized', 'Position',[0, 0, 1, 1]);
+% FirstPClusterMembers = ClusterMembers;
+% path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
+% load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'), '');
+% 
+% SensTable = ThreeCatSensPlot(FirstPClusterMembers, progress, '4-24_',...
+%     ClusterMembers, progress, 'all_');
+% 
+% uitable('Data',SensTable{:,:},'ColumnName',SensTable.Properties.VariableNames,...
+%     'RowName',SensTable.Properties.RowNames,'Units', 'Normalized', 'Position',[0, 0, 1, 1]);
