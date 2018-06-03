@@ -6,6 +6,9 @@
 clear;
 clc;
 
+% change Options for different clustering result
+Options = 'Model Selection';
+
 yvar = 'painsev';
 YVAR_path = 'PAINSEV';
 YVAR_plot = 'Pain Severity';
@@ -24,7 +27,7 @@ demo_uncluster(k1_struct, k1Options)
 %% Data I/O
 NumC = 3;
 
-path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
+path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\', Options, '\');
 
 cluster_file = load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'));
 
