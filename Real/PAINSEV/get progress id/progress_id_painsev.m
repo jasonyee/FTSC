@@ -29,4 +29,4 @@ file_path = strcat(path_result, '\', YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'
 
 load(file_path, 'ClusterIDs');
 
-ProgressIDs = ProgressID(ClusterIDs, cluster_id_progress, file_path);
+[ProgressIDs, ProgressMembers] = ProgressID(ClusterIDs, cluster_id_progress, file_path);
