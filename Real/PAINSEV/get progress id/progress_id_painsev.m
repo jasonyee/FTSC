@@ -14,7 +14,7 @@ Options = 'AllinOne';
 %% Determine [<improve_id>, <stable_id>, <worse_id>] using plot from
 % clusterplot
 
-cluster_id_progress = [1, 3, 2];
+cluster_id_progress = [3, 1, 2];
 
 %% Data I/O: path_result locates the clustering result output by FTSC.
 NumC = 3;
