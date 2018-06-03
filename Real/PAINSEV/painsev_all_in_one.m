@@ -42,7 +42,7 @@ title(strcat('Switches when', {' '},...
             'nClusters=', num2str(nClusters)));
 
 % save result
-save(strcat(path_result, 'PAINSEV_dif_F_',num2str(nClusters),'C.mat'));
+save(strcat(path_result, 'PAINSEV_dif_FC_',num2str(nClusters),'C.mat'));
 
 ProgressInfo = ['PAINSEV ', ...
     ': nClusters = ', num2str(nClusters), ' is finised.'];

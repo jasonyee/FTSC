@@ -19,7 +19,7 @@ NumC = 3;
 
 path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\', target);
 
-load(strcat(path_result, '\', YVAR_path, '_dif_F_', num2str(NumC),'C.mat'));
+load(strcat(path_result, '\', YVAR_path, '_dif_FC_', num2str(NumC),'C.mat'));
 
 %% clustering running time
 fprintf('The clustering algorithm running time is %.2f minutes.\n', clustertime/60)
