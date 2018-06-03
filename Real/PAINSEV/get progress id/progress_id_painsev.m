@@ -5,16 +5,17 @@
 clear;
 clc;
 
+% change Options for different clustering result
+Options = 'Model Selection';
+
 yvar = 'painsev';
 YVAR_path = 'PAINSEV';
 YVAR_plot = 'Pain Severity';
 
-Options = 'AllinOne';
-
 %% Determine [<improve_id>, <stable_id>, <worse_id>] using plot from
 % clusterplot
 
-cluster_id_progress = [3, 1, 2];
+cluster_id_progress = [2, 1, 3];
 
 %% Data I/O: path_result locates the clustering result output by FTSC.
 NumC = 3;
