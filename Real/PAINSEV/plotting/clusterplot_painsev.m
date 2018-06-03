@@ -6,11 +6,11 @@
 clear;
 clc;
 
+Options = 'AllinOne';
+
 yvar = 'painsev';
 YVAR_path = 'PAINSEV';
 YVAR_plot = 'Pain Severity';
-
-Options = 'AllinOne';
 
 %% Data I/O: path_result locates the clustering result output by FTSC.
 NumC = 3;
@@ -42,7 +42,7 @@ ymax = max(dataset(:))+1;
 
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = strcat('Spaghetti plot for', {' '}, ...
+p.Title = strcat('Raw-ClusterIDs plot for', {' '}, ...
                 YVAR_plot, {', '}, ...
                 'nClusters=',num2str(nClusters)); 
 p.TitlePosition = 'centertop'; 
