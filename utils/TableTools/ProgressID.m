@@ -29,5 +29,9 @@ if ~ismember('ProgressMembers', variableInfo)
     save(file_path, 'ProgressMembers', '-append')
 end
 
+if ~ismember('cluster_id_progress', variableInfo)
+    save(file_path, 'cluster_id_progress', '-append')
+end
+
 end
 
