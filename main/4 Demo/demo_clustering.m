@@ -15,7 +15,9 @@ function demo_clustering(struct_file, Options)
 %       .ylabels
 
 %% clustering running time
-fprintf('The running time is %.2f', Options.runningtime_unit, '\n', struct_file.clustertime/60)
+disp(strcat('The running time is ',...
+    {' '}, num2str(struct_file.clustertime/60),...
+    {' '}, Options.runningtime_unit))
 
 %% preallocation
 % get data in each cluster
