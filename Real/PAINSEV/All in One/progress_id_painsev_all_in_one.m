@@ -15,7 +15,7 @@ YVAR_plot = 'Pain Severity';
 %% Determine [<improve_id>, <stable_id>, <worse_id>] using plot from
 % clusterplot
 
-cluster_id_progress = [3, 2, 1];
+cluster_id_progress = [3, 1, 2];
 
 %% Data I/O: path_result locates the clustering result output by FTSC.
 NumC = 3;
