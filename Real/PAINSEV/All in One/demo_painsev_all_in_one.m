@@ -1,17 +1,17 @@
-%%  GUPISUB: Sensitivity analysis, switches plot and random subject fit plotting
+%%  PAINSEV: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
 %   -FTSC
 
-%% loading clustering results
+%% loading clustering result
 clear;
 clc;
 
 % change Options for different clustering result
-Options = 'Model Selection';
+Options = 'AllinOne';
 
-yvar = 'gupisub';
-YVAR_path = 'GUPISUB';
-YVAR_plot = 'GUPI-Subscore';
+yvar = 'painsev';
+YVAR_path = 'PAINSEV';
+YVAR_plot = 'Pain Severity';
 
 %% K=1 Spaghetti Plot
 
@@ -46,3 +46,6 @@ clusterOptions.ylabels = 'Change from Week 4 (vnum = 3)';
 
 %% Demostration
 demo_clustering(cluster_file, clusterOptions)
+
+
+

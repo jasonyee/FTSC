@@ -8,25 +8,12 @@ clc;
 
 yvar = 'urinsev';
 YVAR_path = 'URINSEV';
-YVAR_plot = 'Urinary Severity';
-
-%% K=1 Spaghetti Plot
-
-k1_path = strcat('Y:\Users\Jialin Yi\data\imputation\', yvar, '\');
-load(strcat(k1_path, yvar, '_3dif.mat'))
-
-figure;
-plot(Threedif');
-ylim([min(Threedif(:))-1, max(Threedif(:))+1])
-xlim([0, 26])
-title(strcat('Longitudinal', {' '}, YVAR_plot, ': Change from Week 4 (vnum=3)'));
-ylabel('Change from vnum=3')
-xlabel('vnum')
-
+YVAR_plot = 'Urinary Severity First Period';
+period = '4to24\';
 %% Data I/O
 NumC = 3;
 
-path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
+path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Partition\', period);
 
 load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'));
 
@@ -42,14 +29,6 @@ SSM_kalman = cell(1, nClusters);
 diffusePrior = 1e7;
 ConfidenceLevel = 0.95;     % confidence level
 
-%% sensitivity analysis
-
-% wald's minimum variance
-WaldMembers = ClusteringMembers(nClusters, WaldClusterID);
-% state-space model clustering
-fprintf('Functional clustering v.s. kmeans: \n')
-SensTable(WaldMembers, ClusterMembers)
-
 %% Switches plot
 figure;
 plot(SwitchHistory);
@@ -58,8 +37,9 @@ title(strcat('Swaps in iterations for ', {' '},...
         'nClusters=', num2str(nClusters)));
     
 %% Spaghetti plot with group average fit
-progress = [2, 3, 1]; % improved-1;stable-2;worse-3
+progress = [2, 3, 1];% improved-1;stable-2;worse-3
 random_num = 0;
+
 GrewPoints = .8 * ones(1,3);
 
 % get scale for dataset
@@ -74,7 +54,6 @@ p.Title = strcat('Spaghetti plot for', {' '}, ...
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
-
 for k=1:nClusters
     
     Y = ClusterData{k};
@@ -98,7 +77,7 @@ for k=1:nClusters
     
     m = progress(k); % the position that cluster k will be shown.
     subplot(1,nClusters,m,'Parent',p);
-
+    
     plot(t, Y', 'Color', GrewPoints);
     hold on;
     plot(t, Smoothed(1,:), 'Color', [0;0;156]/255, 'LineWidth', 1.3)
@@ -111,7 +90,7 @@ for k=1:nClusters
     if m== 1 
         ylabel('Change from Week 4 (vnum = 3)'); 
     end
-    plottitle = strcat('Cluster', num2str(k), ' n=', num2str(n));
+    plottitle = strcat('Cluster', num2str(m), ' n=', num2str(n));
     title(plottitle);
 end
 
@@ -135,10 +114,21 @@ for k=1:nClusters
     
     f = figure;
     p = uipanel('Parent',f,'BorderType','none'); 
-    p.Title = strcat(YVAR_plot, ': subject-fit in Cluster',num2str(k)); 
+    p.Title = strcat(YVAR_plot, ': subject-fit in Cluster',num2str(progress(k))); 
     p.TitlePosition = 'centertop'; 
     p.FontSize = 12;
     p.FontWeight = 'bold';
 
     RandomSubjFitBuiltIn(nSubj, Y, Members, SSM_kalman{k}, Output_builtin, [ymin, ymax], p);
 end
+
+%% sensitivity analysis
+% FirstPClusterMembers = ClusterMembers;
+% path_result = strcat('Y:\Users\Jialin Yi\output\', YVAR_path, '\Model Selection\');
+% load(strcat(path_result, YVAR_path,'_dif_FC_', num2str(NumC),'C.mat'), '');
+% 
+% SensTable = ThreeCatSensPlot(FirstPClusterMembers, progress, '4-24_',...
+%     ClusterMembers, progress, 'all_');
+% 
+% uitable('Data',SensTable{:,:},'ColumnName',SensTable.Properties.VariableNames,...
+%     'RowName',SensTable.Properties.RowNames,'Units', 'Normalized', 'Position',[0, 0, 1, 1]);

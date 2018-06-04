@@ -1,4 +1,4 @@
-%% Pain severity data, built-in, cubic spline(F), sin prior(R)
+%% Urinary severity data, built-in, cubic spline(F), sin prior(R)
 %  Adding the following folders to the path:
 %   -FTSC
 % this program uses the all-in-one FTSC function
@@ -9,9 +9,9 @@ clc;
 
 %% Data I/O
 
-path_data = 'Y:\Users\Jialin Yi\data\PAINSEV\';
+path_data = 'Y:\Users\Jialin Yi\data\URINSEV\';
 
-path_result = 'Y:\Users\Jialin Yi\output\PAINSEV\AllinOne\';
+path_result = 'Y:\Users\Jialin Yi\output\URINSEV\AllinOne\';
 
 %% Clustering setting
 nClusters = 3;
@@ -21,8 +21,8 @@ k = 3;
 
 %% First part of the partition data: Week 4-24
 % load data
-load(strcat(path_data, 'painsev_dif_',num2str(nClusters),'C.mat'));
-dataset = painsev_dif;
+load(strcat(path_data, 'urinsev_dif_',num2str(nClusters),'C.mat'));
+dataset = urinsev_dif;
 
 % get time points
 [~, m] = size(dataset);
@@ -38,13 +38,13 @@ clustertime = toc;
 subplot(2, 5, nClusters);
 plot(SwitchHistory)
 title(strcat('Switches when', {' '},...
-            'PAINSEV', {', '}, ...
+            'URINSEV', {', '}, ...
             'nClusters=', num2str(nClusters)));
 
 % save result
-save(strcat(path_result, 'PAINSEV_dif_F_',num2str(nClusters),'C.mat'));
+save(strcat(path_result, 'URINSEV_dif_FC_',num2str(nClusters),'C.mat'));
 
-ProgressInfo = ['PAINSEV ', ...
+ProgressInfo = ['URINSEV ', ...
     ': nClusters = ', num2str(nClusters), ' is finised.'];
 display(ProgressInfo);
 

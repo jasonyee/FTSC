@@ -1,17 +1,17 @@
-%%  GUPISUB: Sensitivity analysis, switches plot and random subject fit plotting
+%%  URINSEV: Sensitivity analysis, switches plot and random subject fit plotting
 %   change the truth id accordingly when analyzing different simulations
 %   -FTSC
 
-%% loading clustering results
+%% loading clustering result
 clear;
 clc;
 
 % change Options for different clustering result
 Options = 'Model Selection';
 
-yvar = 'gupisub';
-YVAR_path = 'GUPISUB';
-YVAR_plot = 'GUPI-Subscore';
+yvar = 'urinsev';
+YVAR_path = 'URINSEV';
+YVAR_plot = 'Urin Severity';
 
 %% K=1 Spaghetti Plot
 
