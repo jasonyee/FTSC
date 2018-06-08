@@ -17,7 +17,7 @@ Plot_filetype = '.pdf';
 % Simulation scenario
 nSim = 10;
 group_size = 100;
-var_random = [200, 100, 100];
+var_random = [200, 200, 200];
 var_noise = 2;
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-');

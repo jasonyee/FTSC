@@ -2,8 +2,8 @@ clear;clc;
 % Simulation scenario
 nSim = 10;
 group_size = 100;
-var_random = [200, 100, 100];
-var_noise = 1;
+var_random = [200, 200, 200];
+var_noise = 2;
 
 SimID = 3;
 LineStyles = {'-', '--', ':'};
