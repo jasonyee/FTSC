@@ -18,7 +18,7 @@ Plot_filetype = '.pdf';
 nSim = 10;
 group_size = 100;
 var_random = [200, 100, 100];
-var_noise = 1;
+var_noise = 2;
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-');
 for j=1:length(var_random)
