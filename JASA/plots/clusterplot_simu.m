@@ -8,10 +8,10 @@ clc;
 
 nSim = 10;
 group_size = 100;
-var_random = [200, 200, 200];
-var_noise = 1;
+var_random = [200, 100, 100];
+var_noise = 2;
 
-experiment = 7;
+experiment = 4;
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-',...
     num2str(var_random(1)), '-', num2str(var_random(2)), '-',...
@@ -28,9 +28,6 @@ file_path = strcat(path_result, file_name,'.mat');
 
 cluster_struct = load(file_path);
 %% Plotting
-
-% clustering running time
-fprintf('The clustering algorithm running time is %.2f minutes.\n', cluster_struct.duration/60)
 
 % preallocation
 % get data in each cluster

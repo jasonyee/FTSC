@@ -8,10 +8,14 @@ clc;
 
 nSim = 10;
 group_size = 100;
-var_random = [200, 200, 200];
-var_noise = 1;
+var_random = [200, 100, 100];
+var_noise = 2;
 
-experiment = 7;
+experiment = 4;
+%% Determine [<improve_id>, <stable_id>, <worse_id>] using plot from
+% clusterplot
+
+cluster_id_progress = [1, 3, 2];
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-',...
     num2str(var_random(1)), '-', num2str(var_random(2)), '-',...
@@ -25,11 +29,6 @@ YVAR_plot = 'simulation';
 path_result = 'Y:\Users\Jialin Yi\output\paper simulation\JASA\data\';
 
 file_path = strcat(path_result, file_name,'.mat');
-
-%% Determine [<improve_id>, <stable_id>, <worse_id>] using plot from
-% clusterplot
-
-cluster_id_progress = [3, 1, 2];
 
 %% Data I/O: path_result locates the clustering result output by FTSC.
 
