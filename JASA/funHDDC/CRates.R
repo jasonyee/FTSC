@@ -4,43 +4,27 @@ library(R.matlab)
 library(dplyr)
 
 # Simulation Scenario
-nSim = 100
-Group_size = 20
-var_random1 = 50
-var_random2 = 200
+nSim = 10
+Group_size = 100
+var_random1 = 200
+var_random2 = 100
 var_random3 = 100
 var_noise = 1
 
-# High SNR, Group_size = 20
-# basisSNR = 7
-# orderSNR = 3
+basisSNR = 10
 
-# Low SNR, Group_size = 20
-basisSNR = 7
-orderSNR = 3
-
-# Low SNR, Group_size = 100
-# basisSNR = 7
-# orderSNR = 2
+set.seed(1)
 
 # Data I/O
-path_data <- "Y:/Users/Jialin Yi/output/paper simulation/VaryClusters/data/"
-path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/data/"
-path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/plot/"
+path_data <- "Y:/Users/Jialin Yi/output/paper simulation/JASA/data/"
+path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/JASA/data/"
+path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/JASA/plot/"
 name_file <- paste(toString(nSim), toString(Group_size), 
                    toString(var_random1), toString(var_random2), toString(var_random3),
                    toString(var_noise), sep = "-")
 
+ndivs <- 0
 # Functions
-EncapFunHDDC <- function(dataset, n_cl, n_b, n_o, modeltype, init_cl){
-  T = nrow(dataset)
-  basis <- create.bspline.basis(c(0, T), nbasis=n_b, norder=n_o)
-  fdobj <- smooth.basis(1:T, dataset,basis,
-                        fdnames=list("Time", "Subject", "Score"))$fd
-  res = funHDDC(fdobj,n_cl,model=modeltype,init=init_cl)
-  
-  return(list(res, fdobj))
-}
 
 CRate <- function(ClusterMatrix){
   ClassRate = 0
@@ -52,19 +36,20 @@ CRate <- function(ClusterMatrix){
   return(ClassRate)
 }
 
-FixSimulation <- function(data_nSim, nbasis = 18, norder = 3){
-  CR = 1:ncol(data_nSim)
+FixSimulation <- function(data_nSim, nbasis = 13){
+  CR = rep(NA, ncol(data_nSim))
+  basis<- create.bspline.basis(c(0,1), nbasis=nbasis)
   for(i in 1:ncol(data_nSim)){
-    dataset <- matrix(pull(data_nSim, i), ncol = 60, byrow = TRUE)
-    modeltype='ABQkDk'
-    out <- EncapFunHDDC(dataset, 3, nbasis, norder, modeltype, 'kmeans')
-    
-    res <- out[[1]]
-    #fdobj <- out[[2]]
-    
-    mat_cl <- matrix(res$class, nrow = Group_size)
-    
-    CR[i] <- CRate(mat_cl) 
+    dataset <- matrix(pull(data_nSim, i), ncol = 300, byrow = TRUE)
+    T = nrow(dataset)
+    var1<-smooth.basis(argvals=seq(0,1,length.out = T),
+                       y=dataset,fdParobj=basis)$fd
+    tryCatch({
+      res<-funHDDC(var1,K=3,init="kmeans")
+      mat_cl <- matrix(res$class, nrow = Group_size)
+      CR[i] <- CRate(mat_cl)
+    }, warning=function(w){
+      ndivs <<- ndivs + 1})
   }
   return(CR)
 }
@@ -77,7 +62,7 @@ data_set <- split(All$data,
 data_set <- bind_rows(data_set)
 
 # FunHDDC on simulated data
-CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR, norder = orderSNR)
+CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
 
 # FTSC on simulation data
 CRFTSC = as.vector(All$FTSC.CRate)
@@ -91,29 +76,7 @@ CRates.Data <- data.frame(rep(c("FTSC", "FunHDDC", "Kmeans"), each=nSim),
 colnames(CRates.Data) <- c("Method", "CRate")
 save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
 
+plot(CRates.Data$Method, CRates.Data$CRate)
 
-# Plots
-pdf(paste(path_out_plot, name_file, ".pdf", sep = ""),
-    width = 8.05, height = 5.76)
 
-par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
-yRange = c(min(CRates.Data$CRate), max(CRates.Data$CRate))
-## plot like time series
-ts.plot(cbind(CRFTSC, CRFunHDDC, CRKmeans),
-        gpars = list(
-          xlab = "",
-          col=c("blue", "red", "black"),
-          ylim = yRange
-        ))
-legend("topright", legend=c("FTSC", "FunHDDC", "K-means"),
-       col=c("blue", "red", "black"), lty=c(1,1,1), cex=0.8)
-# box plot
-boxplot(CRate ~ Method, data = CRates.Data, ylim = yRange)
-
-mtext(paste("Var of noise =", toString(var_noise), ",",
-            "Heterogeneous random effect =", 
-            toString(c(var_random1,var_random2,var_random3)), 
-            outer = TRUE, cex = 1.5))
-
-dev.off()
 
