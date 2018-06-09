@@ -6,6 +6,11 @@ expriment = 5
 colors <- c("red", "blue", "black")
 line.types <- c("solid", "dashed", "longdash")
 plot.order <- c(3,2,1)
+
+lims <- c(-8, 6)
+tick <- -8:6
+margin <- 0.05
+
 ## low random effect, low noise
 nSim = 10
 Group_size = 100
@@ -13,6 +18,7 @@ var_random1 = 200
 var_random2 = 100
 var_random3 = 100
 var_noise = 1
+
 name_file <- paste(toString(nSim), toString(Group_size), 
                    toString(var_random1), toString(var_random2), toString(var_random3)
                    ,toString(var_noise), sep = "-")
@@ -59,9 +65,6 @@ HRLN <- readMat(paste(path_data, name_file, ".mat", sep = ""))
 op <- par(mfrow = c(1,3),
           oma = c(5,4,0,0) + 0.1,
           mar = c(0,0,1,1) + 0.1)
-lims <- c(-9, 6)
-tick <- -9:6
-margin <- 0.05
 
 # Upper Left
 LRLN.experiment <- data.frame(LRLN$data[,,expriment])
