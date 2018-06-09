@@ -9,9 +9,9 @@ Group_size = 100
 var_random1 = 200
 var_random2 = 200
 var_random3 = 200
-var_noise = 1
+var_noise = 2
 
-basisSNR = 8
+basisSNR = 11
 
 set.seed(1)
 
