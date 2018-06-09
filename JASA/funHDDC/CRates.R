@@ -7,11 +7,11 @@ library(dplyr)
 nSim = 10
 Group_size = 100
 var_random1 = 200
-var_random2 = 100
-var_random3 = 100
+var_random2 = 200
+var_random3 = 200
 var_noise = 1
 
-basisSNR = 10
+basisSNR = 8
 
 set.seed(1)
 
