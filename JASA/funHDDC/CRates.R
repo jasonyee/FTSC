@@ -6,13 +6,14 @@ library(dplyr)
 # Simulation Scenario
 nSim = 10
 Group_size = 100
-var_random1 = 200
+var_random1 = 100
 var_random2 = 100
 var_random3 = 100
-var_noise = 2
+var_noise = 1
 
-basisSNR = 9
-thrd = 0.4
+basisSNR = 7
+thrd = 0.8
+itermax = 200
 
 set.seed(1)
 
@@ -46,7 +47,9 @@ FixSimulation <- function(data_nSim, nbasis = 13){
     var1<-smooth.basis(argvals=seq(0,1,length.out = T),
                        y=dataset,fdParobj=basis)$fd
     tryCatch({
-      res<-funHDDC(var1,K=3,init="kmeans", threshold=thrd)
+      res<-funHDDC(var1,K=3,init="vector",
+                   init.vector = All$IniClusterIDs.simu[,i],
+                   threshold=thrd, itermax = itermax)
       mat_cl <- matrix(res$class, nrow = Group_size)
       CR[i] <- CRate(mat_cl)
     }, warning=function(w){
@@ -62,20 +65,22 @@ data_set <- split(All$data,
                   as.factor(rep(1:nSim, each = length(All$data)/nSim)))
 data_set <- bind_rows(data_set)
 
-# FunHDDC on simulated data
-CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
-
-# FTSC on simulation data
-CRFTSC = as.vector(All$FTSC.CRate)
-
 # K-means on simulation data
 CRKmeans = as.vector(All$kmeans.CRate)
 
+# FunHDDC on simulated data
+CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
+
+# # FTSC on simulation data
+# CRFTSC = as.vector(All$FTSC.CRate)
+# 
+
+
 # Save classification rate
-CRates.Data <- data.frame(rep(c("FTSC", "FunHDDC", "Kmeans"), each=nSim),
-                          c(CRFTSC, CRFunHDDC, CRKmeans)) 
+CRates.Data <- data.frame(rep(c("FunHDDC", "Kmeans"), each=nSim),
+                          c(CRFunHDDC, CRKmeans))
 colnames(CRates.Data) <- c("Method", "CRate")
-save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
+#save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
 
 plot(CRates.Data$Method, CRates.Data$CRate)
 
