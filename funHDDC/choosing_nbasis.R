@@ -10,8 +10,8 @@ set.seed(1)
 nSim = 10
 Group_size = 100
 var_random1 = 200
-var_random2 = 200
-var_random3 = 200
+var_random2 = 100
+var_random3 = 100
 var_noise = 2
 basis_num <- 7:20
 K=3

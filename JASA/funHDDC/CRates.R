@@ -7,11 +7,12 @@ library(dplyr)
 nSim = 10
 Group_size = 100
 var_random1 = 200
-var_random2 = 200
-var_random3 = 200
+var_random2 = 100
+var_random3 = 100
 var_noise = 2
 
-basisSNR = 11
+basisSNR = 9
+thrd = 0.4
 
 set.seed(1)
 
@@ -45,7 +46,7 @@ FixSimulation <- function(data_nSim, nbasis = 13){
     var1<-smooth.basis(argvals=seq(0,1,length.out = T),
                        y=dataset,fdParobj=basis)$fd
     tryCatch({
-      res<-funHDDC(var1,K=3,init="kmeans")
+      res<-funHDDC(var1,K=3,init="kmeans", threshold=thrd)
       mat_cl <- matrix(res$class, nrow = Group_size)
       CR[i] <- CRate(mat_cl)
     }, warning=function(w){
