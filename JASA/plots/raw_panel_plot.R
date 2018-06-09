@@ -108,7 +108,7 @@ axis(2, at=tick, labels = FALSE)
 text("(2)", x = 12, y = 6)
 
 # Lower Left
-expriment3 = 3
+expriment3 = 10
 HRLN.experiment <- data.frame(HRLN$data[,,expriment3])
 plot(1:23, seq(-10,10,length=23),
      ylab = "",

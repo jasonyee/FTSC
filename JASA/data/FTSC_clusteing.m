@@ -7,7 +7,7 @@ Path_Data = 'Y:\Users\Jialin Yi\output\paper simulation\JASA\data\';
 nSim = 10;
 group_size = 100;
 var_random = [100, 100, 100];
-var_noise = 2;
+var_noise = 1;
 
 MAX_LOOP = 20;
 logpara0 = [0.5;6;6;-5;0];

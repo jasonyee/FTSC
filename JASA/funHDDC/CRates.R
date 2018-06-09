@@ -9,7 +9,7 @@ Group_size = 100
 var_random1 = 100
 var_random2 = 100
 var_random3 = 100
-var_noise = 1
+var_noise = 2
 
 basisSNR = 7
 thrd = 0.8
@@ -71,16 +71,16 @@ CRKmeans = as.vector(All$kmeans.CRate)
 # FunHDDC on simulated data
 CRFunHDDC = FixSimulation(data_set, nbasis = basisSNR)
 
-# # FTSC on simulation data
-# CRFTSC = as.vector(All$FTSC.CRate)
-# 
+# FTSC on simulation data
+CRFTSC = as.vector(All$FTSC.CRate)
+
 
 
 # Save classification rate
-CRates.Data <- data.frame(rep(c("FunHDDC", "Kmeans"), each=nSim),
-                          c(CRFunHDDC, CRKmeans))
+CRates.Data <- data.frame(rep(c("FTSC", "FunHDDC", "Kmeans"), each=nSim),
+                          c(CRFTSC, CRFunHDDC, CRKmeans))
 colnames(CRates.Data) <- c("Method", "CRate")
-#save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
+save(CRates.Data, file = paste(path_out_data, name_file, ".Rdata", sep = ""))
 
 plot(CRates.Data$Method, CRates.Data$CRate)
 
