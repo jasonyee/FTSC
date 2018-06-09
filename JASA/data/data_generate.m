@@ -15,9 +15,9 @@ Path_OutputBCostBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\JASA\BCost
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 2;
-group_size = 10;
-var_random = [100, 100, 100];
+nSim = 1000;
+group_size = 100;
+var_random = [200, 200, 200];
 var_noise = 2;
 
 file_name = strcat(num2str(nSim), '-', num2str(group_size), '-');
