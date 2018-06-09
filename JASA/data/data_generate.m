@@ -15,8 +15,8 @@ Path_OutputBCostBoxplot = 'Y:\Users\Jialin Yi\output\paper simulation\JASA\BCost
 Plot_filetype = '.pdf';
 
 % Simulation scenario
-nSim = 10;
-group_size = 100;
+nSim = 2;
+group_size = 10;
 var_random = [100, 100, 100];
 var_noise = 2;
 
@@ -58,21 +58,34 @@ save(strcat(Path_OutputData, file_name, '.mat'));
 
 
 %% Plotting
-experiment = 10;
+experiment = 1;
 yrange = [-8, 8];
+colors = {'r', 'k', 'b'};
 subplot(2,2,1)
-plot(SampleFixedEffect(:,:,experiment)')
+for q=1:nClusters
+    plot(SampleFixedEffect((q-1)*group_size+1:q*group_size,:,experiment)', colors{q});
+    hold on
+end
 ylim(yrange)
 title('fixed effect')
 subplot(2,2,2)
-plot(RandomEffect(:,:,experiment)')
+for q=1:nClusters
+    plot(RandomEffect((q-1)*group_size+1:q*group_size,:,experiment)', colors{q});
+    hold on
+end
 ylim(yrange)
 title(strcat('random effect var scale', {' '}, num2str(var_random)))
 subplot(2,2,3)
-plot(WhiteNoise(:,:,experiment)')
+for q=1:nClusters
+    plot(WhiteNoise((q-1)*group_size+1:q*group_size,:,experiment)', colors{q});
+    hold on
+end
 title(strcat('measurement error var scale', {' '}, num2str(var_noise)))
 ylim(yrange)
 subplot(2,2,4)
-plot(data(:,:,experiment)')
+for q=1:nClusters
+    plot(data((q-1)*group_size+1:q*group_size,:,experiment)', colors{q});
+    hold on
+end
 title('raw data')
 ylim(yrange)
