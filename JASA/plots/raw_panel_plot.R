@@ -2,7 +2,6 @@ library(R.matlab)
 path_data <- "Y:/Users/Jialin Yi/output/paper simulation/JASA/data/"
 
 
-expriment = 5
 colors <- c("red", "blue", "black")
 line.types <- c("solid", "dashed", "longdash")
 plot.order <- c(3,2,1)
@@ -67,7 +66,8 @@ op <- par(mfrow = c(1,3),
           mar = c(0,0,1,1) + 0.1)
 
 # Upper Left
-LRLN.experiment <- data.frame(LRLN$data[,,expriment])
+expriment1 = 1
+LRLN.experiment <- data.frame(LRLN$data[,,expriment1])
 plot(1:23, seq(-10,10,length=23),
      ylab = "Simulated scores",
      type = "n", 
@@ -87,7 +87,8 @@ axis(2, at=tick, lwd = margin)
 text("(1)", x = 12, y = 6)
 
 # Upper Right
-LRHN.experiment <- data.frame(LRHN$data[,,expriment])
+expriment2 = 2
+LRHN.experiment <- data.frame(LRHN$data[,,expriment2])
 plot(1:23, seq(-10,10,length=23),
      ylab = "",
      type = "n", 
@@ -107,7 +108,8 @@ axis(2, at=tick, labels = FALSE)
 text("(2)", x = 12, y = 6)
 
 # Lower Left
-HRLN.experiment <- data.frame(HRLN$data[,,expriment])
+expriment3 = 3
+HRLN.experiment <- data.frame(HRLN$data[,,expriment3])
 plot(1:23, seq(-10,10,length=23),
      ylab = "",
      type = "n", 
