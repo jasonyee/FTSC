@@ -6,7 +6,9 @@ library(dplyr)
 # Simulation Scenario
 nSim = 100
 Group_size = 20
-var_random = 100
+var_random1 = 50
+var_random2 = 200
+var_random3 = 100
 var_noise = 1
 
 # High SNR, Group_size = 20
@@ -22,11 +24,12 @@ orderSNR = 3
 # orderSNR = 2
 
 # Data I/O
-path_data <- "Y:/Users/Jialin Yi/output/paper simulation/FixNClusters/data/"
-path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/temp/data/"
-path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/temp/plot/"
+path_data <- "Y:/Users/Jialin Yi/output/paper simulation/VaryClusters/data/"
+path_out_data <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/data/"
+path_out_plot <- "Y:/Users/Jialin Yi/output/paper simulation/FunHDDC/plot/"
 name_file <- paste(toString(nSim), toString(Group_size), 
-                   toString(var_random), toString(var_noise), sep = "-")
+                   toString(var_random1), toString(var_random2), toString(var_random3),
+                   toString(var_noise), sep = "-")
 
 # Functions
 EncapFunHDDC <- function(dataset, n_cl, n_b, n_o, modeltype, init_cl){
@@ -34,7 +37,7 @@ EncapFunHDDC <- function(dataset, n_cl, n_b, n_o, modeltype, init_cl){
   basis <- create.bspline.basis(c(0, T), nbasis=n_b, norder=n_o)
   fdobj <- smooth.basis(1:T, dataset,basis,
                         fdnames=list("Time", "Subject", "Score"))$fd
-  res = funHDDC(fdobj,n_cl,model=modeltype,init=init_cl, thd = 0.01)
+  res = funHDDC(fdobj,n_cl,model=modeltype,init=init_cl)
   
   return(list(res, fdobj))
 }
@@ -59,7 +62,7 @@ FixSimulation <- function(data_nSim, nbasis = 18, norder = 3){
     res <- out[[1]]
     #fdobj <- out[[2]]
     
-    mat_cl <- matrix(res$cls, nrow = Group_size)
+    mat_cl <- matrix(res$class, nrow = Group_size)
     
     CR[i] <- CRate(mat_cl) 
   }
@@ -108,6 +111,9 @@ legend("topright", legend=c("FTSC", "FunHDDC", "K-means"),
 boxplot(CRate ~ Method, data = CRates.Data, ylim = yRange)
 
 mtext(paste("Var of noise =", toString(var_noise), ",",
-            "Var scale of random effect =", toString(var_random)), outer = TRUE, cex = 1.5)
+            "Heterogeneous random effect =", 
+            toString(c(var_random1,var_random2,var_random3)), 
+            outer = TRUE, cex = 1.5))
 
 dev.off()
+
